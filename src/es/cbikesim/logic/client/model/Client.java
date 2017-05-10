@@ -17,7 +17,6 @@ public class Client {
     public Client(int ID){
         this.ID = ID;
         this.state = Client.OFF;
-        this.bike = null;
     }
 
     public int getID() {
