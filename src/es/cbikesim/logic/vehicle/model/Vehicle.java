@@ -1,6 +1,7 @@
 package es.cbikesim.logic.vehicle.model;
 
 import es.cbikesim.logic.bike.model.Bike;
+import es.cbikesim.logic.station.model.Station;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.List;
 public class Vehicle {
 
     private final int ID;
+    private Station to;
+    private Station from;
 
     private List<Bike> bikeList;
 
@@ -27,4 +30,12 @@ public class Vehicle {
     public void setBikeList(List<Bike> bikeList) {
         this.bikeList = bikeList;
     }
+
+    public void setStationTo(Station to){ this.to = to; }
+
+    public Station getStationTo(){ return to; }
+
+    public void setStationFrom(Station from){ this.from = from; }
+
+    public Station getStationFrom(){ return from; }
 }
