@@ -26,6 +26,27 @@ public class Scenario {
         return instance;
     }
 
+    public List<Station> getStationList() {
+        return stationList;
+    }
 
+    public void setStationList(List<Station> stationList) {
+        this.stationList = stationList;
+    }
 
+    public List<Client> getClientsInTransit() {
+        return clientsInTransit;
+    }
+
+    public void setClientsInTransit(List<Client> clientsInTransit) {
+        this.clientsInTransit = clientsInTransit;
+    }
+
+    public List<Vehicle> getVehiclesInTransit() {
+        return vehiclesInTransit;
+    }
+
+    public void setVehiclesInTransit(List<Vehicle> vehiclesInTransit) {
+        this.vehiclesInTransit = vehiclesInTransit;
+    }
 }

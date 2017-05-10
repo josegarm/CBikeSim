@@ -10,12 +10,12 @@ import java.util.List;
 
 public class Station {
 
-    private final int ID, MAX_CAPACITY;
-    private final Point POSITION;
+    public final int ID, MAX_CAPACITY;
+    public final Point POSITION;
 
     private List<Bike> availableBikeList;
-    private List<Client> bikeDepositList;
-    private List<Client> clientWaitingList;
+    private List<Client> clientWaitingToDepositList;
+    private List<Client> clientWaitingToPickUpList;
     private List<Vehicle> vehicleList;
 
     public Station(int ID, int MAX_CAPACITY, Point POSITION) {
@@ -23,21 +23,9 @@ public class Station {
         this.MAX_CAPACITY = MAX_CAPACITY;
         this.POSITION = POSITION;
         this.availableBikeList = new ArrayList<>();
-        this.bikeDepositList = new ArrayList<>();
-        this.clientWaitingList = new ArrayList<>();
+        this.clientWaitingToDepositList = new ArrayList<>();
+        this.clientWaitingToPickUpList = new ArrayList<>();
         this.vehicleList = new ArrayList<>();
-    }
-
-    public int getID() {
-        return ID;
-    }
-
-    public int getMAX_CAPACITY() {
-        return MAX_CAPACITY;
-    }
-
-    public Point getPOSITION() {
-        return POSITION;
     }
 
     public List<Bike> getAvailableBikeList() {
@@ -48,20 +36,20 @@ public class Station {
         this.availableBikeList = availableBikeList;
     }
 
-    public List<Client> getBikeDepositList() {
-        return bikeDepositList;
+    public List<Client> getClientWaitingToDepositList() {
+        return clientWaitingToDepositList;
     }
 
-    public void setBikeDepositList(List<Client> bikeDepositList) {
-        this.bikeDepositList = bikeDepositList;
+    public void setClientWaitingToDepositList(List<Client> clientWaitingToDepositList) {
+        this.clientWaitingToDepositList = clientWaitingToDepositList;
     }
 
-    public List<Client> getClientWaitingList() {
-        return clientWaitingList;
+    public List<Client> getClientWaitingToPickUpList() {
+        return clientWaitingToPickUpList;
     }
 
-    public void setClientWaitingList(List<Client> clientWaitingList) {
-        this.clientWaitingList = clientWaitingList;
+    public void setClientWaitingToPickUpList(List<Client> clientWaitingToPickUpList) {
+        this.clientWaitingToPickUpList = clientWaitingToPickUpList;
     }
 
     public List<Vehicle> getVehicleList() {
