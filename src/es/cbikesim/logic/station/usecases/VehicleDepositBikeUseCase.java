@@ -20,16 +20,10 @@ public class VehicleDepositBikeUseCase implements Command{
     @Override
     public void execute(){
         scenario.getVehiclesInTransit().remove(vehicle);
-        //check if bikes carried in vehicle plus the bikes in the station are less than the max capacity
         if(station.getAvailableBikeList().size() + vehicle.getBikeList().size() < station.MAX_CAPACITY){
-            //bikes fit
             station.getAvailableBikeList().addAll(vehicle.getBikeList());
-            //remove bikes from vehicle
             vehicle.getBikeList().removeAll(vehicle.getBikeList());
             station.getVehicleList().add(vehicle);
-        }else{
-            station.getVehicleList().add(vehicle);
-            //indicate that vehicle is waiting with bikes
         }
     }
 }

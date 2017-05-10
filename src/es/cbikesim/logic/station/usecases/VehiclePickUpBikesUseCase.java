@@ -29,16 +29,13 @@ public class VehiclePickUpBikesUseCase implements Command{
     @Override
     public void execute(){
         if(station.getAvailableBikeList().size() - bikesToPickUp >= 0){
-            //enough bikes available to pick up
             Iterator it = station.getAvailableBikeList().iterator();
-            //add bikes to vehicle
             while(bikesToPickUp >= 0){
                 Bike chosen = (Bike) it.next();
                 vehicle.getBikeList().add(chosen);
                 station.getAvailableBikeList().remove(chosen);
             }
             vehicle.setStationTo(to);
-            //add vehicle to Scenario
             scenario.getVehiclesInTransit().add(vehicle);
             station.getVehicleList().remove(vehicle);
         }

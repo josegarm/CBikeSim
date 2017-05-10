@@ -24,16 +24,11 @@ public class ClientPickUpBikeUseCase implements Command{
     @Override
     public void execute() {
         if(station.getClientWaitingToPickUpList().indexOf(client) == 0){
-            //if client first in line then we assign him a bike
             Bike pickedUp = station.getAvailableBikeList().iterator().next();
             client.setBike(pickedUp);
-            //remove bike from available list, picked up by client
             station.getAvailableBikeList().remove(pickedUp);
-            //add to map in transitList
-            scenario.getClientsInTransit().add(station.getClientWaitingToPickUpList().get(0));
-            //add destination station
+            scenario.getClientsInTransit().add(client);
             station.getClientWaitingToPickUpList().get(0).setTo(to);
-            //remove from waiting list
             station.getClientWaitingToPickUpList().remove(station.getClientWaitingToPickUpList().get(0));
         }else{
             //error
