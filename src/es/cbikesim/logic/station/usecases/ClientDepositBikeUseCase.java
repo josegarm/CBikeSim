@@ -1,8 +1,9 @@
-package es.cbikesim.logic.station.model;
+package es.cbikesim.logic.station.usecases;
 
 import es.cbikesim.lib.Command;
 import es.cbikesim.logic.client.model.Client;
 import es.cbikesim.logic.scenario.model.Scenario;
+import es.cbikesim.logic.station.model.Station;
 
 public class ClientDepositBikeUseCase implements Command{
 
