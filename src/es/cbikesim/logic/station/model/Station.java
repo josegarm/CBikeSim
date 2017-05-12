@@ -10,18 +10,18 @@ import java.util.List;
 
 public class Station {
 
-    public final int ID, MAX_CAPACITY;
-    public final Point POSITION;
+    public final int id, max_capacity;
+    public final Point position;
 
     private List<Bike> availableBikeList;
     private List<Client> clientWaitingToDepositList;
     private List<Client> clientWaitingToPickUpList;
     private List<Vehicle> vehicleList;
 
-    public Station(int ID, int MAX_CAPACITY, Point POSITION) {
-        this.ID = ID;
-        this.MAX_CAPACITY = MAX_CAPACITY;
-        this.POSITION = POSITION;
+    public Station(int id, int max_capacity, Point position) {
+        this.id = id;
+        this.max_capacity = max_capacity;
+        this.position = position;
         this.availableBikeList = new ArrayList<>();
         this.clientWaitingToDepositList = new ArrayList<>();
         this.clientWaitingToPickUpList = new ArrayList<>();

@@ -21,7 +21,7 @@ public class ClientDepositBikeUseCase implements Command{
     @Override
     public void execute() {
         scenario.getClientsInTransit().remove(client);
-        if (station.getAvailableBikeList().size() < station.MAX_CAPACITY){
+        if (station.getAvailableBikeList().size() < station.max_capacity){
             station.getAvailableBikeList().add(client.getBike());
             client.setBike(null);
         } else {
