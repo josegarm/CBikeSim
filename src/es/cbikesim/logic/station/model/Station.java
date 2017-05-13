@@ -8,7 +8,7 @@ import es.cbikesim.logic.vehicle.model.Vehicle;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Station {
+public class Station{
 
     private final String id;
     public final int max_capacity;
@@ -44,4 +44,5 @@ public class Station {
     public List<Vehicle> getVehicleList() {
         return vehicleList;
     }
+
 }
