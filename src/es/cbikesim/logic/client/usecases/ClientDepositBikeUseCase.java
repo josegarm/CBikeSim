@@ -1,20 +1,22 @@
-package es.cbikesim.logic.station.usecases;
+package es.cbikesim.logic.client.usecases;
 
 import es.cbikesim.lib.pattern.Command;
 import es.cbikesim.logic.client.model.Client;
 import es.cbikesim.logic.scenario.model.Scenario;
 import es.cbikesim.logic.station.model.Station;
 
+/**
+ * Use Case: The client deposit a bike in the arrival station
+ */
 public class ClientDepositBikeUseCase implements Command{
 
-    private Scenario scenario;
     private Client client;
+    private Scenario scenario;
 
-    public ClientDepositBikeUseCase(Scenario scenario, Client client){
-        this.scenario = scenario;
+    public ClientDepositBikeUseCase(Client client, Scenario scenario) {
         this.client = client;
+        this.scenario = scenario;
     }
-
 
     @Override
     public void execute() {
