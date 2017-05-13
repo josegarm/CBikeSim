@@ -37,4 +37,13 @@ public class Scenario {
     public List<Vehicle> getVehiclesInTransit() {
         return vehiclesInTransit;
     }
+
+    @Override
+    public String toString() {
+        return "Scenario {" + "\n " +
+                "   stationList=" + stationList + ",\n " +
+                "   clientsInTransit=" + clientsInTransit + ",\n " +
+                "   vehiclesInTransit=" + vehiclesInTransit + "\n " +
+                '}';
+    }
 }

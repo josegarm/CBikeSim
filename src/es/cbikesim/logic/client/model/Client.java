@@ -5,8 +5,6 @@ import es.cbikesim.logic.station.model.Station;
 
 public class Client {
 
-    public static final int OFF = 0, ON = 1;
-
     private final String id;
 
     private int state;
@@ -16,7 +14,6 @@ public class Client {
 
     public Client(String id){
         this.id = id;
-        this.state = Client.OFF;
     }
 
     public String getId() {
@@ -47,4 +44,14 @@ public class Client {
 
     public void setTo(Station to) { this.to = to; }
 
+    @Override
+    public String toString() {
+        return "Client {" + "\n " +
+                "   id='" + id + '\'' + ",\n " +
+                "   state=" + state + ",\n " +
+                "   bike=" + bike + ",\n " +
+                "   from=" + from + ",\n " +
+                "   to=" + to + "\n " +
+                '}';
+    }
 }

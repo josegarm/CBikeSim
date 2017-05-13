@@ -18,4 +18,11 @@ public abstract class Bike {
 
     public void setBikeType(BikeType type){ this.type = type; }
 
+    @Override
+    public String toString() {
+        return "Bike {" + "\n " +
+                "   id='" + id + '\'' + ",\n " +
+                "   type=" + type + "\n " +
+                '}';
+    }
 }

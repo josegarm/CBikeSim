@@ -42,4 +42,14 @@ public class Vehicle {
     public void setFrom(Station from) {
         this.from = from;
     }
+
+    @Override
+    public String toString() {
+        return "Vehicle {" + "\n " +
+                "   id='" + id + '\'' + ",\n " +
+                "   to=" + to + ",\n " +
+                "   from=" + from + ",\n " +
+                "   bikeList=" + bikeList + "\n " +
+                '}';
+    }
 }

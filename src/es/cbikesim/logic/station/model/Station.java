@@ -45,4 +45,16 @@ public class Station{
         return vehicleList;
     }
 
+    @Override
+    public String toString() {
+        return "Station { " + "\n " +
+                "   id='" + id + '\'' + ",\n " +
+                "   max_capacity=" + max_capacity + ",\n " +
+                "   position=" + position + ",\n " +
+                "   availableBikeList=" + availableBikeList + ",\n " +
+                "   clientWaitingToDepositList=" + clientWaitingToDepositList + ",\n " +
+                "   clientWaitingToPickUpList=" + clientWaitingToPickUpList + ",\n " +
+                "   vehicleList=" + vehicleList + "\n " +
+                '}';
+    }
 }
