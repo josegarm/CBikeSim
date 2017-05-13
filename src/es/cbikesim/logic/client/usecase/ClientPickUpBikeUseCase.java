@@ -1,4 +1,4 @@
-package es.cbikesim.logic.client.usecases;
+package es.cbikesim.logic.client.usecase;
 
 
 import es.cbikesim.lib.pattern.Command;
