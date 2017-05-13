@@ -1,4 +1,4 @@
-package es.cbikesim.logic.station.usecases;
+package es.cbikesim.logic.vehicle.usecases;
 
 import es.cbikesim.lib.pattern.Command;
 import es.cbikesim.logic.scenario.model.Scenario;
