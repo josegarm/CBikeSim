@@ -27,10 +27,6 @@ public class Vehicle {
         return bikeList;
     }
 
-    public void setBikeList(List<Bike> bikeList) {
-        this.bikeList = bikeList;
-    }
-
     public void setStationTo(Station to){ this.to = to; }
 
     public Station getStationTo(){ return to; }

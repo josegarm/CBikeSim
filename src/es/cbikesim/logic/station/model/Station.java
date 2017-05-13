@@ -32,31 +32,15 @@ public class Station {
         return availableBikeList;
     }
 
-    public void setAvailableBikeList(List<Bike> availableBikeList) {
-        this.availableBikeList = availableBikeList;
-    }
-
     public List<Client> getClientWaitingToDepositList() {
         return clientWaitingToDepositList;
-    }
-
-    public void setClientWaitingToDepositList(List<Client> clientWaitingToDepositList) {
-        this.clientWaitingToDepositList = clientWaitingToDepositList;
     }
 
     public List<Client> getClientWaitingToPickUpList() {
         return clientWaitingToPickUpList;
     }
 
-    public void setClientWaitingToPickUpList(List<Client> clientWaitingToPickUpList) {
-        this.clientWaitingToPickUpList = clientWaitingToPickUpList;
-    }
-
     public List<Vehicle> getVehicleList() {
         return vehicleList;
-    }
-
-    public void setVehicleList(List<Vehicle> vehicleList) {
-        this.vehicleList = vehicleList;
     }
 }

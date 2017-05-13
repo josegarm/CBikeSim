@@ -9,23 +9,25 @@ public class ClientDepositBikeUseCase implements Command{
 
     private Scenario scenario;
     private Client client;
-    private Station station;
 
-    public ClientDepositBikeUseCase(Scenario scenario, Client client, Station station){
+    public ClientDepositBikeUseCase(Scenario scenario, Client client){
         this.scenario = scenario;
         this.client = client;
-        this.station = station;
     }
 
 
     @Override
     public void execute() {
+        Station currentStation = client.getTo();
+        client.setFrom(currentStation);
+        client.setTo(null);
         scenario.getClientsInTransit().remove(client);
-        if (station.getAvailableBikeList().size() < station.max_capacity){
-            station.getAvailableBikeList().add(client.getBike());
+
+        if (currentStation.getAvailableBikeList().size() < currentStation.max_capacity){
+            currentStation.getAvailableBikeList().add(client.getBike());
             client.setBike(null);
         } else {
-            station.getClientWaitingToDepositList().add(client);
+            currentStation.getClientWaitingToDepositList().add(client);
         }
     }
 }
