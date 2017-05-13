@@ -1,14 +1,9 @@
-package es.cbikesim.lib.pattern;
+package es.cbikesim.logic.bike.model;
 
-
-import es.cbikesim.logic.bike.model.Bike;
-import es.cbikesim.logic.bike.model.BikeType;
-import es.cbikesim.logic.bike.model.ElectricBike;
-import es.cbikesim.logic.bike.model.NormalBike;
 
 public class BikeFactory {
 
-     static int id = 0;
+    static int id = 0;
 
     public static Bike spawnBike(BikeType type){
         Bike bike = null;
