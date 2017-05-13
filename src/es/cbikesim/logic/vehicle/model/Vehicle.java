@@ -27,11 +27,19 @@ public class Vehicle {
         return bikeList;
     }
 
-    public void setStationTo(Station to){ this.to = to; }
+    public Station getTo() {
+        return to;
+    }
 
-    public Station getStationTo(){ return to; }
+    public void setTo(Station to) {
+        this.to = to;
+    }
 
-    public void setStationFrom(Station from){ this.from = from; }
+    public Station getFrom() {
+        return from;
+    }
 
-    public Station getStationFrom(){ return from; }
+    public void setFrom(Station from) {
+        this.from = from;
+    }
 }
