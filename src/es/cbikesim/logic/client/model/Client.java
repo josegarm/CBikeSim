@@ -7,19 +7,19 @@ public class Client {
 
     public static final int OFF = 0, ON = 1;
 
-    private final int ID;
+    private final String ID;
 
     private int state;
     private Bike bike;
     private Station from;
     private Station to;
 
-    public Client(int ID){
+    public Client(String ID){
         this.ID = ID;
         this.state = Client.OFF;
     }
 
-    public int getID() {
+    public String getID() {
         return ID;
     }
 

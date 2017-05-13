@@ -8,18 +8,18 @@ import java.util.List;
 
 public class Vehicle {
 
-    private final int ID;
+    private final String ID;
     private Station to;
     private Station from;
 
     private List<Bike> bikeList;
 
-    public Vehicle(int ID){
+    public Vehicle(String ID){
         this.ID = ID;
         this.bikeList = new ArrayList<>();
     }
 
-    public int getID() {
+    public String getID() {
         return ID;
     }
 

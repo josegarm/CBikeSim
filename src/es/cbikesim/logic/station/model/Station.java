@@ -10,7 +10,8 @@ import java.util.List;
 
 public class Station {
 
-    public final int id, max_capacity;
+    private final String ID;
+    public final int max_capacity;
     public final Point position;
 
     private List<Bike> availableBikeList;
@@ -18,8 +19,8 @@ public class Station {
     private List<Client> clientWaitingToPickUpList;
     private List<Vehicle> vehicleList;
 
-    public Station(int id, int max_capacity, Point position) {
-        this.id = id;
+    public Station(String ID, int max_capacity, Point position) {
+        this.ID = ID;
         this.max_capacity = max_capacity;
         this.position = position;
         this.availableBikeList = new ArrayList<>();
