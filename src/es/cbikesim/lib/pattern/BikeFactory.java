@@ -8,9 +8,9 @@ import es.cbikesim.logic.bike.model.NormalBike;
 
 public class BikeFactory {
 
-     int id = 0;
+     static int id = 0;
 
-    public Bike spawnBike(BikeType type){
+    public static Bike spawnBike(BikeType type){
         Bike bike = null;
         switch(type){
             case NORMAL:
@@ -27,7 +27,7 @@ public class BikeFactory {
         return bike;
     }
 
-    private void incrementId(){
-        id++;
+    private static void incrementId(){
+        BikeFactory.id++;
     }
 }
