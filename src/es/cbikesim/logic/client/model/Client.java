@@ -7,20 +7,20 @@ public class Client {
 
     public static final int OFF = 0, ON = 1;
 
-    private final String ID;
+    private final String id;
 
     private int state;
     private Bike bike;
     private Station from;
     private Station to;
 
-    public Client(String ID){
-        this.ID = ID;
+    public Client(String id){
+        this.id = id;
         this.state = Client.OFF;
     }
 
-    public String getID() {
-        return ID;
+    public String getId() {
+        return id;
     }
 
     public int getState() {

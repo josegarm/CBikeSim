@@ -32,7 +32,7 @@ public class ClientPickUpBikeUseCase implements Command{
             station.getClientWaitingToPickUpList().remove(station.getClientWaitingToPickUpList().get(0));
         }else{
             //error
-            System.out.println("Client id" + client.getID() + " is not first in line!");
+            System.out.println("Client id" + client.getId() + " is not first in line!");
         }
     }
 }

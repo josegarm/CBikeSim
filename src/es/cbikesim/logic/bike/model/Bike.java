@@ -2,14 +2,14 @@ package es.cbikesim.logic.bike.model;
 
 public class Bike {
 
-    private final String ID;
+    private final String id;
 
-    public Bike(String ID) {
-        this.ID = ID;
+    public Bike(String id) {
+        this.id = id;
     }
 
-    public String getID() {
-        return ID;
+    public String getId() {
+        return id;
     }
 
 }
