@@ -2,14 +2,13 @@ package es.cbikesim.logic.vehicle.usecases;
 
 
 import es.cbikesim.lib.pattern.Command;
-import es.cbikesim.logic.bike.model.Bike;
 import es.cbikesim.logic.scenario.model.Scenario;
 import es.cbikesim.logic.station.model.Station;
 import es.cbikesim.logic.vehicle.model.Vehicle;
 
-import java.util.Iterator;
-import java.util.List;
-
+/**
+ * Use Case: The vehicle pick up bikes in the current station and go to other station
+ */
 public class VehiclePickUpBikesUseCase implements Command{
 
     private Vehicle vehicle;

@@ -5,8 +5,9 @@ import es.cbikesim.logic.scenario.model.Scenario;
 import es.cbikesim.logic.station.model.Station;
 import es.cbikesim.logic.vehicle.model.Vehicle;
 
-import java.util.Iterator;
-
+/**
+ * Use Case: The vehicle deposit bikes in the arrival station
+ */
 public class VehicleDepositBikeUseCase implements Command{
 
     private Vehicle vehicle;
