@@ -1,6 +1,8 @@
 package es.cbikesim.lib.pattern;
 
-
+/**
+ *  Class responsible for invoking method execute() of Command
+ */
 public class Invoker {
 
     private Command command;
