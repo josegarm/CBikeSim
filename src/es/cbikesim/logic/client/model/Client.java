@@ -7,7 +7,6 @@ public class Client {
 
     private final String id;
 
-    private int state;
     private Bike bike;
     private Station from;
     private Station to;
@@ -20,14 +19,6 @@ public class Client {
         return id;
     }
 
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
-    }
-
     public Bike getBike() {
         return bike;
     }
@@ -38,7 +29,7 @@ public class Client {
 
     public Station getFrom(){ return this.from; }
 
-    public void setFrom(Station station){ this.from = from; }
+    public void setFrom(Station from){ this.from = from; }
 
     public Station getTo(){ return this.to; }
 
@@ -48,7 +39,6 @@ public class Client {
     public String toString() {
         return "Client {" + "\n " +
                 "   id='" + id + '\'' + ",\n " +
-                "   state=" + state + ",\n " +
                 "   bike=" + bike + ",\n " +
                 "   from=" + from + ",\n " +
                 "   to=" + to + "\n " +
