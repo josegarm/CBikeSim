@@ -1,11 +1,15 @@
-package es.cbikesim.logic.bike.model;
+package es.cbikesim.lib.pattern;
 
+
+import es.cbikesim.scenario.model.Bike;
+import es.cbikesim.scenario.model.ElectricBike;
+import es.cbikesim.scenario.model.NormalBike;
 
 public class BikeFactory {
 
     static int id = 0;
 
-    public static Bike spawnBike(BikeType type){
+    public static Bike spawnBike(Bike.BikeType type){
         Bike bike = null;
         switch(type){
             case NORMAL:

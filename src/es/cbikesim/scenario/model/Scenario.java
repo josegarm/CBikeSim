@@ -1,8 +1,4 @@
-package es.cbikesim.logic.scenario.model;
-
-import es.cbikesim.logic.client.model.Client;
-import es.cbikesim.logic.station.model.Station;
-import es.cbikesim.logic.vehicle.model.Vehicle;
+package es.cbikesim.scenario.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,10 +36,11 @@ public class Scenario {
 
     @Override
     public String toString() {
-        return "Scenario {" + "\n " +
-                "   stationList=" + stationList + ",\n " +
-                "   clientsInTransit=" + clientsInTransit + ",\n " +
-                "   vehiclesInTransit=" + vehiclesInTransit + "\n " +
-                '}';
+        return "Scenario \n" +
+                "{ \n" +
+                "   stationList = " + stationList + ",\n" +
+                "   clientsInTransit = " + clientsInTransit + ",\n" +
+                "   vehiclesInTransit = " + vehiclesInTransit + "\n" +
+                "}";
     }
 }

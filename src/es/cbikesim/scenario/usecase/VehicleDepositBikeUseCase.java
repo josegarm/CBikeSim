@@ -1,9 +1,9 @@
-package es.cbikesim.logic.vehicle.usecase;
+package es.cbikesim.scenario.usecase;
 
 import es.cbikesim.lib.pattern.Command;
-import es.cbikesim.logic.scenario.model.Scenario;
-import es.cbikesim.logic.station.model.Station;
-import es.cbikesim.logic.vehicle.model.Vehicle;
+import es.cbikesim.scenario.model.Scenario;
+import es.cbikesim.scenario.model.Station;
+import es.cbikesim.scenario.model.Vehicle;
 
 /**
  * Use Case: The vehicle deposit bikes in the arrival station

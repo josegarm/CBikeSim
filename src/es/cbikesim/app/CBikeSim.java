@@ -1,4 +1,4 @@
-package es.cbikesim.presentation.app;
+package es.cbikesim.app;
 
 import es.cbikesim.lib.examples.Presenter;
 import javafx.application.Application;

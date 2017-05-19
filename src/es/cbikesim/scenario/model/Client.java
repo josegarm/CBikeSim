@@ -1,7 +1,4 @@
-package es.cbikesim.logic.client.model;
-
-import es.cbikesim.logic.bike.model.Bike;
-import es.cbikesim.logic.station.model.Station;
+package es.cbikesim.scenario.model;
 
 public class Client {
 
@@ -37,11 +34,12 @@ public class Client {
 
     @Override
     public String toString() {
-        return "Client {" + "\n " +
-                "   id='" + id + '\'' + ",\n " +
-                "   bike=" + bike + ",\n " +
-                "   from=" + from + ",\n " +
-                "   to=" + to + "\n " +
-                '}';
+        return "Client \n" +
+                "{ \n" +
+                "   id = '" + id + "\'" + ",\n" +
+                "   bike = " + bike + ",\n" +
+                "   from = " + from + ",\n" +
+                "   to = " + to + "\n" +
+                "}";
     }
 }

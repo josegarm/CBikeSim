@@ -1,6 +1,8 @@
-package es.cbikesim.logic.bike.model;
+package es.cbikesim.scenario.model;
 
 public abstract class Bike {
+
+    public enum BikeType { NORMAL, ELECTRIC }
 
     private final String id;
     private BikeType type;
@@ -20,9 +22,10 @@ public abstract class Bike {
 
     @Override
     public String toString() {
-        return "Bike {" + "\n " +
-                "   id='" + id + '\'' + ",\n " +
-                "   type=" + type + "\n " +
-                '}';
+        return "Bike \n" +
+                "{ \n" +
+                "   id = '" + id + "\'" + ",\n" +
+                "   type = " + type + "\n" +
+                "}";
     }
 }

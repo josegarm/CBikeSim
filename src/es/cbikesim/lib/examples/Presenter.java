@@ -1,15 +1,15 @@
 package es.cbikesim.lib.examples;
 
 import es.cbikesim.lib.Point;
+import es.cbikesim.lib.pattern.BikeFactory;
 import es.cbikesim.lib.pattern.Command;
 import es.cbikesim.lib.pattern.Invoker;
-import es.cbikesim.logic.bike.model.BikeFactory;
-import es.cbikesim.logic.bike.model.BikeType;
-import es.cbikesim.logic.client.model.Client;
-import es.cbikesim.logic.client.usecase.ClientDepositBikeUseCase;
-import es.cbikesim.logic.scenario.model.Scenario;
-import es.cbikesim.logic.station.model.Station;
-import es.cbikesim.logic.station.usecase.NextClientsPickUpBikeUseCase;
+import es.cbikesim.scenario.model.Bike.BikeType;
+import es.cbikesim.scenario.model.Client;
+import es.cbikesim.scenario.model.Scenario;
+import es.cbikesim.scenario.model.Station;
+import es.cbikesim.scenario.usecase.ClientDepositBikeUseCase;
+import es.cbikesim.scenario.usecase.NextClientPicksUpBikeUseCase;
 
 public class Presenter {
 
@@ -43,7 +43,7 @@ public class Presenter {
         System.out.println("First \n" + client); //FIRST PRINT
 
         Command clientDepositBike = new ClientDepositBikeUseCase(client, scenario);
-        Command nextClientsPickUpBike = new NextClientsPickUpBikeUseCase(client.getTo(), scenario);
+        Command nextClientsPickUpBike = new NextClientPicksUpBikeUseCase(client.getTo(), scenario);
 
         Invoker invoker = new Invoker();
 

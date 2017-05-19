@@ -1,9 +1,6 @@
-package es.cbikesim.logic.station.model;
+package es.cbikesim.scenario.model;
 
 import es.cbikesim.lib.Point;
-import es.cbikesim.logic.bike.model.Bike;
-import es.cbikesim.logic.client.model.Client;
-import es.cbikesim.logic.vehicle.model.Vehicle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,14 +44,15 @@ public class Station{
 
     @Override
     public String toString() {
-        return "Station { " + "\n " +
-                "   id='" + id + '\'' + ",\n " +
-                "   max_capacity=" + max_capacity + ",\n " +
-                "   position=" + position + ",\n " +
-                "   availableBikeList=" + availableBikeList + ",\n " +
-                "   clientWaitingToDepositList=" + clientWaitingToDepositList + ",\n " +
-                "   clientWaitingToPickUpList=" + clientWaitingToPickUpList + ",\n " +
-                "   vehicleList=" + vehicleList + "\n " +
-                '}';
+        return "Station \n" +
+                "{ \n" +
+                "   id = '" + id + "\'" + ",\n" +
+                "   max_capacity = " + max_capacity + ",\n" +
+                "   position = " + position + ",\n" +
+                "   availableBikeList = " + availableBikeList + ",\n" +
+                "   clientWaitingToDepositList = " + clientWaitingToDepositList + ",\n" +
+                "   clientWaitingToPickUpList = " + clientWaitingToPickUpList + ",\n" +
+                "   vehicleList = " + vehicleList + "\n" +
+                "}";
     }
 }

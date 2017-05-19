@@ -1,4 +1,4 @@
-package es.cbikesim.logic.bike.model;
+package es.cbikesim.scenario.model;
 
 
 public class NormalBike extends Bike{

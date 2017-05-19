@@ -1,17 +1,17 @@
-package es.cbikesim.logic.station.usecase;
+package es.cbikesim.scenario.usecase;
 
 
 import es.cbikesim.lib.pattern.Command;
-import es.cbikesim.logic.client.model.Client;
-import es.cbikesim.logic.scenario.model.Scenario;
-import es.cbikesim.logic.station.model.Station;
+import es.cbikesim.scenario.model.Client;
+import es.cbikesim.scenario.model.Scenario;
+import es.cbikesim.scenario.model.Station;
 
-public class NextClientsDepositBikeUseCase implements Command{
+public class NextClientDepositsBikeUseCase implements Command{
 
     private Station station;
     private Scenario scenario;
 
-    public NextClientsDepositBikeUseCase(Station station, Scenario scenario) {
+    public NextClientDepositsBikeUseCase(Station station, Scenario scenario) {
         this.station = station;
         this.scenario = scenario;
     }

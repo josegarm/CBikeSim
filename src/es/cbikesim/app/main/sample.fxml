@@ -1,4 +1,4 @@
 <?import javafx.scene.layout.GridPane?>
-<GridPane fx:controller="es.cbikesim.presentation.main.Controller"
+<GridPane fx:controller="es.cbikesim.app.main.Controller"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
 </GridPane>

@@ -1,7 +1,4 @@
-package es.cbikesim.logic.vehicle.model;
-
-import es.cbikesim.logic.bike.model.Bike;
-import es.cbikesim.logic.station.model.Station;
+package es.cbikesim.scenario.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,11 +42,12 @@ public class Vehicle {
 
     @Override
     public String toString() {
-        return "Vehicle {" + "\n " +
-                "   id='" + id + '\'' + ",\n " +
-                "   to=" + to + ",\n " +
-                "   from=" + from + ",\n " +
-                "   bikeList=" + bikeList + "\n " +
-                '}';
+        return "Vehicle \n" +
+                "{ \n" +
+                "   id = '" + id + "\'" + ",\n" +
+                "   to = " + to + ",\n" +
+                "   from = " + from + ",\n" +
+                "   bikeList = " + bikeList + "\n" +
+                "}";
     }
 }
