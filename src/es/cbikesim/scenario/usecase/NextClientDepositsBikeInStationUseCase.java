@@ -6,12 +6,12 @@ import es.cbikesim.scenario.model.Client;
 import es.cbikesim.scenario.model.Scenario;
 import es.cbikesim.scenario.model.Station;
 
-public class NextClientDepositsBikeUseCase implements Command{
+public class NextClientDepositsBikeInStationUseCase implements Command{
 
     private Station station;
     private Scenario scenario;
 
-    public NextClientDepositsBikeUseCase(Station station, Scenario scenario) {
+    public NextClientDepositsBikeInStationUseCase(Station station, Scenario scenario) {
         this.station = station;
         this.scenario = scenario;
     }
