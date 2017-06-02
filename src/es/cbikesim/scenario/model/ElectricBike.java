@@ -7,4 +7,13 @@ public class ElectricBike extends Bike{
         super(Bike.ELECTRIC, id);
     }
 
+    @Override
+    public String toString() {
+        return "Bike \n" +
+                "{ \n" +
+                "   id = '" + super.getId() + "'" + ",\n" +
+                "   type = Electric\n" +
+                "}";
+    }
+
 }

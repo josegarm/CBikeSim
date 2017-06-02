@@ -26,7 +26,7 @@ public class CBikeSim extends Application {
 
 
     public static void main(String[] args) {
-        //launch(args);
-        new Presenter().init(); // for tests
+        launch(args);
+        //new Presenter().init(); // for tests
     }
 }

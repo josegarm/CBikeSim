@@ -13,13 +13,13 @@ import es.cbikesim.scenario.usecase.NextClientPicksUpBikeFromStationUseCase;
 
 public class Presenter {
 
+    Scenario scenario = new Scenario();
     View view = new View();
 
     public void init(){
-        Scenario scenario = Scenario.getInstance();
 
-        Station station1 = new Station(1,2,new Point(1,1));
-        Station station2 = new Station(2,10,new Point(2,2));
+        Station station1 = new Station(1,2, new Point(1,1));
+        Station station2 = new Station(2,10, new Point(2,2));
 
         scenario.getStationList().add(station1);
         scenario.getStationList().add(station2);
@@ -38,8 +38,6 @@ public class Presenter {
      * Example method, presenter is not implemented yet
      */
     public void clientDepositBike(Client client){
-        Scenario scenario = Scenario.getInstance();
-
         System.out.println("First \n" + client); //FIRST PRINT
 
         Command clientDepositBike = new ClientDepositBikeUseCase(client, scenario);
@@ -51,8 +49,7 @@ public class Presenter {
         invoker.addCommand(nextClientsPickUpBike);
 
         invoker.invoke();
-
-        System.out.println("Last \n" + client); //LAST PRINT
+        System.out.println("Last \n" + scenario); //LAST PRINT
 
         view.updateView();
     }
