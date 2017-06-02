@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox prefHeight="900.0" prefWidth="1440.0">
+         <children>
+            <Canvas height="900.0" width="1081.0" />
+            <VBox prefHeight="900.0" prefWidth="402.0" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

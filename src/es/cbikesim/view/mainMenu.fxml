@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane prefHeight="900.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.cbikesim.controller.mainMenuController">
+   <children>
+      <VBox layoutX="6.0" prefHeight="900.0" prefWidth="1434.0" />
+      <Canvas height="900.0" width="1440.0" />
+   </children>
+</AnchorPane>
