@@ -9,7 +9,7 @@ import es.cbikesim.scenario.model.Client;
 import es.cbikesim.scenario.model.Scenario;
 import es.cbikesim.scenario.model.Station;
 import es.cbikesim.scenario.usecase.ClientDepositBikeUseCase;
-import es.cbikesim.scenario.usecase.NextClientPicksUpBikeOfStationUseCase;
+import es.cbikesim.scenario.usecase.NextClientPicksUpBikeFromStationUseCase;
 
 public class Presenter {
 
@@ -43,7 +43,7 @@ public class Presenter {
         System.out.println("First \n" + client); //FIRST PRINT
 
         Command clientDepositBike = new ClientDepositBikeUseCase(client, scenario);
-        Command nextClientsPickUpBike = new NextClientPicksUpBikeOfStationUseCase(client.getTo(), scenario);
+        Command nextClientsPickUpBike = new NextClientPicksUpBikeFromStationUseCase(client.getTo(), scenario);
 
         Invoker invoker = new Invoker();
 
