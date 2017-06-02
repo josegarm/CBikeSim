@@ -2,12 +2,11 @@ package es.cbikesim.scenario.model;
 
 public abstract class Bike {
 
-    public enum BikeType { NORMAL, ELECTRIC }
-
+    public static final int NORMAL = 0, ELECTRIC = 1;
     private final String id;
-    private BikeType type;
+    private int type;
 
-    public Bike(BikeType type, String id) {
+    public Bike(int type, String id) {
         this.type = type;
         this.id = id;
     }
@@ -16,9 +15,9 @@ public abstract class Bike {
         return id;
     }
 
-    public BikeType getBikeType(){ return type; }
+    public int getBikeType(){ return type; }
 
-    public void setBikeType(BikeType type){ this.type = type; }
+    public void setBikeType(int type){ this.type = type; }
 
     @Override
     public String toString() {

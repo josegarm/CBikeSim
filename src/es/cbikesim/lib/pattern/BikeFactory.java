@@ -9,13 +9,13 @@ public class BikeFactory {
 
     public static int id = 0;
 
-    public static Bike spawnBike(Bike.BikeType type){
+    public static Bike spawnBike(int type){
         Bike bike = null;
         switch(type){
-            case NORMAL:
+            case Bike.NORMAL:
                 bike = new NormalBike("normalBike" + id++);
                 break;
-            case ELECTRIC:
+            case Bike.ELECTRIC:
                 bike = new ElectricBike("electricBike" + id++);
                 break;
             default:

@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class CBikeSim extends Application {
 
@@ -17,6 +18,8 @@ public class CBikeSim extends Application {
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        primaryStage.initStyle(StageStyle.UNDECORATED);
 
     }
 
