@@ -3,15 +3,15 @@ package es.cbikesim.scenario.model;
 public abstract class Bike {
 
     public static final int NORMAL = 0, ELECTRIC = 1;
-    private final String id;
+    private final int id;
     private int type;
 
-    public Bike(int type, String id) {
+    public Bike(int type, int id) {
         this.type = type;
         this.id = id;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
@@ -23,7 +23,7 @@ public abstract class Bike {
     public String toString() {
         return "Bike \n" +
                 "{ \n" +
-                "   id = '" + id + "\'" + ",\n" +
+                "   id = '" + id + "'" + ",\n" +
                 "   type = " + type + "\n" +
                 "}";
     }

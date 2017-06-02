@@ -1,4 +1,4 @@
-package es.cbikesim.lib;
+package es.cbikesim.lib.util;
 
 public class Point {
 

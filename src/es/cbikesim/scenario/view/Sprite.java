@@ -1,4 +1,4 @@
-package es.cbikesim.view;
+package es.cbikesim.scenario.view;
 import javafx.scene.image.Image;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.geometry.Rectangle2D;
@@ -7,12 +7,9 @@ import javafx.geometry.Rectangle2D;
 public class Sprite {
 
     private Image image;
-    private double positionX;
-    private double positionY;
-    private double velocityX;
-    private double velocityY;
-    private double width;
-    private double height;
+    private double positionX, positionY; // If you can use the class Point that is already implemented
+    private double velocityX, velocityY; // you can use it with velocity too
+    private double width, height;
 
     public Sprite()
     {

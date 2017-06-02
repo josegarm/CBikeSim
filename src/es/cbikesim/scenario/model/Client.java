@@ -2,17 +2,17 @@ package es.cbikesim.scenario.model;
 
 public class Client {
 
-    private final String id;
+    private final int id;
 
     private Bike bike;
     private Station from;
     private Station to;
 
-    public Client(String id){
+    public Client(int id){
         this.id = id;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 

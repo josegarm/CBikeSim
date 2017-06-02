@@ -1,13 +1,13 @@
 package es.cbikesim.scenario.model;
 
-import es.cbikesim.lib.Point;
+import es.cbikesim.lib.util.Point;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Station{
 
-    private final String id;
+    private final int id;
     public final int max_capacity;
     public final Point position;
 
@@ -16,7 +16,7 @@ public class Station{
     private List<Client> clientWaitingToPickUpList;
     private List<Vehicle> vehicleList;
 
-    public Station(String id, int max_capacity, Point position) {
+    public Station(int id, int max_capacity, Point position) {
         this.id = id;
         this.max_capacity = max_capacity;
         this.position = position;

@@ -6,6 +6,10 @@ package es.cbikesim.lib.pattern;
  */
 public interface Command {
 
+    /**
+     * Definition of method responsible for executing the use case.
+     * @return void
+     */
     public void execute();
 
 }
