@@ -12,15 +12,16 @@ public class CBikeSim extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("main/sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
 
-        Scene scene = new Scene(root, 300, 275);
-
-        primaryStage.setTitle("Hello World");
+        Scene scene = new Scene(root, 1440, 900);
         primaryStage.setScene(scene);
+
+        primaryStage.initStyle(StageStyle.UTILITY);
+
         primaryStage.show();
 
-        primaryStage.initStyle(StageStyle.UNDECORATED);
+
 
     }
 
