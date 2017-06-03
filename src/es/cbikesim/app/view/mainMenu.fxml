@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="body" maxHeight="900.0" maxWidth="1440.0" minHeight="900.0" minWidth="1440.0" prefHeight="900.0" prefWidth="1440.0" stylesheets="@view/css/mainMenu.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.cbikesim.scenario.view.mainMenu.mainMenuController">
+<AnchorPane id="body" maxHeight="900.0" maxWidth="1440.0" minHeight="900.0" minWidth="1440.0" prefHeight="900.0" prefWidth="1440.0" stylesheets="@css/mainMenu.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.cbikesim.app.view.controller.mainMenuController">
    <children>
       <HBox prefHeight="900.0" prefWidth="1440.0">
          <children>
@@ -19,23 +19,23 @@
                <children>
                   <ImageView fitHeight="185.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@view/images/logo.png" />
+                        <Image url="@images/logo.png" />
                      </image>
                      <VBox.margin>
                         <Insets top="100.0" />
                      </VBox.margin>
                   </ImageView>
-                  <Button mnemonicParsing="false" prefHeight="85.0" prefWidth="200.0" text="New Game" VBox.vgrow="NEVER">
+                  <Button fx:id="newGameButton" mnemonicParsing="false" prefHeight="85.0" prefWidth="200.0" text="New Game" VBox.vgrow="NEVER">
                      <VBox.margin>
                         <Insets left="400.0" right="400.0" top="200.0" />
                      </VBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="85.0" prefWidth="200.0" text="Settings">
+                  <Button fx:id="settingsButton" mnemonicParsing="false" prefHeight="85.0" prefWidth="200.0" text="Settings">
                      <VBox.margin>
                         <Insets left="400.0" right="400.0" top="50.0" />
                      </VBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="85.0" prefWidth="200.0" text="Exit">
+                  <Button fx:id="exitButton" mnemonicParsing="false" prefHeight="85.0" prefWidth="200.0" text="Exit">
                      <VBox.margin>
                         <Insets bottom="107.5" left="400.0" right="400.0" top="50.0" />
                      </VBox.margin>
