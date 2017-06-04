@@ -29,28 +29,53 @@ public class CBikeSim extends Application {
     private static final int WIDTH = 1280;
     private static final int HEIGHT = 720;
 
+    boolean firstLoad = false;
+    boolean audioState = true;
+
+    String pathSelect = CBikeSim.class.getResource("select.wav").toString();
+    String pathHoverM = CBikeSim.class.getResource("hover.wav").toString();
+    String path = CBikeSim.class.getResource("funny_arcade.mp3").toString();
+    Media media = new Media(path);
+    Media mediaSelect = new Media(pathSelect);
+    Media mediaHover = new Media(pathSelect);
+    MediaPlayer mp = new MediaPlayer(media);
+    MediaPlayer mpSelect = new MediaPlayer(mediaSelect);
+    MediaPlayer mpHover = new MediaPlayer(mediaSelect);
+
+
+
+    private List<Pair<String, Runnable>> getSettingsData(){
+        return Arrays.asList(
+                new Pair<String, Runnable>("Display FULLSCREEN ", () -> {}),
+                new Pair<String, Runnable>("Audio   " + (audioState ? "ON" : "OFF"), () -> {}),
+                new Pair<String, Runnable>("Back", () -> {})
+        );
+    }
+
+
     private List<Pair<String, Runnable>> menuData = Arrays.asList(
             new Pair<String, Runnable>("Single Player", () -> {}),
-            new Pair<String, Runnable>("Game Options", () -> {}),
+            new Pair<String, Runnable>("Game Options", ()-> {}),
             new Pair<String, Runnable>("Additional Content", () -> {}),
             new Pair<String, Runnable>("Tutorial", () -> {}),
             new Pair<String, Runnable>("Credits", () -> {}),
             new Pair<String, Runnable>("Exit to Desktop", Platform::exit)
     );
 
+
     private Pane root = new Pane();
     private VBox menuBox = new VBox(-5);
     private Line line;
+
+    double lineX = WIDTH / 2 - 100;
+    double lineY = HEIGHT / 3 + 50;
 
     private Parent createContent() {
         addBackground();
         addTitle();
 
-        double lineX = WIDTH / 2 - 100;
-        double lineY = HEIGHT / 3 + 50;
-
         addLine(lineX, lineY);
-        addMenu(lineX + 5, lineY + 5);
+        addMenu(lineX + 5, lineY + 5,menuData);
 
         startAnimation();
 
@@ -100,11 +125,26 @@ public class CBikeSim extends Application {
         st.play();
     }
 
-    private void addMenu(double x, double y) {
+    public void changeSettings(){
+        menuBox.getChildren().clear();
+        addMenu(lineX + 5, lineY + 5,getSettingsData());
+    }
+
+    public void backToHome(){
+        menuBox.getChildren().clear();
+        addMenu(lineX + 5, lineY + 5, menuData);
+    }
+
+    public void changeMusic(){
+        if(audioState) mp.play();
+        else mp.stop();
+    }
+
+    private void addMenu(double x, double y, List<Pair<String, Runnable>> l) {
         menuBox.setTranslateX(x);
         menuBox.setTranslateY(y);
-        menuData.forEach(data -> {
-            MenuItem item = new MenuItem(data.getKey());
+        l.forEach(data -> {
+            MenuItem item = new MenuItem(data.getKey(),this);
             item.setOnAction(data.getValue());
             item.setTranslateX(-300);
 
@@ -115,8 +155,13 @@ public class CBikeSim extends Application {
 
             menuBox.getChildren().addAll(item);
         });
+        if(!firstLoad){
+            root.getChildren().add(menuBox);
+            firstLoad = true;
+        }else{
+            startAnimation();
+        }
 
-        root.getChildren().add(menuBox);
     }
 
     @Override
@@ -124,10 +169,6 @@ public class CBikeSim extends Application {
         Scene scene = new Scene(createContent());
         primaryStage.setTitle("CBike Sim Game");
         primaryStage.setScene(scene);
-
-        String path = CBikeSim.class.getResource("funny_arcade.mp3").toString();
-        Media media = new Media(path);
-        MediaPlayer mp = new MediaPlayer(media);
         mp.play();
 
         primaryStage.show();
