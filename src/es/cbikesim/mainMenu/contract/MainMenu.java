@@ -8,6 +8,8 @@ public interface MainMenu {
 
     interface Presenter{
 
+        void setView(MainMenu.View view);
+
     }
 
 }

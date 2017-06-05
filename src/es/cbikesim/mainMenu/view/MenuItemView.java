@@ -14,24 +14,17 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class MenuItemView extends Pane {
-    private Text text;
+
     private MainMenuView context;
+    private Text text;
 
     private Effect shadow = new DropShadow(5, Color.BLACK);
     private Effect blur = new BoxBlur(1, 1, 2);
 
 
-    String pathSelect = MenuItemView.class.getResource("/music/select.wav").toString();
-    String pathHoverM = MenuItemView.class.getResource("/music/hover.wav").toString();
-    Media mediaSelect = new Media(pathSelect);
-    Media mediaHover = new Media(pathHoverM);
-    MediaPlayer mpSelect = new MediaPlayer(mediaSelect);
-    MediaPlayer mpHover = new MediaPlayer(mediaHover);
-
-
-
     public MenuItemView(String name, MainMenuView obj) {
         context = obj;
+
         Polygon bg = new Polygon(
                 0, 0,
                 200, 0,
@@ -39,9 +32,9 @@ public class MenuItemView extends Pane {
                 200, 30,
                 0, 30
         );
+
         bg.setStroke(Color.color(1, 1, 1, 0.75));
         bg.setEffect(new GaussianBlur());
-
         bg.fillProperty().bind(
                 Bindings.when(pressedProperty())
                         .then(Color.color(0, 0, 0, 0.75))
@@ -61,37 +54,28 @@ public class MenuItemView extends Pane {
         );
 
         setOnMouseEntered(e -> {
-            mpHover.play();
+            context.getMpHover().stop();
+            context.getMpHover().play();
         });
 
-        setOnMouseExited(e -> {
-            if(!text.getText().equals("Exit to Desktop")){
-                mpHover = new MediaPlayer(mediaHover);
-            }
-        });
 
         setOnMousePressed(e -> {
-            mpSelect.play();
+            context.getMpSelect().stop();
+            context.getMpSelect().play();
+
             switch(text.getText()){
-                case "Single Player" : initGame(); break;
-                case "GameView Options" : changeToSettings(); break;
-                case "Back" : changeToHome(); break;
-                case "Audio   ON" : changeAudio(context.isAudioState()); break;
-                case "Audio   OFF" : changeAudio(context.isAudioState()); break;
+                case "Single Player" : context.initGame(); break;
+                case "GameView Options" : context.changeToSettings(); break;
+                case "Back" : context.changeToHome(); break;
+                case "Audio   ON" : changeAudio(); break;
+                case "Audio   OFF" : changeAudio(); break;
             }
-
         });
-
-        setOnMouseReleased(e -> {
-            mpSelect = new MediaPlayer(mediaSelect);
-        });
-
 
         getChildren().addAll(bg, text);
     }
 
-    private void changeAudio(boolean audio) {
-        context.setAudioState(!audio);
+    private void changeAudio() {
         context.changeMusic();
         text.setText("Audio   " + (context.isAudioState() ? "ON" : "OFF"));
     }
@@ -100,15 +84,4 @@ public class MenuItemView extends Pane {
         setOnMouseClicked(e -> action.run());
     }
 
-    public void changeToSettings(){
-        context.changeSettings();
-    }
-
-    public void changeToHome(){
-        context.backToHome();
-    }
-
-    public void initGame(){
-        context.initGame();
-    }
 }

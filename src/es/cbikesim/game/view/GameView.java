@@ -15,9 +15,9 @@ import javafx.stage.Stage;
 
 public class GameView implements Game.View {
 
-    private static final int WIDTH = 1280;
-    private static final int HEIGHT = 720;
+    private static final int WIDTH = 1280, HEIGHT = 720;
 
+    private Game.Presenter presenter;
     private Stage primaryStage;
 
     private Pane root = new Pane();
@@ -25,8 +25,10 @@ public class GameView implements Game.View {
     private VBox rightSideBar = new VBox(-5);
     private Line line;
 
-    public GameView(Stage primaryStage) {
+    public GameView(Stage primaryStage, Game.Presenter presenter) {
         this.primaryStage = primaryStage;
+        this.presenter = presenter;
+        this.presenter.setView(this);
     }
 
     public void start() throws Exception {
