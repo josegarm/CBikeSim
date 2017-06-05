@@ -1,9 +1,9 @@
 package es.cbikesim.lib.examples;
 
-import es.cbikesim.lib.util.Point;
 import es.cbikesim.lib.pattern.BikeFactory;
 import es.cbikesim.lib.pattern.Command;
 import es.cbikesim.lib.pattern.Invoker;
+import es.cbikesim.lib.util.Point;
 import es.cbikesim.scenario.model.Bike;
 import es.cbikesim.scenario.model.Client;
 import es.cbikesim.scenario.model.Scenario;

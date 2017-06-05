@@ -1,6 +1,5 @@
 package es.cbikesim.mainMenu.view;
 
-import es.cbikesim.app.CBikeSim;
 import javafx.beans.binding.Bindings;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.DropShadow;
@@ -22,8 +21,8 @@ public class MenuItem extends Pane {
     private Effect blur = new BoxBlur(1, 1, 2);
 
 
-    String pathSelect = CBikeSim.class.getResource("/music/select.wav").toString();
-    String pathHoverM = CBikeSim.class.getResource("/music/hover.wav").toString();
+    String pathSelect = MenuItem.class.getResource("/music/select.wav").toString();
+    String pathHoverM = MenuItem.class.getResource("/music/hover.wav").toString();
     Media mediaSelect = new Media(pathSelect);
     Media mediaHover = new Media(pathHoverM);
     MediaPlayer mpSelect = new MediaPlayer(mediaSelect);
@@ -52,7 +51,7 @@ public class MenuItem extends Pane {
         text = new Text(name);
         text.setTranslateX(5);
         text.setTranslateY(20);
-        text.setFont(Font.loadFont(CBikeSim.class.getResource("/font/Penumbra-HalfSerif-Std_35114.ttf").toExternalForm(), 22));
+        text.setFont(Font.loadFont(MenuItem.class.getResource("/font/Penumbra-HalfSerif-Std_35114.ttf").toExternalForm(), 22));
         text.setFill(Color.WHITE);
 
         text.effectProperty().bind(
@@ -74,6 +73,7 @@ public class MenuItem extends Pane {
         setOnMousePressed(e -> {
             mpSelect.play();
             switch(text.getText()){
+                case "Single Player" : initGame(); break;
                 case "Game Options" : changeToSettings(); break;
                 case "Back" : changeToHome(); break;
                 case "Audio   ON" : changeAudio(context.isAudioState()); break;
@@ -106,5 +106,9 @@ public class MenuItem extends Pane {
 
     public void changeToHome(){
         context.backToHome();
+    }
+
+    public void initGame(){
+        context.initGame();
     }
 }

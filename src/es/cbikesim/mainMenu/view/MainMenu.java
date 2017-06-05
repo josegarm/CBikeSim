@@ -1,6 +1,7 @@
 package es.cbikesim.mainMenu.view;
 
 
+import es.cbikesim.scenario.view.Game;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
@@ -85,6 +86,14 @@ public class MainMenu {
         this.primaryStage.show();
 
         mp.play();
+    }
+
+    public void initGame(){
+        try {
+            new Game(this.primaryStage).start();
+        } catch (Exception e){
+
+        }
     }
 
     public void changeSettings(){

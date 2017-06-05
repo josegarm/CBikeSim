@@ -3,7 +3,6 @@ package es.cbikesim.mainMenu.view;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class MenuTitle extends Pane {
@@ -16,8 +15,7 @@ public class MenuTitle extends Pane {
         }
 
         text = new Text(spread);
-        text.setStyle("-fx-font: 40 \"res/Penumbra-HalfSerif-Std_35114.ttf\";");
-        //text.setFont(Font.loadFont(CBikeSim.class.getResource("res/Penumbra-HalfSerif-Std_35114.ttf").toExternalForm(), 50));
+        text.setStyle("-fx-font: 40 'res/Penumbra-HalfSerif-Std_35114.ttf';");
         text.setFill(Color.WHITE);
         text.setEffect(new DropShadow(30, Color.BLACK));
 
