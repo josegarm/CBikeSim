@@ -13,7 +13,6 @@ hs_err_pid*
 
 # folders
 out/
-output/
 .idea/
 CBikeSim.iml
 
