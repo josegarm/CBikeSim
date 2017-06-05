@@ -1,4 +1,4 @@
-package es.cbikesim.app.view.menu;
+package es.cbikesim.mainMenu.view;
 
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;

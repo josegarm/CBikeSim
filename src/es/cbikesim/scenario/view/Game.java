@@ -1,4 +1,4 @@
-package es.cbikesim.app.view.game;
+package es.cbikesim.scenario.view;
 
 
 import javafx.application.Application;
@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 import java.awt.*;
 import java.awt.Color;
 
-public class game extends Application{
+public class Game extends Application{
 
     private static final int WIDTH = 1280;
     private static final int HEIGHT = 720;
@@ -34,7 +34,7 @@ public class game extends Application{
     }
 
     private void addBackground() {
-        ImageView imageView = new ImageView(new javafx.scene.image.Image(getClass().getResource("res/bicycle_wallpaper.jpg").toExternalForm()));
+        ImageView imageView = new ImageView(new javafx.scene.image.Image(getClass().getResource("/img/bicycle_wallpaper.jpg").toExternalForm()));
         imageView.setFitWidth(WIDTH);
         imageView.setFitHeight(HEIGHT);
 

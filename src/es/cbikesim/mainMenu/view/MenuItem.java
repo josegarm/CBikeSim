@@ -1,7 +1,7 @@
-package es.cbikesim.app.view.menu;
+package es.cbikesim.mainMenu.view;
 
+import es.cbikesim.app.CBikeSim;
 import javafx.beans.binding.Bindings;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
@@ -13,18 +13,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import java.lang.reflect.*;
 
 public class MenuItem extends Pane {
     private Text text;
-    private CBikeSim context;
+    private MainMenu context;
 
     private Effect shadow = new DropShadow(5, Color.BLACK);
     private Effect blur = new BoxBlur(1, 1, 2);
 
 
-    String pathSelect = CBikeSim.class.getResource("select.wav").toString();
-    String pathHoverM = CBikeSim.class.getResource("hover.wav").toString();
+    String pathSelect = CBikeSim.class.getResource("/music/select.wav").toString();
+    String pathHoverM = CBikeSim.class.getResource("/music/hover.wav").toString();
     Media mediaSelect = new Media(pathSelect);
     Media mediaHover = new Media(pathHoverM);
     MediaPlayer mpSelect = new MediaPlayer(mediaSelect);
@@ -32,7 +31,7 @@ public class MenuItem extends Pane {
 
 
 
-    public MenuItem(String name, CBikeSim obj) {
+    public MenuItem(String name, MainMenu obj) {
         context = obj;
         Polygon bg = new Polygon(
                 0, 0,
@@ -53,7 +52,7 @@ public class MenuItem extends Pane {
         text = new Text(name);
         text.setTranslateX(5);
         text.setTranslateY(20);
-        text.setFont(Font.loadFont(CBikeSim.class.getResource("res/Penumbra-HalfSerif-Std_35114.ttf").toExternalForm(), 22));
+        text.setFont(Font.loadFont(CBikeSim.class.getResource("/font/Penumbra-HalfSerif-Std_35114.ttf").toExternalForm(), 22));
         text.setFill(Color.WHITE);
 
         text.effectProperty().bind(
@@ -77,8 +76,8 @@ public class MenuItem extends Pane {
             switch(text.getText()){
                 case "Game Options" : changeToSettings(); break;
                 case "Back" : changeToHome(); break;
-                case "Audio   ON" : changeAudio(context.audioState); break;
-                case "Audio   OFF" : changeAudio(context.audioState); break;
+                case "Audio   ON" : changeAudio(context.isAudioState()); break;
+                case "Audio   OFF" : changeAudio(context.isAudioState()); break;
             }
 
         });
@@ -92,9 +91,9 @@ public class MenuItem extends Pane {
     }
 
     private void changeAudio(boolean audio) {
-        context.audioState = !audio;
+        context.setAudioState(!audio);
         context.changeMusic();
-        text.setText("Audio   " + (context.audioState ? "ON" : "OFF"));
+        text.setText("Audio   " + (context.isAudioState() ? "ON" : "OFF"));
     }
 
     public void setOnAction(Runnable action) {

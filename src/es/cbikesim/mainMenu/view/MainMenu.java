@@ -1,8 +1,8 @@
-package es.cbikesim.app.view.menu;
+package es.cbikesim.mainMenu.view;
 
 
-import javafx.animation.*;
-import javafx.application.Application;
+import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -24,25 +24,27 @@ import javafx.util.Pair;
 import java.util.Arrays;
 import java.util.List;
 
-public class CBikeSim extends Application {
+public class MainMenu {
 
     private static final int WIDTH = 1280;
     private static final int HEIGHT = 720;
 
-    boolean firstLoad = false;
-    boolean audioState = true;
+    private Stage primaryStage;
 
-    String pathSelect = CBikeSim.class.getResource("select.wav").toString();
-    String pathHoverM = CBikeSim.class.getResource("hover.wav").toString();
-    String path = CBikeSim.class.getResource("funny_arcade.mp3").toString();
-    Media media = new Media(path);
-    Media mediaSelect = new Media(pathSelect);
-    Media mediaHover = new Media(pathSelect);
-    MediaPlayer mp = new MediaPlayer(media);
-    MediaPlayer mpSelect = new MediaPlayer(mediaSelect);
-    MediaPlayer mpHover = new MediaPlayer(mediaSelect);
+    private  boolean firstLoad = false;
+    private  boolean audioState = true;
 
+    private String pathSelect = MainMenu.class.getResource("/music/select.wav").toString();
+    private String pathHoverM = MainMenu.class.getResource("/music/hover.wav").toString();
+    private String path = MainMenu.class.getResource("/music/funny_arcade.mp3").toString();
 
+    private Media media = new Media(path);
+    private Media mediaSelect = new Media(pathSelect);
+    private Media mediaHover = new Media(pathHoverM);
+
+    private MediaPlayer mp = new MediaPlayer(media);
+    private MediaPlayer mpSelect = new MediaPlayer(mediaSelect);
+    private MediaPlayer mpHover = new MediaPlayer(mediaHover);
 
     private List<Pair<String, Runnable>> getSettingsData(){
         return Arrays.asList(
@@ -51,7 +53,6 @@ public class CBikeSim extends Application {
                 new Pair<String, Runnable>("Back", () -> {})
         );
     }
-
 
     private List<Pair<String, Runnable>> menuData = Arrays.asList(
             new Pair<String, Runnable>("Single Player", () -> {}),
@@ -67,15 +68,56 @@ public class CBikeSim extends Application {
     private VBox menuBox = new VBox(-5);
     private Line line;
 
-    double lineX = WIDTH / 2 - 100;
-    double lineY = HEIGHT / 3 + 50;
+    private double lineX = WIDTH / 2 - 100;
+    private double lineY = HEIGHT / 3 + 50;
+
+
+
+    public MainMenu(Stage primaryStage){
+        this.primaryStage = primaryStage;
+    }
+
+    public void start() throws Exception {
+        Scene scene = new Scene(createContent());
+
+        this.primaryStage.setTitle("CBike Sim Game");
+        this.primaryStage.setScene(scene);
+        this.primaryStage.show();
+
+        mp.play();
+    }
+
+    public void changeSettings(){
+        menuBox.getChildren().clear();
+        addMenu(lineX + 5, lineY + 5,getSettingsData());
+    }
+
+    public void backToHome(){
+        menuBox.getChildren().clear();
+        addMenu(lineX + 5, lineY + 5, menuData);
+    }
+
+    public void changeMusic(){
+        if(audioState) mp.play();
+        else mp.stop();
+    }
+
+    public boolean isAudioState(){
+        return this.audioState;
+    }
+
+    public void setAudioState(boolean audioState){
+        this.audioState = audioState;
+    }
+
+
 
     private Parent createContent() {
         addBackground();
         addTitle();
 
         addLine(lineX, lineY);
-        addMenu(lineX + 5, lineY + 5,menuData);
+        addMenu(lineX + 5, lineY + 5, menuData);
 
         startAnimation();
 
@@ -83,7 +125,7 @@ public class CBikeSim extends Application {
     }
 
     private void addBackground() {
-        ImageView imageView = new ImageView(new Image(getClass().getResource("res/bicycle_wallpaper.jpg").toExternalForm()));
+        ImageView imageView = new ImageView(new Image(getClass().getResource("/img/bicycle_wallpaper.jpg").toExternalForm()));
         imageView.setFitWidth(WIDTH);
         imageView.setFitHeight(HEIGHT);
 
@@ -125,26 +167,11 @@ public class CBikeSim extends Application {
         st.play();
     }
 
-    public void changeSettings(){
-        menuBox.getChildren().clear();
-        addMenu(lineX + 5, lineY + 5,getSettingsData());
-    }
-
-    public void backToHome(){
-        menuBox.getChildren().clear();
-        addMenu(lineX + 5, lineY + 5, menuData);
-    }
-
-    public void changeMusic(){
-        if(audioState) mp.play();
-        else mp.stop();
-    }
-
     private void addMenu(double x, double y, List<Pair<String, Runnable>> l) {
         menuBox.setTranslateX(x);
         menuBox.setTranslateY(y);
         l.forEach(data -> {
-            MenuItem item = new MenuItem(data.getKey(),this);
+            MenuItem item = new MenuItem(data.getKey(), this);
             item.setOnAction(data.getValue());
             item.setTranslateX(-300);
 
@@ -158,23 +185,9 @@ public class CBikeSim extends Application {
         if(!firstLoad){
             root.getChildren().add(menuBox);
             firstLoad = true;
-        }else{
+        } else {
             startAnimation();
         }
-
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Scene scene = new Scene(createContent());
-        primaryStage.setTitle("CBike Sim Game");
-        primaryStage.setScene(scene);
-        mp.play();
-
-        primaryStage.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
 }
