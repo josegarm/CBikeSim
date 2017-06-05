@@ -1,5 +1,6 @@
-package es.cbikesim.scenario.view;
+package es.cbikesim.game.view;
 
+import es.cbikesim.game.contract.Game;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -12,7 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
-public class Game{
+public class GameView implements Game.View {
 
     private static final int WIDTH = 1280;
     private static final int HEIGHT = 720;
@@ -24,14 +25,14 @@ public class Game{
     private VBox rightSideBar = new VBox(-5);
     private Line line;
 
-    public Game(Stage primaryStage) {
+    public GameView(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
     public void start() throws Exception {
         Scene scene = new Scene(createContent());
 
-        this.primaryStage.setTitle("CBike Sim Game");
+        this.primaryStage.setTitle("CBike Sim GameView");
         this.primaryStage.setScene(scene);
         this.primaryStage.show();
     }

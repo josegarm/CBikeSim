@@ -1,10 +1,10 @@
-package es.cbikesim.scenario.usecase;
+package es.cbikesim.game.usecase;
 
 
 import es.cbikesim.lib.pattern.Command;
-import es.cbikesim.scenario.model.Client;
-import es.cbikesim.scenario.model.Scenario;
-import es.cbikesim.scenario.model.Station;
+import es.cbikesim.game.model.Client;
+import es.cbikesim.game.model.Scenario;
+import es.cbikesim.game.model.Station;
 
 public class NextClientPicksUpBikeFromStationUseCase implements Command{
 

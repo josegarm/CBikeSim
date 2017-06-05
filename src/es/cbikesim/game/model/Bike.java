@@ -1,4 +1,4 @@
-package es.cbikesim.scenario.model;
+package es.cbikesim.game.model;
 
 public abstract class Bike {
 

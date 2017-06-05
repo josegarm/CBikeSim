@@ -4,12 +4,12 @@ import es.cbikesim.lib.pattern.BikeFactory;
 import es.cbikesim.lib.pattern.Command;
 import es.cbikesim.lib.pattern.Invoker;
 import es.cbikesim.lib.util.Point;
-import es.cbikesim.scenario.model.Bike;
-import es.cbikesim.scenario.model.Client;
-import es.cbikesim.scenario.model.Scenario;
-import es.cbikesim.scenario.model.Station;
-import es.cbikesim.scenario.usecase.ClientDepositBikeUseCase;
-import es.cbikesim.scenario.usecase.NextClientPicksUpBikeFromStationUseCase;
+import es.cbikesim.game.model.Bike;
+import es.cbikesim.game.model.Client;
+import es.cbikesim.game.model.Scenario;
+import es.cbikesim.game.model.Station;
+import es.cbikesim.game.usecase.ClientDepositBikeUseCase;
+import es.cbikesim.game.usecase.NextClientPicksUpBikeFromStationUseCase;
 
 public class Presenter {
 

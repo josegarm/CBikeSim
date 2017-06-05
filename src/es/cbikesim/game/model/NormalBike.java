@@ -1,10 +1,10 @@
-package es.cbikesim.scenario.model;
+package es.cbikesim.game.model;
 
 
-public class ElectricBike extends Bike{
+public class NormalBike extends Bike{
 
-    public ElectricBike(int id) {
-        super(Bike.ELECTRIC, id);
+    public NormalBike(int id) {
+        super(Bike.NORMAL, id);
     }
 
     @Override
@@ -12,7 +12,7 @@ public class ElectricBike extends Bike{
         return "Bike \n" +
                 "{ \n" +
                 "   id = '" + super.getId() + "'" + ",\n" +
-                "   type = Electric\n" +
+                "   type = Normal\n" +
                 "}";
     }
 
