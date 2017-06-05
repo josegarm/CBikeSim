@@ -7,7 +7,7 @@ public interface Game {
     }
 
     interface Presenter {
-
+        void setView(Game.View view);
     }
 
 }

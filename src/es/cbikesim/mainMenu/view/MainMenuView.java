@@ -1,6 +1,8 @@
 package es.cbikesim.mainMenu.view;
 
 
+import es.cbikesim.game.contract.Game;
+import es.cbikesim.game.presenter.GamePresenter;
 import es.cbikesim.game.view.GameView;
 import es.cbikesim.mainMenu.contract.MainMenu;
 import javafx.animation.ScaleTransition;
@@ -28,33 +30,24 @@ import java.util.List;
 
 public class MainMenuView implements MainMenu.View {
 
-    private static final int WIDTH = 1280;
-    private static final int HEIGHT = 720;
+    private static final int WIDTH = 1280, HEIGHT = 720;
 
+    private boolean firstLoad = false, audioState = true;
+    private double lineX = WIDTH / 2 - 100, lineY = HEIGHT / 3 + 50;
+
+    private MainMenu.Presenter presenter;
     private Stage primaryStage;
 
-    private  boolean firstLoad = false;
-    private  boolean audioState = true;
+    private Pane root = new Pane();
+    private VBox menuBox = new VBox(-5);
+    private Line line;
+    private MediaPlayer mp, mpSelect, mpHover;
 
-    private String pathSelect = MainMenuView.class.getResource("/music/select.wav").toString();
-    private String pathHoverM = MainMenuView.class.getResource("/music/hover.wav").toString();
-    private String path = MainMenuView.class.getResource("/music/funny_arcade.mp3").toString();
-
-    private Media media = new Media(path);
-    private Media mediaSelect = new Media(pathSelect);
-    private Media mediaHover = new Media(pathHoverM);
-
-    private MediaPlayer mp = new MediaPlayer(media);
-    private MediaPlayer mpSelect = new MediaPlayer(mediaSelect);
-    private MediaPlayer mpHover = new MediaPlayer(mediaHover);
-
-    private List<Pair<String, Runnable>> getSettingsData(){
-        return Arrays.asList(
-                new Pair<String, Runnable>("Display FULLSCREEN ", () -> {}),
-                new Pair<String, Runnable>("Audio   " + (audioState ? "ON" : "OFF"), () -> {}),
-                new Pair<String, Runnable>("Back", () -> {})
-        );
-    }
+    private List<Pair<String, Runnable>> settingsData = Arrays.asList(
+            new Pair<String, Runnable>("Display FULLSCREEN ", () -> {}),
+            new Pair<String, Runnable>("Audio   " + (audioState ? "ON" : "OFF"), () -> {}),
+            new Pair<String, Runnable>("Back", () -> {})
+    );
 
     private List<Pair<String, Runnable>> menuData = Arrays.asList(
             new Pair<String, Runnable>("Single Player", () -> {}),
@@ -66,17 +59,11 @@ public class MainMenuView implements MainMenu.View {
     );
 
 
-    private Pane root = new Pane();
-    private VBox menuBox = new VBox(-5);
-    private Line line;
 
-    private double lineX = WIDTH / 2 - 100;
-    private double lineY = HEIGHT / 3 + 50;
-
-
-
-    public MainMenuView(Stage primaryStage){
+    public MainMenuView(Stage primaryStage, MainMenu.Presenter presenter){
         this.primaryStage = primaryStage;
+        this.presenter = presenter;
+        this.presenter.setView(this);
     }
 
     public void start() throws Exception {
@@ -91,23 +78,25 @@ public class MainMenuView implements MainMenu.View {
 
     public void initGame(){
         try {
-            new GameView(this.primaryStage).start();
+            Game.Presenter gp = new GamePresenter();
+            new GameView(this.primaryStage, gp).start();
         } catch (Exception e){
 
         }
     }
 
-    public void changeSettings(){
+    public void changeToSettings(){
         menuBox.getChildren().clear();
-        addMenu(lineX + 5, lineY + 5,getSettingsData());
+        addMenu(lineX + 5, lineY + 5, this.settingsData);
     }
 
-    public void backToHome(){
+    public void changeToHome(){
         menuBox.getChildren().clear();
         addMenu(lineX + 5, lineY + 5, menuData);
     }
 
     public void changeMusic(){
+        audioState = !audioState;
         if(audioState) mp.play();
         else mp.stop();
     }
@@ -120,7 +109,17 @@ public class MainMenuView implements MainMenu.View {
         this.audioState = audioState;
     }
 
+    public MediaPlayer getMp() {
+        return mp;
+    }
 
+    public MediaPlayer getMpSelect() {
+        return mpSelect;
+    }
+
+    public MediaPlayer getMpHover() {
+        return mpHover;
+    }
 
     private Parent createContent() {
         addBackground();
@@ -129,6 +128,7 @@ public class MainMenuView implements MainMenu.View {
         addLine(lineX, lineY);
         addMenu(lineX + 5, lineY + 5, menuData);
 
+        prepareMusic();
         startAnimation();
 
         return root;
@@ -158,6 +158,20 @@ public class MainMenuView implements MainMenu.View {
         line.setScaleY(0);
 
         root.getChildren().add(line);
+    }
+
+    private void prepareMusic(){
+        String pathSelect = MainMenuView.class.getResource("/music/select.wav").toString();
+        String pathHoverM = MainMenuView.class.getResource("/music/hover.wav").toString();
+        String path = MainMenuView.class.getResource("/music/funny_arcade.mp3").toString();
+
+        Media media = new Media(path);
+        Media mediaSelect = new Media(pathSelect);
+        Media mediaHover = new Media(pathHoverM);
+
+        this.mp = new MediaPlayer(media);
+        this.mpSelect = new MediaPlayer(mediaSelect);
+        this.mpHover = new MediaPlayer(mediaHover);
     }
 
     private void startAnimation() {
