@@ -1,4 +1,4 @@
-package es.cbikesim.scenario.view;
+package es.cbikesim.game.view;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;

@@ -1,7 +1,8 @@
 package es.cbikesim.mainMenu.view;
 
 
-import es.cbikesim.scenario.view.Game;
+import es.cbikesim.game.view.GameView;
+import es.cbikesim.mainMenu.contract.MainMenu;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
@@ -25,7 +26,7 @@ import javafx.util.Pair;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainMenu {
+public class MainMenuView implements MainMenu.View {
 
     private static final int WIDTH = 1280;
     private static final int HEIGHT = 720;
@@ -35,9 +36,9 @@ public class MainMenu {
     private  boolean firstLoad = false;
     private  boolean audioState = true;
 
-    private String pathSelect = MainMenu.class.getResource("/music/select.wav").toString();
-    private String pathHoverM = MainMenu.class.getResource("/music/hover.wav").toString();
-    private String path = MainMenu.class.getResource("/music/funny_arcade.mp3").toString();
+    private String pathSelect = MainMenuView.class.getResource("/music/select.wav").toString();
+    private String pathHoverM = MainMenuView.class.getResource("/music/hover.wav").toString();
+    private String path = MainMenuView.class.getResource("/music/funny_arcade.mp3").toString();
 
     private Media media = new Media(path);
     private Media mediaSelect = new Media(pathSelect);
@@ -57,7 +58,7 @@ public class MainMenu {
 
     private List<Pair<String, Runnable>> menuData = Arrays.asList(
             new Pair<String, Runnable>("Single Player", () -> {}),
-            new Pair<String, Runnable>("Game Options", ()-> {}),
+            new Pair<String, Runnable>("GameView Options", ()-> {}),
             new Pair<String, Runnable>("Additional Content", () -> {}),
             new Pair<String, Runnable>("Tutorial", () -> {}),
             new Pair<String, Runnable>("Credits", () -> {}),
@@ -74,14 +75,14 @@ public class MainMenu {
 
 
 
-    public MainMenu(Stage primaryStage){
+    public MainMenuView(Stage primaryStage){
         this.primaryStage = primaryStage;
     }
 
     public void start() throws Exception {
         Scene scene = new Scene(createContent());
 
-        this.primaryStage.setTitle("CBike Sim Game");
+        this.primaryStage.setTitle("CBike Sim GameView");
         this.primaryStage.setScene(scene);
         this.primaryStage.show();
 
@@ -90,7 +91,7 @@ public class MainMenu {
 
     public void initGame(){
         try {
-            new Game(this.primaryStage).start();
+            new GameView(this.primaryStage).start();
         } catch (Exception e){
 
         }
@@ -142,7 +143,7 @@ public class MainMenu {
     }
 
     private void addTitle() {
-        MenuTitle title = new MenuTitle("CBikeSim");
+        MenuTitleView title = new MenuTitleView("CBikeSim");
         title.setTranslateX(WIDTH / 2.25 - title.getTitleWidth() / 2);
         title.setTranslateY(HEIGHT /3);
 
@@ -180,7 +181,7 @@ public class MainMenu {
         menuBox.setTranslateX(x);
         menuBox.setTranslateY(y);
         l.forEach(data -> {
-            MenuItem item = new MenuItem(data.getKey(), this);
+            MenuItemView item = new MenuItemView(data.getKey(), this);
             item.setOnAction(data.getValue());
             item.setTranslateX(-300);
 

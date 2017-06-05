@@ -13,16 +13,16 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class MenuItem extends Pane {
+public class MenuItemView extends Pane {
     private Text text;
-    private MainMenu context;
+    private MainMenuView context;
 
     private Effect shadow = new DropShadow(5, Color.BLACK);
     private Effect blur = new BoxBlur(1, 1, 2);
 
 
-    String pathSelect = MenuItem.class.getResource("/music/select.wav").toString();
-    String pathHoverM = MenuItem.class.getResource("/music/hover.wav").toString();
+    String pathSelect = MenuItemView.class.getResource("/music/select.wav").toString();
+    String pathHoverM = MenuItemView.class.getResource("/music/hover.wav").toString();
     Media mediaSelect = new Media(pathSelect);
     Media mediaHover = new Media(pathHoverM);
     MediaPlayer mpSelect = new MediaPlayer(mediaSelect);
@@ -30,7 +30,7 @@ public class MenuItem extends Pane {
 
 
 
-    public MenuItem(String name, MainMenu obj) {
+    public MenuItemView(String name, MainMenuView obj) {
         context = obj;
         Polygon bg = new Polygon(
                 0, 0,
@@ -51,7 +51,7 @@ public class MenuItem extends Pane {
         text = new Text(name);
         text.setTranslateX(5);
         text.setTranslateY(20);
-        text.setFont(Font.loadFont(MenuItem.class.getResource("/font/Penumbra-HalfSerif-Std_35114.ttf").toExternalForm(), 22));
+        text.setFont(Font.loadFont(MenuItemView.class.getResource("/font/Penumbra-HalfSerif-Std_35114.ttf").toExternalForm(), 22));
         text.setFill(Color.WHITE);
 
         text.effectProperty().bind(
@@ -74,7 +74,7 @@ public class MenuItem extends Pane {
             mpSelect.play();
             switch(text.getText()){
                 case "Single Player" : initGame(); break;
-                case "Game Options" : changeToSettings(); break;
+                case "GameView Options" : changeToSettings(); break;
                 case "Back" : changeToHome(); break;
                 case "Audio   ON" : changeAudio(context.isAudioState()); break;
                 case "Audio   OFF" : changeAudio(context.isAudioState()); break;

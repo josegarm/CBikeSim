@@ -1,9 +1,9 @@
 package es.cbikesim.lib.pattern;
 
 
-import es.cbikesim.scenario.model.Bike;
-import es.cbikesim.scenario.model.ElectricBike;
-import es.cbikesim.scenario.model.NormalBike;
+import es.cbikesim.game.model.Bike;
+import es.cbikesim.game.model.ElectricBike;
+import es.cbikesim.game.model.NormalBike;
 
 public class BikeFactory {
 

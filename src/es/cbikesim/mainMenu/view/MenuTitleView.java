@@ -5,10 +5,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-public class MenuTitle extends Pane {
+public class MenuTitleView extends Pane {
     private Text text;
 
-    public MenuTitle(String name) {
+    public MenuTitleView(String name) {
         String spread = "";
         for (char c : name.toCharArray()) {
             spread += c + " ";

@@ -1,4 +1,4 @@
-package es.cbikesim.scenario.model;
+package es.cbikesim.game.model;
 
 import es.cbikesim.lib.util.Point;
 
