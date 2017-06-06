@@ -1,9 +1,13 @@
 package es.cbikesim.mainMenu.view;
 
 import es.cbikesim.mainMenu.contract.MainMenu;
+import javafx.animation.KeyFrame;
 import javafx.animation.ScaleTransition;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -28,7 +32,7 @@ public class MainMenuView implements MainMenu.View {
 
     private static final int WIDTH = 1280, HEIGHT = 720;
 
-    private boolean firstLoad = false, audioState = true;
+    private boolean firstLoad = false, audioState = true, fewBikes = false, fewCapCar = false;
     private double lineX = WIDTH / 2 - 100, lineY = HEIGHT / 3 + 50;
 
     private MainMenu.Presenter presenter;
@@ -38,6 +42,8 @@ public class MainMenuView implements MainMenu.View {
     private VBox menuBox = new VBox(-5);
     private Line line;
     private MediaPlayer mp, mpSelect, mpHover;
+
+
 
 
     public MainMenuView(Stage primaryStage, MainMenu.Presenter presenter){
@@ -57,9 +63,11 @@ public class MainMenuView implements MainMenu.View {
         mp.play();
     }
 
-    public void initGame(){
+    public void initGame(String difficulty){
+        //method to set difficulty
         presenter.initGame(this.primaryStage);
-    }
+        mp.stop();
+        }
 
     public void changeToSettings(){
         menuBox.getChildren().clear();
@@ -69,6 +77,16 @@ public class MainMenuView implements MainMenu.View {
     public void changeToHome(){
         menuBox.getChildren().clear();
         addMenu(lineX + 5, lineY + 5, this.getMenuData());
+    }
+
+    public void changeToDifficulty(){
+        menuBox.getChildren().clear();
+        addMenu(lineX + 5, lineY + 5, this.getDifficultyData());
+    }
+
+    public void changeToCustomDifficulty(){
+        menuBox.getChildren().clear();
+        addMenu(lineX + 5, lineY + 5, this.getCustomDifficultyData());
     }
 
     public void changeMusic(){
@@ -84,6 +102,14 @@ public class MainMenuView implements MainMenu.View {
     public void setAudioState(boolean audioState){
         this.audioState = audioState;
     }
+
+    public boolean FewBikeState(){ return this.fewBikes; }
+
+    public boolean FewCapCar(){ return this.fewCapCar; }
+
+    public void setFewBikes(boolean fewBikes){ this.fewBikes = fewBikes;}
+
+    public void setFewCapCar(boolean fewCapCar){ this.fewCapCar = fewCapCar;}
 
     public MediaPlayer getMp() {
         return mp;
@@ -109,7 +135,7 @@ public class MainMenuView implements MainMenu.View {
     }
 
     private void addBackground() {
-        ImageView imageView = new ImageView(new Image(getClass().getResource("/img/bicycle_wallpaper.jpg").toExternalForm()));
+        ImageView imageView = new ImageView(new Image(getClass().getResource("/img/bicycle_wallpaper_5.jpg").toExternalForm()));
         imageView.setFitWidth(WIDTH);
         imageView.setFitHeight(HEIGHT);
 
@@ -118,7 +144,7 @@ public class MainMenuView implements MainMenu.View {
 
     private void addTitle() {
         MenuTitleView title = new MenuTitleView("CBikeSim");
-        title.setTranslateX(WIDTH / 2.25 - title.getTitleWidth() / 2);
+        title.setTranslateX(WIDTH / 2 - title.getTitleWidth() / 2);
         title.setTranslateY(HEIGHT /3);
 
         root.getChildren().add(title);
@@ -151,6 +177,25 @@ public class MainMenuView implements MainMenu.View {
                 new Pair<String, Runnable>("Tutorial", () -> {}),
                 new Pair<String, Runnable>("Credits", () -> {}),
                 new Pair<String, Runnable>("Exit to Desktop", Platform::exit)
+        );
+    }
+
+    private List<Pair<String, Runnable>> getDifficultyData() {
+        return Arrays.asList(
+                new Pair<String, Runnable>("EASY", () -> {}),
+                new Pair<String, Runnable>("NORMAL", ()-> {}),
+                new Pair<String, Runnable>("HARD", () -> {}),
+                new Pair<String, Runnable>("CUSTOM", () -> {}),
+                new Pair<String, Runnable>("Back", () -> {})
+        );
+    }
+
+    private List<Pair<String, Runnable>> getCustomDifficultyData() {
+        return Arrays.asList(
+                new Pair<String, Runnable>("Number of bikes    " + (fewBikes ? "FEW" : "NORMAL"), () -> {}),
+                new Pair<String, Runnable>("Bike Capacity car       " + (fewCapCar ? "2" : "6"), ()-> {}),
+                new Pair<String, Runnable>("PLAY", () -> {}),
+                new Pair<String, Runnable>("Back", () -> {})
         );
     }
 

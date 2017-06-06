@@ -44,7 +44,7 @@ public class MenuItemView extends Pane {
         text = new Text(name);
         text.setTranslateX(5);
         text.setTranslateY(20);
-        text.setFont(Font.loadFont(MenuItemView.class.getResource("/font/Penumbra-HalfSerif-Std_35114.ttf").toExternalForm(), 22));
+        text.setFont(Font.loadFont(MenuItemView.class.getResource("/font/Penumbra-HalfSerif-Std_35114.ttf").toExternalForm(), 12));
         text.setFill(Color.WHITE);
 
         text.effectProperty().bind(
@@ -64,11 +64,20 @@ public class MenuItemView extends Pane {
             context.getMpSelect().play();
 
             switch(text.getText()){
-                case "Single Player" : context.initGame(); break;
+                case "PLAY" : context.initGame("CUSTOM"); break;
+                case "Single Player" : context.changeToDifficulty(); break;
                 case "GameView Options" : context.changeToSettings(); break;
                 case "Back" : context.changeToHome(); break;
                 case "Audio   ON" : changeAudio(); break;
                 case "Audio   OFF" : changeAudio(); break;
+                case "CUSTOM" : context.changeToCustomDifficulty(); break;
+                case "Number of bikes    FEW" : changeBikeNum(false); break;
+                case "Number of bikes    NORMAL" : changeBikeNum(true); break;
+                case "Bike Capacity car       6" : changeCapCar(true); break;
+                case "Bike Capacity car       2" : changeCapCar(false); break;
+                case "EASY" : context.initGame("EASY"); break;
+                case "NORMAL" : context.initGame("MEDIUM"); break;
+                case "HARD" : context.initGame("HARD"); break;
             }
         });
 
@@ -78,6 +87,16 @@ public class MenuItemView extends Pane {
     private void changeAudio() {
         context.changeMusic();
         text.setText("Audio   " + (context.isAudioState() ? "ON" : "OFF"));
+    }
+
+    private void changeBikeNum(boolean state) {
+        context.setFewBikes(state);
+        text.setText("Number of bikes    " + (context.FewBikeState() ? "FEW" : "NORMAL"));
+    }
+
+    private void changeCapCar(boolean state){
+        context.setFewCapCar(state);
+        text.setText("Bike Capacity car       " + (context.FewCapCar() ? "2" : "6"));
     }
 
     public void setOnAction(Runnable action) {
