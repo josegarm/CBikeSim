@@ -43,22 +43,6 @@ public class MainMenuView implements MainMenu.View {
     private Line line;
     private MediaPlayer mp, mpSelect, mpHover;
 
-    private List<Pair<String, Runnable>> settingsData = Arrays.asList(
-            new Pair<String, Runnable>("Display FULLSCREEN ", () -> {}),
-            new Pair<String, Runnable>("Audio   " + (audioState ? "ON" : "OFF"), () -> {}),
-            new Pair<String, Runnable>("Back", () -> {})
-    );
-
-    private List<Pair<String, Runnable>> menuData = Arrays.asList(
-            new Pair<String, Runnable>("Single Player", () -> {}),
-            new Pair<String, Runnable>("GameView Options", ()-> {}),
-            new Pair<String, Runnable>("Additional Content", () -> {}),
-            new Pair<String, Runnable>("Tutorial", () -> {}),
-            new Pair<String, Runnable>("Credits", () -> {}),
-            new Pair<String, Runnable>("Exit to Desktop", Platform::exit)
-    );
-
-
 
     public MainMenuView(Stage primaryStage, MainMenu.Presenter presenter){
         this.primaryStage = primaryStage;
@@ -87,12 +71,12 @@ public class MainMenuView implements MainMenu.View {
 
     public void changeToSettings(){
         menuBox.getChildren().clear();
-        addMenu(lineX + 5, lineY + 5, this.settingsData);
+        addMenu(lineX + 5, lineY + 5, this.getSettingsData());
     }
 
     public void changeToHome(){
         menuBox.getChildren().clear();
-        addMenu(lineX + 5, lineY + 5, menuData);
+        addMenu(lineX + 5, lineY + 5, this.getMenuData());
     }
 
     public void changeMusic(){
@@ -126,10 +110,8 @@ public class MainMenuView implements MainMenu.View {
         addTitle();
 
         addLine(lineX, lineY);
-        addMenu(lineX + 5, lineY + 5, menuData);
-
+        addMenu(lineX + 5, lineY + 5, this.getMenuData());
         prepareMusic();
-        startAnimation();
 
         return root;
     }
@@ -160,18 +142,48 @@ public class MainMenuView implements MainMenu.View {
         root.getChildren().add(line);
     }
 
-    private void prepareMusic(){
-        String pathSelect = MainMenuView.class.getResource("/music/select.wav").toString();
-        String pathHoverM = MainMenuView.class.getResource("/music/hover.wav").toString();
-        String path = MainMenuView.class.getResource("/music/funny_arcade.mp3").toString();
+    private List<Pair<String, Runnable>> getSettingsData() {
+        return Arrays.asList(
+                new Pair<String, Runnable>("Display FULLSCREEN ", () -> {}),
+                new Pair<String, Runnable>("Audio   " + (audioState ? "ON" : "OFF"), () -> {}),
+                new Pair<String, Runnable>("Back", () -> {})
+        );
+    }
 
-        Media media = new Media(path);
-        Media mediaSelect = new Media(pathSelect);
-        Media mediaHover = new Media(pathHoverM);
 
-        this.mp = new MediaPlayer(media);
-        this.mpSelect = new MediaPlayer(mediaSelect);
-        this.mpHover = new MediaPlayer(mediaHover);
+    private List<Pair<String, Runnable>> getMenuData() {
+        return Arrays.asList(
+                new Pair<String, Runnable>("Single Player", () -> {}),
+                new Pair<String, Runnable>("GameView Options", ()-> {}),
+                new Pair<String, Runnable>("Additional Content", () -> {}),
+                new Pair<String, Runnable>("Tutorial", () -> {}),
+                new Pair<String, Runnable>("Credits", () -> {}),
+                new Pair<String, Runnable>("Exit to Desktop", Platform::exit)
+        );
+    }
+
+    private void addMenu(double x, double y, List<Pair<String, Runnable>> l) {
+        menuBox.setTranslateX(x);
+        menuBox.setTranslateY(y);
+        l.forEach(data -> {
+            MenuItemView item = new MenuItemView(data.getKey(), this);
+            item.setOnAction(data.getValue());
+            item.setTranslateX(-300);
+
+            Rectangle clip = new Rectangle(300, 30);
+            clip.translateXProperty().bind(item.translateXProperty().negate());
+
+            item.setClip(clip);
+
+            menuBox.getChildren().addAll(item);
+        });
+
+        if(!firstLoad){
+            root.getChildren().add(menuBox);
+            firstLoad = true;
+        }
+
+        startAnimation();
     }
 
     private void startAnimation() {
@@ -191,27 +203,18 @@ public class MainMenuView implements MainMenu.View {
         st.play();
     }
 
-    private void addMenu(double x, double y, List<Pair<String, Runnable>> l) {
-        menuBox.setTranslateX(x);
-        menuBox.setTranslateY(y);
-        l.forEach(data -> {
-            MenuItemView item = new MenuItemView(data.getKey(), this);
-            item.setOnAction(data.getValue());
-            item.setTranslateX(-300);
+    private void prepareMusic(){
+        String pathSelect = MainMenuView.class.getResource("/music/select.wav").toString();
+        String pathHoverM = MainMenuView.class.getResource("/music/hover.wav").toString();
+        String path = MainMenuView.class.getResource("/music/funny_arcade.mp3").toString();
 
-            Rectangle clip = new Rectangle(300, 30);
-            clip.translateXProperty().bind(item.translateXProperty().negate());
+        Media media = new Media(path);
+        Media mediaSelect = new Media(pathSelect);
+        Media mediaHover = new Media(pathHoverM);
 
-            item.setClip(clip);
-
-            menuBox.getChildren().addAll(item);
-        });
-        if(!firstLoad){
-            root.getChildren().add(menuBox);
-            firstLoad = true;
-        } else {
-            startAnimation();
-        }
+        this.mp = new MediaPlayer(media);
+        this.mpSelect = new MediaPlayer(mediaSelect);
+        this.mpHover = new MediaPlayer(mediaHover);
     }
 
 }
