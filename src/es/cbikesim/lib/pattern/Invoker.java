@@ -11,12 +11,16 @@ public class Invoker {
     private List<Command> commands = new ArrayList<>();
 
     public void setCommand(Command command) {
-        this.commands.clear();
+        this.clear();
         this.commands.add(command);
     }
 
     public void addCommand(Command command){
         this.commands.add(command);
+    }
+
+    public void clear(){
+        this.commands.clear();
     }
 
     public void invoke(){

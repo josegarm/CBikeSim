@@ -31,7 +31,8 @@ public class GameView implements Game.View {
         this.presenter.setView(this);
     }
 
-    public void start() throws Exception {
+    @Override
+    public void start() {
         Scene scene = new Scene(createContent());
 
         this.primaryStage.setTitle("CBike Sim GameView");
