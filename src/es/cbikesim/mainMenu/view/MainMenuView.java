@@ -1,9 +1,5 @@
 package es.cbikesim.mainMenu.view;
 
-
-import es.cbikesim.game.contract.Game;
-import es.cbikesim.game.presenter.GamePresenter;
-import es.cbikesim.game.view.GameView;
 import es.cbikesim.mainMenu.contract.MainMenu;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
@@ -50,7 +46,8 @@ public class MainMenuView implements MainMenu.View {
         this.presenter.setView(this);
     }
 
-    public void start() throws Exception {
+    @Override
+    public void start() {
         Scene scene = new Scene(createContent());
 
         this.primaryStage.setTitle("CBike Sim GameView");
@@ -61,12 +58,7 @@ public class MainMenuView implements MainMenu.View {
     }
 
     public void initGame(){
-        try {
-            Game.Presenter gp = new GamePresenter();
-            new GameView(this.primaryStage, gp).start();
-        } catch (Exception e){
-
-        }
+        presenter.initGame(this.primaryStage);
     }
 
     public void changeToSettings(){

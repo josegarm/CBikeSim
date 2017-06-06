@@ -1,6 +1,7 @@
 package es.cbikesim.app;
 
 
+import es.cbikesim.mainMenu.contract.MainMenu;
 import es.cbikesim.mainMenu.presenter.MainMenuPresenter;
 import es.cbikesim.mainMenu.view.MainMenuView;
 
@@ -11,8 +12,9 @@ public class CBikeSim extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        MainMenuPresenter mmp = new MainMenuPresenter();
-        new MainMenuView(primaryStage,mmp).start();
+        MainMenu.Presenter mainMenuPresenter = new MainMenuPresenter();
+        MainMenu.View mainMenuView = new MainMenuView(primaryStage, mainMenuPresenter);
+        mainMenuView.start();
     }
 
     public static void main(String[] args) {
