@@ -14,10 +14,10 @@ public class MainMenuPresenter implements MainMenu.Presenter{
     @Override
     public void initGame(Stage primaryStage) {
         Game.Presenter gamePresenter = new GamePresenter();
-
+        Game.View gameView = new GameView(primaryStage, gamePresenter);
         gamePresenter.createScenario(0);
 
-        Game.View gameView = new GameView(primaryStage, gamePresenter);
+
         gameView.start();
     }
 

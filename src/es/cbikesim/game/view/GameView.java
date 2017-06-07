@@ -9,7 +9,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+
+import java.util.List;
 
 public class GameView implements Game.View {
 
@@ -20,6 +23,7 @@ public class GameView implements Game.View {
     private MediaPlayer mp;
     private Pane root = new Pane();
 
+    //ELEMENTS PASSIVE
     private VBox sideBar;
     private Pane topUtilityPane;
     private Pane titlePaneBike;
@@ -42,6 +46,9 @@ public class GameView implements Game.View {
     private ImageView ui;
     private Pane mapPane;
     private ImageView map;
+
+    //STATIONS
+    private List<Circle> stations;
 
 
     public GameView(Stage primaryStage, Game.Presenter presenter) {
@@ -203,6 +210,7 @@ public class GameView implements Game.View {
         return bikeGridPane;
     }
 
+
     @Override
     public GridPane getClientPane() {
         return clientGridPane;
@@ -222,6 +230,9 @@ public class GameView implements Game.View {
     public Pane getTitlePaneClient() {
         return titlePaneClient;
     }
+
+    @Override
+    public Pane getMapPane(){ return mapPane; }
 
 
     private Parent createContent(){
@@ -247,5 +258,7 @@ public class GameView implements Game.View {
         Media media = new Media(path);
         this.mp = new MediaPlayer(media);
     }
+
+
 
 }

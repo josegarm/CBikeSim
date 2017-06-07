@@ -42,6 +42,8 @@ public class Station{
         return vehicleList;
     }
 
+    public int getId(){ return id; }
+
     @Override
     public String toString() {
         return "Station \n" +
