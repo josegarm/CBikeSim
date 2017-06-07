@@ -21,9 +21,9 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.Pair;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class MainMenuView implements MainMenu.View {
 
@@ -45,7 +45,7 @@ public class MainMenuView implements MainMenu.View {
 
     private MediaPlayer mp, mpSelect, mpHover;
 
-    MenuItemView miv;
+    private MenuItemView itemPressed;
 
 
     public MainMenuView(Stage primaryStage, MainMenu.Presenter presenter){
@@ -143,10 +143,10 @@ public class MainMenuView implements MainMenu.View {
     }
 
     private void addBackground() {
-        ImageView imageView = new ImageView(new Image(getClass().getResource("/img/bicycle_wallpaper_1.jpg").toExternalForm()));
+        String path = "/img/bicycle_wallpaper_"+ (new Random().nextInt((5 - 1) + 1) + 1) + ".jpg";
+        ImageView imageView = new ImageView(new Image(getClass().getResource(path).toExternalForm()));
         imageView.setFitWidth(WIDTH);
         imageView.setFitHeight(HEIGHT);
-
         root.getChildren().add(imageView);
     }
 
@@ -171,7 +171,10 @@ public class MainMenuView implements MainMenu.View {
     private List<Pair<String, Runnable>> getSettingsData() {
         return Arrays.asList(
                 //new Pair<String, Runnable>("DISPLAY FULLSCREEN ", () -> {}),
-                new Pair<String, Runnable>("AUDIO   " + (audioState ? "ON" : "OFF"), () -> {}),
+                new Pair<String, Runnable>("AUDIO   " + (audioState ? "ON" : "OFF"), () -> {
+                    this.changeMusic();
+                    this.itemPressed.setText("AUDIO   " + (audioState ? "ON" : "OFF"));
+                }),
                 new Pair<String, Runnable>("BACK", this::changeToHome)
         );
     }
@@ -200,31 +203,17 @@ public class MainMenuView implements MainMenu.View {
 
     private List<Pair<String, Runnable>> getCustomDifficultyData() {
         return Arrays.asList(
-                new Pair<String, Runnable>("NUMBER OF BIKES    " + (numBikes == FEW ? "FEW" : "NORMAL"), () -> {}),
-                new Pair<String, Runnable>("BIKE CAPACITY CAR  " + carCapacity, () -> {}),
+                new Pair<String, Runnable>("NUMBER OF BIKES    " + (numBikes == FEW ? "FEW" : "NORMAL"), () -> {
+                    this.changeNumBikes();
+                    this.itemPressed.setText("NUMBER OF BIKES    " + (numBikes == FEW ? "FEW" : "NORMAL"));
+                }),
+                new Pair<String, Runnable>("BIKE CAPACITY CAR  " + carCapacity, () -> {
+                    this.changeCarCapacity();
+                    this.itemPressed.setText("BIKE CAPACITY CAR  " + carCapacity);
+                }),
                 new Pair<String, Runnable>("PLAY", this::initGame),
                 new Pair<String, Runnable>("BACK", this::changeToDifficulty)
         );
-    }
-
-    public void passItem(MenuItemView miv){
-        this.miv = miv;
-        switch(miv.getText()){
-            //case "PLAY" : context.initGame("CUSTOM"); break;
-            //case "SINGLE PLAYER" : context.changeToDifficulty(); break;
-            //case "GAME OPTIONS" : context.changeToSettings(); break;
-            //case "BACK" : context.changeToHome(); break;
-            case "AUDIO   ON" : changeMusic(); break;
-            case "AUDIO   OFF" : changeMusic(); break;
-            //case "EASY" : context.initGame("EASY"); break;
-            //case "NORMAL" : context.initGame("MEDIUM"); break;
-            //case "HARD" : context.initGame("HARD"); break;
-            //case "CUSTOM" : context.changeToCustomDifficulty(); break;
-            //case "NUMBER OF BIKES    FEW" : changeBikeNum(false); break;
-            //case "NUMBER OF BIKES    NORMAL" : changeBikeNum(true); break;
-            //case "BIKE CAPACITY CAR       6" : changeCapCar(true); break;
-            //case "BIKE CAPACITY CAR       2" : changeCapCar(false); break;
-        }
     }
 
     private void addMenu(double x, double y, List<Pair<String, Runnable>> l) {
@@ -252,13 +241,8 @@ public class MainMenuView implements MainMenu.View {
         startAnimation();
     }
 
-    private void updateMenuWith(List<Pair<String, Runnable>> list) {
-        menuBox.getChildren().clear();
-        list.forEach(data -> {
-            MenuItemView item = new MenuItemView(data.getKey(), this);
-            item.setOnAction(data.getValue());
-            menuBox.getChildren().addAll(item);
-        });
+    public void setItemPressed(MenuItemView itemPressed){
+        this.itemPressed = itemPressed;
     }
 
     private void startAnimation() {

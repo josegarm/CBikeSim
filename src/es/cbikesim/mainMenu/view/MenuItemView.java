@@ -60,35 +60,14 @@ public class MenuItemView extends Pane {
         setOnMousePressed(e -> {
             context.getMpSelect().stop();
             context.getMpSelect().play();
-            context.passItem(this);
-
-            switch(text.getText()){
-                //case "PLAY" : context.initGame("CUSTOM"); break;
-                //case "SINGLE PLAYER" : context.changeToDifficulty(); break;
-                //case "GAME OPTIONS" : context.changeToSettings(); break;
-                //case "BACK" : context.changeToHome(); break;
-                //case "AUDIO   ON" : changeAudio(); break;
-                //case "AUDIO   OFF" : changeAudio(); break;
-                //case "EASY" : context.initGame("EASY"); break;
-                //case "NORMAL" : context.initGame("MEDIUM"); break;
-                //case "HARD" : context.initGame("HARD"); break;
-                //case "CUSTOM" : context.changeToCustomDifficulty(); break;
-                //case "NUMBER OF BIKES    FEW" : changeBikeNum(false); break;
-                //case "NUMBER OF BIKES    NORMAL" : changeBikeNum(true); break;
-                //case "BIKE CAPACITY CAR       6" : changeCapCar(true); break;
-                //case "BIKE CAPACITY CAR       2" : changeCapCar(false); break;
-            }
+            context.setItemPressed(this);
         });
 
         getChildren().addAll(bg, text);
     }
 
-    public void setText(String name){
-        text.setText(name);
-    }
-
-    public String getText(){
-        return text.getText();
+    public void setText(String text){
+        this.text.setText(text);
     }
 
     public void setOnAction(Runnable action) {
