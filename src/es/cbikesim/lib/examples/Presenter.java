@@ -1,5 +1,6 @@
 package es.cbikesim.lib.examples;
 
+import es.cbikesim.lib.exception.UseCaseException;
 import es.cbikesim.lib.pattern.BikeFactory;
 import es.cbikesim.lib.pattern.Command;
 import es.cbikesim.lib.pattern.Invoker;
@@ -48,7 +49,11 @@ public class Presenter {
         invoker.addCommand(clientDepositBike);
         invoker.addCommand(nextClientsPickUpBike);
 
-        invoker.invoke();
+        try {
+            invoker.invoke();
+        } catch (UseCaseException e) {
+            e.printStackTrace();
+        }
         System.out.println("Last \n" + scenario); //LAST PRINT
 
         view.updateView();
