@@ -6,8 +6,6 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
@@ -44,7 +42,7 @@ public class MenuItemView extends Pane {
         text = new Text(name);
         text.setTranslateX(5);
         text.setTranslateY(20);
-        text.setFont(Font.loadFont(MenuItemView.class.getResource("/font/Penumbra-HalfSerif-Std_35114.ttf").toExternalForm(), 22));
+        text.setFont(Font.loadFont(MenuItemView.class.getResource("/font/Penumbra-HalfSerif-Std_35114.ttf").toExternalForm(), 14));
         text.setFill(Color.WHITE);
 
         text.effectProperty().bind(
@@ -64,20 +62,24 @@ public class MenuItemView extends Pane {
             context.getMpSelect().play();
 
             switch(text.getText()){
-                case "Single Player" : context.initGame(); break;
-                case "GameView Options" : context.changeToSettings(); break;
-                case "Back" : context.changeToHome(); break;
-                case "Audio   ON" : changeAudio(); break;
-                case "Audio   OFF" : changeAudio(); break;
+                //case "PLAY" : context.initGame("CUSTOM"); break;
+                //case "SINGLE PLAYER" : context.changeToDifficulty(); break;
+                //case "GAME OPTIONS" : context.changeToSettings(); break;
+                //case "BACK" : context.changeToHome(); break;
+                //case "AUDIO   ON" : changeAudio(); break;
+                //case "AUDIO   OFF" : changeAudio(); break;
+                //case "EASY" : context.initGame("EASY"); break;
+                //case "NORMAL" : context.initGame("MEDIUM"); break;
+                //case "HARD" : context.initGame("HARD"); break;
+                //case "CUSTOM" : context.changeToCustomDifficulty(); break;
+                //case "NUMBER OF BIKES    FEW" : changeBikeNum(false); break;
+                //case "NUMBER OF BIKES    NORMAL" : changeBikeNum(true); break;
+                //case "BIKE CAPACITY CAR       6" : changeCapCar(true); break;
+                //case "BIKE CAPACITY CAR       2" : changeCapCar(false); break;
             }
         });
 
         getChildren().addAll(bg, text);
-    }
-
-    private void changeAudio() {
-        context.changeMusic();
-        text.setText("Audio   " + (context.isAudioState() ? "ON" : "OFF"));
     }
 
     public void setOnAction(Runnable action) {
