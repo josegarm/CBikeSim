@@ -1,5 +1,6 @@
 package es.cbikesim.game.usecase;
 
+import es.cbikesim.lib.exception.UseCaseException;
 import es.cbikesim.lib.pattern.Command;
 import es.cbikesim.game.model.Client;
 import es.cbikesim.game.model.Scenario;
@@ -19,7 +20,7 @@ public class ClientDepositBikeUseCase implements Command{
     }
 
     @Override
-    public void execute() {
+    public void execute() throws UseCaseException {
         Station currentStation = client.getTo();
         client.setFrom(currentStation);
         client.setTo(null);

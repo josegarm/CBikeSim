@@ -19,7 +19,6 @@ public class GamePresenter implements Game.Presenter {
         Command createScenario = new CreateScenarioUseCase(scenario);
         invoker.setCommand(createScenario);
         invoker.invoke();
-
     }
 
     @Override
