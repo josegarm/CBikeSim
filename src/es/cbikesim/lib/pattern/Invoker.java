@@ -1,5 +1,7 @@
 package es.cbikesim.lib.pattern;
 
+import es.cbikesim.lib.exception.UseCaseException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class Invoker {
         this.commands.clear();
     }
 
-    public void invoke(){
+    public void invoke() throws UseCaseException{
         for (Command command : commands) {
             command.execute();
         }
