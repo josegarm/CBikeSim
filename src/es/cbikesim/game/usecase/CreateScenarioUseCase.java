@@ -19,8 +19,8 @@ public class CreateScenarioUseCase implements Command {
 
     @Override
     public void execute() throws UseCaseException {
-        Station station1 = new Station(1,2, new Point(1,1));
-        Station station2 = new Station(2,10, new Point(2,2));
+        Station station1 = new Station(1,2, new Point(50,90));
+        Station station2 = new Station(2,10, new Point(120,300));
 
         scenario.getStationList().add(station1);
         scenario.getStationList().add(station2);
