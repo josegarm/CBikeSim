@@ -1,16 +1,16 @@
 package es.cbikesim.lib.examples;
 
-import es.cbikesim.lib.exception.UseCaseException;
-import es.cbikesim.lib.pattern.BikeFactory;
-import es.cbikesim.lib.pattern.Command;
-import es.cbikesim.lib.pattern.Invoker;
-import es.cbikesim.lib.util.Point;
 import es.cbikesim.game.model.Bike;
 import es.cbikesim.game.model.Client;
 import es.cbikesim.game.model.Scenario;
 import es.cbikesim.game.model.Station;
 import es.cbikesim.game.usecase.ClientDepositBikeUseCase;
 import es.cbikesim.game.usecase.NextClientPicksUpBikeFromStationUseCase;
+import es.cbikesim.lib.exception.UseCaseException;
+import es.cbikesim.lib.pattern.BikeFactory;
+import es.cbikesim.lib.pattern.Command;
+import es.cbikesim.lib.pattern.Invoker;
+import es.cbikesim.lib.util.Point;
 
 public class Presenter {
 

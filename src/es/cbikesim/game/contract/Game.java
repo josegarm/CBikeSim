@@ -1,6 +1,5 @@
 package es.cbikesim.game.contract;
 
-import es.cbikesim.game.view.Sprite;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
@@ -10,10 +9,10 @@ public interface Game {
         void start();
         GridPane getBikePane();
         GridPane getClientPane();
+        Pane getMapPane();
         Pane getUtilityPane();
         Pane getTitlePaneBike();
         Pane getTitlePaneClient();
-        Pane getMapPane();
     }
 
     interface Presenter {

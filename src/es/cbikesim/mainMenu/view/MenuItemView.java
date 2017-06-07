@@ -1,5 +1,6 @@
 package es.cbikesim.mainMenu.view;
 
+import es.cbikesim.mainMenu.contract.MainMenu;
 import javafx.beans.binding.Bindings;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.DropShadow;
@@ -13,16 +14,30 @@ import javafx.scene.text.Text;
 
 public class MenuItemView extends Pane {
 
-    private MainMenuView context;
+    private MainMenu.Presenter context;
     private Text text;
 
     private Effect shadow = new DropShadow(5, Color.BLACK);
     private Effect blur = new BoxBlur(1, 1, 2);
 
 
-    public MenuItemView(String name, MainMenuView obj) {
-        context = obj;
+    public MenuItemView(String name, MainMenu.Presenter context) {
+        this.context = context;
 
+        addListeners();
+
+        getChildren().addAll(createBackground(), createText(name));
+    }
+
+    public void setText(String text){
+        this.text.setText(text);
+    }
+
+    public void setOnAction(Runnable action) {
+        setOnMouseClicked(e -> action.run());
+    }
+
+    private Polygon createBackground(){
         Polygon bg = new Polygon(
                 0, 0,
                 200, 0,
@@ -33,13 +48,19 @@ public class MenuItemView extends Pane {
 
         bg.setStroke(Color.color(1, 1, 1, 0.75));
         bg.setEffect(new GaussianBlur());
+
         bg.fillProperty().bind(
                 Bindings.when(pressedProperty())
-                        .then(Color.color(0, 0, 0, 0.75))
-                        .otherwise(Color.color(0, 0, 0, 0.25))
+                        .then(Color.color(0, 0, 0, 0.85))
+                        .otherwise(Color.color(0, 0, 0, 0.55))
         );
 
+        return bg;
+    }
+
+    private Text createText(String name){
         text = new Text(name);
+
         text.setTranslateX(5);
         text.setTranslateY(20);
         text.setFont(Font.loadFont(MenuItemView.class.getResource("/font/Penumbra-HalfSerif-Std_35114.ttf").toExternalForm(), 14));
@@ -51,27 +72,20 @@ public class MenuItemView extends Pane {
                         .otherwise(blur)
         );
 
+        return text;
+    }
+
+    private void addListeners(){
+
         setOnMouseEntered(e -> {
-            context.getMpHover().stop();
-            context.getMpHover().play();
+            context.playHover();
         });
 
-
         setOnMousePressed(e -> {
-            context.getMpSelect().stop();
-            context.getMpSelect().play();
+            context.playSelect();
             context.setItemPressed(this);
         });
 
-        getChildren().addAll(bg, text);
-    }
-
-    public void setText(String text){
-        this.text.setText(text);
-    }
-
-    public void setOnAction(Runnable action) {
-        setOnMouseClicked(e -> action.run());
     }
 
 }
