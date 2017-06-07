@@ -1,13 +1,9 @@
 package es.cbikesim.mainMenu.view;
 
 import es.cbikesim.mainMenu.contract.MainMenu;
-import javafx.animation.KeyFrame;
 import javafx.animation.ScaleTransition;
-import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -31,19 +27,22 @@ import java.util.List;
 public class MainMenuView implements MainMenu.View {
 
     private static final int WIDTH = 1280, HEIGHT = 720;
+    private static final int FEW = 0, NORMAL = 1;
 
-    private boolean firstLoad = false, audioState = true, fewBikes = false, fewCapCar = false;
-    private double lineX = WIDTH / 2 - 100, lineY = HEIGHT / 3 + 50;
-
-    private MainMenu.Presenter presenter;
-    private Stage primaryStage;
+    private int lineX = WIDTH / 2 - 100;
+    private int lineY = HEIGHT / 3 + 50;
 
     private Pane root = new Pane();
     private VBox menuBox = new VBox(-5);
     private Line line;
+
+    private MainMenu.Presenter presenter;
+    private Stage primaryStage;
+
+    private boolean firstLoad = false, audioState = true;
+    private int numBikes = FEW, carCapacity = 3;
+
     private MediaPlayer mp, mpSelect, mpHover;
-
-
 
 
     public MainMenuView(Stage primaryStage, MainMenu.Presenter presenter){
@@ -63,29 +62,25 @@ public class MainMenuView implements MainMenu.View {
         mp.play();
     }
 
-    public void initGame(String difficulty){
+    public void initGame(){
         //method to set difficulty
         presenter.initGame(this.primaryStage);
         mp.stop();
         }
 
     public void changeToSettings(){
-        menuBox.getChildren().clear();
         addMenu(lineX + 5, lineY + 5, this.getSettingsData());
     }
 
     public void changeToHome(){
-        menuBox.getChildren().clear();
         addMenu(lineX + 5, lineY + 5, this.getMenuData());
     }
 
     public void changeToDifficulty(){
-        menuBox.getChildren().clear();
         addMenu(lineX + 5, lineY + 5, this.getDifficultyData());
     }
 
     public void changeToCustomDifficulty(){
-        menuBox.getChildren().clear();
         addMenu(lineX + 5, lineY + 5, this.getCustomDifficultyData());
     }
 
@@ -93,6 +88,16 @@ public class MainMenuView implements MainMenu.View {
         audioState = !audioState;
         if(audioState) mp.play();
         else mp.stop();
+    }
+
+    public void changeNumBikes(){
+        if(numBikes == FEW) numBikes = NORMAL;
+        else numBikes = FEW;
+    }
+
+    public void changeCarCapacity(){
+        if(carCapacity >= 9) carCapacity = 3;
+        else carCapacity = carCapacity + 3;
     }
 
     public boolean isAudioState(){
@@ -103,13 +108,13 @@ public class MainMenuView implements MainMenu.View {
         this.audioState = audioState;
     }
 
-    public boolean FewBikeState(){ return this.fewBikes; }
+    public int getNumBikes(){ return this.numBikes; }
 
-    public boolean FewCapCar(){ return this.fewCapCar; }
+    public int getCarCapacity(){ return this.carCapacity; }
 
-    public void setFewBikes(boolean fewBikes){ this.fewBikes = fewBikes;}
+    public void setNumBikes(int fewBikes){ this.numBikes = fewBikes;}
 
-    public void setFewCapCar(boolean fewCapCar){ this.fewCapCar = fewCapCar;}
+    public void setCarCapacity(int carCapacity){ this.carCapacity = carCapacity;}
 
     public MediaPlayer getMp() {
         return mp;
@@ -135,7 +140,7 @@ public class MainMenuView implements MainMenu.View {
     }
 
     private void addBackground() {
-        ImageView imageView = new ImageView(new Image(getClass().getResource("/img/bicycle_wallpaper_5.jpg").toExternalForm()));
+        ImageView imageView = new ImageView(new Image(getClass().getResource("/img/bicycle_wallpaper_1.jpg").toExternalForm()));
         imageView.setFitWidth(WIDTH);
         imageView.setFitHeight(HEIGHT);
 
@@ -162,44 +167,54 @@ public class MainMenuView implements MainMenu.View {
 
     private List<Pair<String, Runnable>> getSettingsData() {
         return Arrays.asList(
-                new Pair<String, Runnable>("Display FULLSCREEN ", () -> {}),
-                new Pair<String, Runnable>("Audio   " + (audioState ? "ON" : "OFF"), () -> {}),
-                new Pair<String, Runnable>("Back", () -> {})
+                //new Pair<String, Runnable>("DISPLAY FULLSCREEN ", () -> {}),
+                new Pair<String, Runnable>("AUDIO   " + (audioState ? "ON" : "OFF"), () -> {
+                    this.changeMusic();
+                    updateMenuWith(getSettingsData());
+                }),
+                new Pair<String, Runnable>("BACK", this::changeToHome)
         );
     }
 
 
     private List<Pair<String, Runnable>> getMenuData() {
         return Arrays.asList(
-                new Pair<String, Runnable>("Single Player", () -> {}),
-                new Pair<String, Runnable>("GameView Options", ()-> {}),
-                new Pair<String, Runnable>("Additional Content", () -> {}),
-                new Pair<String, Runnable>("Tutorial", () -> {}),
-                new Pair<String, Runnable>("Credits", () -> {}),
-                new Pair<String, Runnable>("Exit to Desktop", Platform::exit)
+                new Pair<String, Runnable>("SINGLE PLAYER", this::changeToDifficulty),
+                new Pair<String, Runnable>("GAME OPTIONS", this::changeToSettings),
+                //new Pair<String, Runnable>("ADDITIONAL CONTENT", this:: ),
+                //new Pair<String, Runnable>("TUTORIAL", () -> {}),
+                //new Pair<String, Runnable>("CREDITS", () -> {}),
+                new Pair<String, Runnable>("EXIT TO DESKTOP", Platform::exit)
         );
     }
 
     private List<Pair<String, Runnable>> getDifficultyData() {
         return Arrays.asList(
-                new Pair<String, Runnable>("EASY", () -> {}),
-                new Pair<String, Runnable>("NORMAL", ()-> {}),
-                new Pair<String, Runnable>("HARD", () -> {}),
-                new Pair<String, Runnable>("CUSTOM", () -> {}),
-                new Pair<String, Runnable>("Back", () -> {})
+                new Pair<String, Runnable>("EASY", this::initGame),
+                new Pair<String, Runnable>("NORMAL", this::initGame),
+                new Pair<String, Runnable>("HARD", this::initGame),
+                new Pair<String, Runnable>("CUSTOM", this::changeToCustomDifficulty),
+                new Pair<String, Runnable>("BACK", this::changeToHome)
         );
     }
 
     private List<Pair<String, Runnable>> getCustomDifficultyData() {
         return Arrays.asList(
-                new Pair<String, Runnable>("Number of bikes    " + (fewBikes ? "FEW" : "NORMAL"), () -> {}),
-                new Pair<String, Runnable>("Bike Capacity car       " + (fewCapCar ? "2" : "6"), ()-> {}),
-                new Pair<String, Runnable>("PLAY", () -> {}),
-                new Pair<String, Runnable>("Back", () -> {})
+                new Pair<String, Runnable>("NUMBER OF BIKES    " + (numBikes == FEW ? "FEW" : "NORMAL"), () -> {
+                    this.changeNumBikes();
+                    updateMenuWith(getCustomDifficultyData());
+                }),
+                new Pair<String, Runnable>("BIKE CAPACITY CAR  " + carCapacity, () -> {
+                    this.changeCarCapacity();
+                    updateMenuWith(getCustomDifficultyData());
+                }),
+                new Pair<String, Runnable>("PLAY", this::initGame),
+                new Pair<String, Runnable>("BACK", this::changeToDifficulty)
         );
     }
 
     private void addMenu(double x, double y, List<Pair<String, Runnable>> l) {
+        menuBox.getChildren().clear();
         menuBox.setTranslateX(x);
         menuBox.setTranslateY(y);
         l.forEach(data -> {
@@ -221,6 +236,15 @@ public class MainMenuView implements MainMenu.View {
         }
 
         startAnimation();
+    }
+
+    private void updateMenuWith(List<Pair<String, Runnable>> list) {
+        menuBox.getChildren().clear();
+        list.forEach(data -> {
+            MenuItemView item = new MenuItemView(data.getKey(), this);
+            item.setOnAction(data.getValue());
+            menuBox.getChildren().addAll(item);
+        });
     }
 
     private void startAnimation() {
@@ -252,6 +276,10 @@ public class MainMenuView implements MainMenu.View {
         this.mp = new MediaPlayer(media);
         this.mpSelect = new MediaPlayer(mediaSelect);
         this.mpHover = new MediaPlayer(mediaHover);
+
+        this.mp.setVolume(0.3);
+        this.mpSelect.setVolume(1.0);
+        this.mpHover.setVolume(0.1);
     }
 
 }

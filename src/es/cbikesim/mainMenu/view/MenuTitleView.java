@@ -16,7 +16,7 @@ public class MenuTitleView extends Pane {
         }
 
         text = new Text(spread);
-        text.setFont(Font.loadFont(MenuTitleView.class.getResource("/font/Penumbra-HalfSerif-Std_35114.ttf").toExternalForm(), 22));
+        text.setFont(Font.loadFont(MenuTitleView.class.getResource("/font/Penumbra-HalfSerif-Std_35114.ttf").toExternalForm(), 28));
         text.setFill(Color.WHITE);
         text.setEffect(new DropShadow(30, Color.BLACK));
 
