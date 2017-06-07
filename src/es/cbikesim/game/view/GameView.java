@@ -4,15 +4,11 @@ import es.cbikesim.game.contract.Game;
 import es.cbikesim.mainMenu.view.MainMenuView;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
 public class GameView implements Game.View {
@@ -25,17 +21,17 @@ public class GameView implements Game.View {
     private Pane root = new Pane();
 
     private VBox sideBar;
-    private Pane pane;
-    private Pane pane0;
-    private GridPane gridPane;
+    private Pane topUtilityPane;
+    private Pane titlePaneBike;
+    private GridPane bikeGridPane;
     private ColumnConstraints columnConstraints;
     private ColumnConstraints columnConstraints0;
     private ColumnConstraints columnConstraints1;
     private RowConstraints rowConstraints;
     private RowConstraints rowConstraints0;
     private RowConstraints rowConstraints1;
-    private Pane pane1;
-    private GridPane gridPane0;
+    private Pane titlePaneClient;
+    private GridPane clientGridPane;
     private ColumnConstraints columnConstraints2;
     private ColumnConstraints columnConstraints3;
     private ColumnConstraints columnConstraints4;
@@ -54,17 +50,17 @@ public class GameView implements Game.View {
         this.presenter.setView(this);
 
         sideBar = new VBox();
-        pane = new Pane();
-        pane0 = new Pane();
-        gridPane = new GridPane();
+        topUtilityPane = new Pane();
+        titlePaneBike = new Pane();
+        bikeGridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
         columnConstraints0 = new ColumnConstraints();
         columnConstraints1 = new ColumnConstraints();
         rowConstraints = new RowConstraints();
         rowConstraints0 = new RowConstraints();
         rowConstraints1 = new RowConstraints();
-        pane1 = new Pane();
-        gridPane0 = new GridPane();
+        titlePaneClient = new Pane();
+        clientGridPane = new GridPane();
         columnConstraints2 = new ColumnConstraints();
         columnConstraints3 = new ColumnConstraints();
         columnConstraints4 = new ColumnConstraints();
@@ -88,14 +84,14 @@ public class GameView implements Game.View {
         sideBar.setPrefHeight(654.0);
         sideBar.setPrefWidth(232.0);
 
-        pane.setPrefHeight(101.0);
-        pane.setPrefWidth(232.0);
+        topUtilityPane.setPrefHeight(101.0);
+        topUtilityPane.setPrefWidth(232.0);
 
-        pane0.setPrefHeight(44.0);
-        pane0.setPrefWidth(232.0);
+        titlePaneBike.setPrefHeight(44.0);
+        titlePaneBike.setPrefWidth(232.0);
 
-        gridPane.setPrefHeight(186.0);
-        gridPane.setPrefWidth(232.0);
+        bikeGridPane.setPrefHeight(186.0);
+        bikeGridPane.setPrefWidth(232.0);
 
         columnConstraints.setHgrow(javafx.scene.layout.Priority.SOMETIMES);
         columnConstraints.setMinWidth(10.0);
@@ -121,11 +117,11 @@ public class GameView implements Game.View {
         rowConstraints1.setPrefHeight(30.0);
         rowConstraints1.setVgrow(javafx.scene.layout.Priority.SOMETIMES);
 
-        pane1.setPrefHeight(44.0);
-        pane1.setPrefWidth(232.0);
+        titlePaneClient.setPrefHeight(44.0);
+        titlePaneClient.setPrefWidth(232.0);
 
-        gridPane0.setPrefHeight(175.0);
-        gridPane0.setPrefWidth(232.0);
+        clientGridPane.setPrefHeight(175.0);
+        clientGridPane.setPrefWidth(232.0);
 
         columnConstraints2.setHgrow(javafx.scene.layout.Priority.SOMETIMES);
         columnConstraints2.setMinWidth(10.0);
@@ -167,23 +163,23 @@ public class GameView implements Game.View {
         map.setFitWidth(980.0);
 
 
-        sideBar.getChildren().add(pane);
-        sideBar.getChildren().add(pane0);
-        gridPane.getColumnConstraints().add(columnConstraints);
-        gridPane.getColumnConstraints().add(columnConstraints0);
-        gridPane.getColumnConstraints().add(columnConstraints1);
-        gridPane.getRowConstraints().add(rowConstraints);
-        gridPane.getRowConstraints().add(rowConstraints0);
-        gridPane.getRowConstraints().add(rowConstraints1);
-        sideBar.getChildren().add(gridPane);
-        sideBar.getChildren().add(pane1);
-        gridPane0.getColumnConstraints().add(columnConstraints2);
-        gridPane0.getColumnConstraints().add(columnConstraints3);
-        gridPane0.getColumnConstraints().add(columnConstraints4);
-        gridPane0.getRowConstraints().add(rowConstraints2);
-        gridPane0.getRowConstraints().add(rowConstraints3);
-        gridPane0.getRowConstraints().add(rowConstraints4);
-        sideBar.getChildren().add(gridPane0);
+        sideBar.getChildren().add(topUtilityPane);
+        sideBar.getChildren().add(titlePaneBike);
+        bikeGridPane.getColumnConstraints().add(columnConstraints);
+        bikeGridPane.getColumnConstraints().add(columnConstraints0);
+        bikeGridPane.getColumnConstraints().add(columnConstraints1);
+        bikeGridPane.getRowConstraints().add(rowConstraints);
+        bikeGridPane.getRowConstraints().add(rowConstraints0);
+        bikeGridPane.getRowConstraints().add(rowConstraints1);
+        sideBar.getChildren().add(bikeGridPane);
+        sideBar.getChildren().add(titlePaneClient);
+        clientGridPane.getColumnConstraints().add(columnConstraints2);
+        clientGridPane.getColumnConstraints().add(columnConstraints3);
+        clientGridPane.getColumnConstraints().add(columnConstraints4);
+        clientGridPane.getRowConstraints().add(rowConstraints2);
+        clientGridPane.getRowConstraints().add(rowConstraints3);
+        clientGridPane.getRowConstraints().add(rowConstraints4);
+        sideBar.getChildren().add(clientGridPane);
         sideBar.getChildren().add(hBox);
         mapPane.getChildren().add(map);
 
@@ -200,6 +196,31 @@ public class GameView implements Game.View {
         this.primaryStage.setScene(scene);
         this.primaryStage.show();
         mp.play();
+    }
+
+    @Override
+    public GridPane getBikePane() {
+        return bikeGridPane;
+    }
+
+    @Override
+    public GridPane getClientPane() {
+        return clientGridPane;
+    }
+
+    @Override
+    public Pane getUtilityPane() {
+        return topUtilityPane;
+    }
+
+    @Override
+    public Pane getTitlePaneBike() {
+        return titlePaneBike;
+    }
+
+    @Override
+    public Pane getTitlePaneClient() {
+        return titlePaneClient;
     }
 
 
@@ -226,8 +247,5 @@ public class GameView implements Game.View {
         Media media = new Media(path);
         this.mp = new MediaPlayer(media);
     }
-
-
-
 
 }

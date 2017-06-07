@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.Pair;
 
+import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,6 +44,8 @@ public class MainMenuView implements MainMenu.View {
     private int numBikes = FEW, carCapacity = 3;
 
     private MediaPlayer mp, mpSelect, mpHover;
+
+    MenuItemView miv;
 
 
     public MainMenuView(Stage primaryStage, MainMenu.Presenter presenter){
@@ -168,10 +171,7 @@ public class MainMenuView implements MainMenu.View {
     private List<Pair<String, Runnable>> getSettingsData() {
         return Arrays.asList(
                 //new Pair<String, Runnable>("DISPLAY FULLSCREEN ", () -> {}),
-                new Pair<String, Runnable>("AUDIO   " + (audioState ? "ON" : "OFF"), () -> {
-                    this.changeMusic();
-                    updateMenuWith(getSettingsData());
-                }),
+                new Pair<String, Runnable>("AUDIO   " + (audioState ? "ON" : "OFF"), () -> {}),
                 new Pair<String, Runnable>("BACK", this::changeToHome)
         );
     }
@@ -200,17 +200,31 @@ public class MainMenuView implements MainMenu.View {
 
     private List<Pair<String, Runnable>> getCustomDifficultyData() {
         return Arrays.asList(
-                new Pair<String, Runnable>("NUMBER OF BIKES    " + (numBikes == FEW ? "FEW" : "NORMAL"), () -> {
-                    this.changeNumBikes();
-                    updateMenuWith(getCustomDifficultyData());
-                }),
-                new Pair<String, Runnable>("BIKE CAPACITY CAR  " + carCapacity, () -> {
-                    this.changeCarCapacity();
-                    updateMenuWith(getCustomDifficultyData());
-                }),
+                new Pair<String, Runnable>("NUMBER OF BIKES    " + (numBikes == FEW ? "FEW" : "NORMAL"), () -> {}),
+                new Pair<String, Runnable>("BIKE CAPACITY CAR  " + carCapacity, () -> {}),
                 new Pair<String, Runnable>("PLAY", this::initGame),
                 new Pair<String, Runnable>("BACK", this::changeToDifficulty)
         );
+    }
+
+    public void passItem(MenuItemView miv){
+        this.miv = miv;
+        switch(miv.getText()){
+            //case "PLAY" : context.initGame("CUSTOM"); break;
+            //case "SINGLE PLAYER" : context.changeToDifficulty(); break;
+            //case "GAME OPTIONS" : context.changeToSettings(); break;
+            //case "BACK" : context.changeToHome(); break;
+            case "AUDIO   ON" : changeMusic(); break;
+            case "AUDIO   OFF" : changeMusic(); break;
+            //case "EASY" : context.initGame("EASY"); break;
+            //case "NORMAL" : context.initGame("MEDIUM"); break;
+            //case "HARD" : context.initGame("HARD"); break;
+            //case "CUSTOM" : context.changeToCustomDifficulty(); break;
+            //case "NUMBER OF BIKES    FEW" : changeBikeNum(false); break;
+            //case "NUMBER OF BIKES    NORMAL" : changeBikeNum(true); break;
+            //case "BIKE CAPACITY CAR       6" : changeCapCar(true); break;
+            //case "BIKE CAPACITY CAR       2" : changeCapCar(false); break;
+        }
     }
 
     private void addMenu(double x, double y, List<Pair<String, Runnable>> l) {

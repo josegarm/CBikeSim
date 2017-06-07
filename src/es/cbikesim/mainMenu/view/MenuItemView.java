@@ -60,6 +60,7 @@ public class MenuItemView extends Pane {
         setOnMousePressed(e -> {
             context.getMpSelect().stop();
             context.getMpSelect().play();
+            context.passItem(this);
 
             switch(text.getText()){
                 //case "PLAY" : context.initGame("CUSTOM"); break;
@@ -80,6 +81,14 @@ public class MenuItemView extends Pane {
         });
 
         getChildren().addAll(bg, text);
+    }
+
+    public void setText(String name){
+        text.setText(name);
+    }
+
+    public String getText(){
+        return text.getText();
     }
 
     public void setOnAction(Runnable action) {
