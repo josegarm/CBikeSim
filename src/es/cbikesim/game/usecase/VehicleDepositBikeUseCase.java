@@ -27,7 +27,7 @@ public class VehicleDepositBikeUseCase implements Command{
         scenario.getVehiclesInTransit().remove(vehicle);
         currentStation.getVehicleList().add(vehicle);
 
-        while (!vehicle.getBikeList().isEmpty() && currentStation.getAvailableBikeList().size() < currentStation.max_capacity){
+        while (!vehicle.getBikeList().isEmpty() && currentStation.getAvailableBikeList().size() < currentStation.getMaxCapacity()){
             currentStation.getAvailableBikeList().add(vehicle.getBikeList().remove(0));
         }
     }

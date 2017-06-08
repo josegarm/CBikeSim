@@ -20,8 +20,7 @@ public class GameView implements Game.View {
 
     private Game.Presenter presenter;
     private Stage primaryStage;
-    private MediaPlayer mp;
-    private Pane root = new Pane();
+    private Pane root;
 
     //ELEMENTS PASSIVE
     private VBox sideBar;
@@ -55,7 +54,58 @@ public class GameView implements Game.View {
         this.primaryStage = primaryStage;
         this.presenter = presenter;
         this.presenter.setView(this);
+    }
 
+    @Override
+    public void start() {
+        Scene scene = new Scene(createContent());
+        this.primaryStage.setTitle("CBike Sim GameView");
+        this.primaryStage.setScene(scene);
+        this.primaryStage.show();
+    }
+
+    @Override
+    public GridPane getBikePane() {
+        return bikeGridPane;
+    }
+
+
+    @Override
+    public GridPane getClientPane() {
+        return clientGridPane;
+    }
+
+    @Override
+    public Pane getUtilityPane() {
+        return topUtilityPane;
+    }
+
+    @Override
+    public Pane getTitlePaneBike() {
+        return titlePaneBike;
+    }
+
+    @Override
+    public Pane getTitlePaneClient() {
+        return titlePaneClient;
+    }
+
+    @Override
+    public Pane getMapPane(){ return mapPane; }
+
+
+    private Parent createContent(){
+        initComponents();
+        setSizes();
+        addBackground();
+        addMap();
+        addComponents();
+        presenter.load();
+        return root;
+    }
+
+    private void initComponents(){
+        root = new Pane();
         sideBar = new VBox();
         topUtilityPane = new Pane();
         titlePaneBike = new Pane();
@@ -77,8 +127,9 @@ public class GameView implements Game.View {
         hBox = new HBox();
         ui = new ImageView();
         mapPane = new Pane();
+    }
 
-
+    private void setSizes(){
         root.setMaxHeight(720.0);
         root.setMaxWidth(1280.0);
         root.setMinHeight(720.0);
@@ -164,12 +215,23 @@ public class GameView implements Game.View {
         mapPane.setLayoutY(27.0);
         mapPane.setPrefHeight(667.0);
         mapPane.setPrefWidth(980.0);
+    }
 
+    private void addBackground() {
+        ImageView imageView = new ImageView(new Image(getClass().getResource("/img/ui.jpg").toExternalForm()));
+        imageView.setFitWidth(WIDTH);
+        imageView.setFitHeight(HEIGHT);
+
+        root.getChildren().add(imageView);
+    }
+
+    private void addMap(){
         map = new ImageView(new Image(getClass().getResource("/img/map.png").toExternalForm()));
         map.setFitHeight(667.0);
         map.setFitWidth(980.0);
+    }
 
-
+    private void addComponents(){
         sideBar.getChildren().add(topUtilityPane);
         sideBar.getChildren().add(titlePaneBike);
         bikeGridPane.getColumnConstraints().add(columnConstraints);
@@ -190,75 +252,9 @@ public class GameView implements Game.View {
         sideBar.getChildren().add(hBox);
         mapPane.getChildren().add(map);
 
-
-        
-    }
-
-    @Override
-    public void start() {
-        Scene scene = new Scene(createContent());
-        prepareMusic();
-
-        this.primaryStage.setTitle("CBike Sim GameView");
-        this.primaryStage.setScene(scene);
-        this.primaryStage.show();
-        mp.play();
-    }
-
-    @Override
-    public GridPane getBikePane() {
-        return bikeGridPane;
-    }
-
-
-    @Override
-    public GridPane getClientPane() {
-        return clientGridPane;
-    }
-
-    @Override
-    public Pane getUtilityPane() {
-        return topUtilityPane;
-    }
-
-    @Override
-    public Pane getTitlePaneBike() {
-        return titlePaneBike;
-    }
-
-    @Override
-    public Pane getTitlePaneClient() {
-        return titlePaneClient;
-    }
-
-    @Override
-    public Pane getMapPane(){ return mapPane; }
-
-
-    private Parent createContent(){
-        addBackground();
         root.getChildren().add(sideBar);
         root.getChildren().add(ui);
         root.getChildren().add(mapPane);
-
-
-        return root;
     }
-
-    private void addBackground() {
-        ImageView imageView = new ImageView(new Image(getClass().getResource("/img/ui.jpg").toExternalForm()));
-        imageView.setFitWidth(WIDTH);
-        imageView.setFitHeight(HEIGHT);
-
-        root.getChildren().add(imageView);
-    }
-
-    private void prepareMusic(){
-        String path = MainMenuView.class.getResource("/music/soundtrack_game.mp3").toString();
-        Media media = new Media(path);
-        this.mp = new MediaPlayer(media);
-    }
-
-
 
 }

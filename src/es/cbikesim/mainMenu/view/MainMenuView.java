@@ -58,14 +58,18 @@ public class MainMenuView implements MainMenu.View {
     }
 
     private Parent createContent() {
-        root = new Pane();
-        menuBox = new VBox(-5);
+        initComponents();
         addBackground();
         addTitle();
         addLine();
         addMenuBox();
         presenter.load();
         return root;
+    }
+
+    private void initComponents(){
+        root = new Pane();
+        menuBox = new VBox(-5);
     }
 
     private void addBackground() {

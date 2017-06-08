@@ -4,43 +4,83 @@ import es.cbikesim.game.contract.Game;
 import es.cbikesim.game.model.Scenario;
 import es.cbikesim.game.model.Station;
 import es.cbikesim.game.usecase.CreateScenarioUseCase;
+import es.cbikesim.game.view.StationView;
 import es.cbikesim.lib.exception.UseCaseException;
 import es.cbikesim.lib.pattern.Command;
 import es.cbikesim.lib.pattern.Invoker;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 public class GamePresenter implements Game.Presenter {
+
+    public static final int EASY = 0, NORMAL = 1, HARD = 2, CUSTOM = 3;
 
     private Game.View view;
     private Scenario scenario;
     private Station selectedStation;
+    private MediaPlayer mp, mpSelect;
 
     private Invoker invoker = new Invoker();
 
+    private int difficulty;
+
+    public GamePresenter(){
+        scenario = new Scenario();
+    }
+
     @Override
-    public void createScenario(int difficult) {
-        this.scenario = new Scenario();
-        Command createScenario = new CreateScenarioUseCase(scenario);
-        invoker.setCommand(createScenario);
-        try {
-            invoker.invoke();
-        } catch (UseCaseException e) {
-            e.printStackTrace();
+    public void load() {
+        prepareMusic();
+        mp.play();
+
+        paint();
+    }
+
+    @Override
+    public void playSelect() {
+        mpSelect.stop();
+        mpSelect.play();
+    }
+
+    @Override
+    public void createScenario(int difficulty, int numBikes, int carCapacity) {
+        this.difficulty = difficulty;
+        Command createScenario;
+
+        switch (difficulty){
+            case EASY:
+                createScenario = new CreateScenarioUseCase(scenario);
+                break;
+            case NORMAL:
+                createScenario = new CreateScenarioUseCase(scenario);
+                break;
+            case HARD:
+                createScenario = new CreateScenarioUseCase(scenario);
+                break;
+            case CUSTOM:
+                createScenario = new CreateScenarioUseCase(scenario);
+                break;
+            default:
+                createScenario = new CreateScenarioUseCase(scenario);
         }
-        paintStations();
+
+        invoker.setCommand(createScenario);
+        try { invoker.invoke(); }
+        catch (UseCaseException e) { e.printStackTrace(); }
+    }
+
+    @Override
+    public void showDataFromStation(String id) {
+        Station station = getSelectedStationWith(id);
+        selectedStation = station;
+        System.out.println(station);
     }
 
     @Override
     public void setView(Game.View view) {
         this.view = view;
-    }
-
-    public void setSelectedStation(int station){
-        selectedStation = scenario.getStationList().get(station);
     }
 
     public void addBikesFromStationToBikePane(){
@@ -52,22 +92,35 @@ public class GamePresenter implements Game.Presenter {
 
     }
 
-    private void paintStations(){
-        Pane map = view.getMapPane();
+    private void paint(){
         for(Station station : scenario.getStationList()){
-            Circle renderStation = new Circle(station.position.getX(), station.position.getY(), 20);
-            renderStation.setFill(Color.rgb(0,128,255));
-            renderStation.setStroke(Color.rgb(0,76,153));
-            renderStation.setStrokeWidth(3);
-            renderStation.setId(new Integer(station.getId()).toString());
-            renderStation.setOnMouseClicked(e -> {
-                System.out.println(renderStation.getId());
-            });
-            map.getChildren().add(renderStation);
+            paintStation(station);
         }
     }
 
+    private void paintStation(Station station){
+        StationView stationView = new StationView(station.getPosition(), station.getId(),this);
+        view.getMapPane().getChildren().add(stationView);
+    }
 
+    private Station getSelectedStationWith(String id){
+        for(Station station : scenario.getStationList()){
+            if(station.getId().equals(id)) return station;
+        }
+        return null;
+    }
 
+    private void prepareMusic(){
+        String pathSelect = getClass().getResource("/music/select.wav").toString();
+        String path = getClass().getResource("/music/soundtrack_game.mp3").toString();
+
+        Media mediaSelect = new Media(pathSelect);
+        Media media = new Media(path);
+
+        this.mpSelect = new MediaPlayer(mediaSelect);
+        this.mp = new MediaPlayer(media);
+
+        this.mpSelect.setVolume(1.0);
+    }
 
 }

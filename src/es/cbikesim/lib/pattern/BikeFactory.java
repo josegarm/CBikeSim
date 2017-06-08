@@ -13,10 +13,10 @@ public class BikeFactory {
         Bike bike = null;
         switch(type){
             case Bike.NORMAL:
-                bike = new NormalBike(id++);
+                bike = new NormalBike(""+id++);
                 break;
             case Bike.ELECTRIC:
-                bike = new ElectricBike(id++);
+                bike = new ElectricBike(""+id++);
                 break;
             default:
                 //throw exception

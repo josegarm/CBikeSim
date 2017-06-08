@@ -16,7 +16,10 @@ public interface Game {
     }
 
     interface Presenter {
-        void createScenario(int difficult);
+        void load();
+        void playSelect();
+        void createScenario(int difficulty, int numBikes, int carCapacity);
+        void showDataFromStation(String id);
         void setView(Game.View view);
     }
 

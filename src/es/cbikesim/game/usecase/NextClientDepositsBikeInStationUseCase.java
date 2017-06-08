@@ -19,7 +19,7 @@ public class NextClientDepositsBikeInStationUseCase implements Command{
 
     @Override
     public void execute() throws UseCaseException {
-        if (!station.getClientWaitingToDepositList().isEmpty() && station.getAvailableBikeList().size() < station.max_capacity){
+        if (!station.getClientWaitingToDepositList().isEmpty() && station.getAvailableBikeList().size() < station.getMaxCapacity()){
             Client client = station.getClientWaitingToDepositList().remove(0);
             station.getAvailableBikeList().add(client.getBike());
             client.setBike(null);

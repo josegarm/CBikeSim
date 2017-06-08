@@ -7,18 +7,18 @@ import java.util.List;
 
 public class Station{
 
-    private final int id;
-    public final int max_capacity;
-    public final Point position;
+    private final String id;
+    private final int maxCapacity;
+    private final Point position;
 
     private List<Bike> availableBikeList;
     private List<Client> clientWaitingToDepositList;
     private List<Client> clientWaitingToPickUpList;
     private List<Vehicle> vehicleList;
 
-    public Station(int id, int max_capacity, Point position) {
+    public Station(String id, int maxCapacity, Point position) {
         this.id = id;
-        this.max_capacity = max_capacity;
+        this.maxCapacity = maxCapacity;
         this.position = position;
         this.availableBikeList = new ArrayList<>();
         this.clientWaitingToDepositList = new ArrayList<>();
@@ -42,14 +42,24 @@ public class Station{
         return vehicleList;
     }
 
-    public int getId(){ return id; }
+    public String getId(){
+        return id;
+    }
+
+    public int getMaxCapacity() {
+        return maxCapacity;
+    }
+
+    public Point getPosition() {
+        return position;
+    }
 
     @Override
     public String toString() {
         return "Station \n" +
                 "{ \n" +
                 "   id = '" + id + "\'" + ",\n" +
-                "   max_capacity = " + max_capacity + ",\n" +
+                "   maxCapacity = " + maxCapacity + ",\n" +
                 "   position = " + position + ",\n" +
                 "   availableBikeList = " + availableBikeList + ",\n" +
                 "   clientWaitingToDepositList = " + clientWaitingToDepositList + ",\n" +

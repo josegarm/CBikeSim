@@ -3,15 +3,15 @@ package es.cbikesim.game.model;
 public abstract class Bike {
 
     public static final int NORMAL = 0, ELECTRIC = 1;
-    private final int id;
+    private final String id;
     private int type;
 
-    public Bike(int type, int id) {
+    public Bike(int type, String id) {
         this.type = type;
         this.id = id;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

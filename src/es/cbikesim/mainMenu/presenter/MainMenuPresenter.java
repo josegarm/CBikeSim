@@ -26,10 +26,15 @@ public class MainMenuPresenter implements MainMenu.Presenter{
     private MainMenu.View view;
 
     private boolean audioState = true;
-    private int numBikes = FEW_BIKES, carCapacity = 3;
+    private int numBikes, carCapacity;
     private MediaPlayer mp, mpSelect, mpHover;
 
     private MenuItemView itemPressed;
+
+    public MainMenuPresenter(){
+        numBikes = FEW_BIKES;
+        carCapacity = 3;
+    }
 
     @Override
     public void load() {
@@ -60,11 +65,11 @@ public class MainMenuPresenter implements MainMenu.Presenter{
         this.view = view;
     }
 
-    private void initGame() {
+    private void initGame(int difficulty) {
+        mp.stop();
         Game.Presenter gamePresenter = new GamePresenter();
         Game.View gameView = new GameView(view.getPrimaryStage(), gamePresenter);
-
-        gamePresenter.createScenario(0);
+        gamePresenter.createScenario(difficulty, numBikes, carCapacity);
         gameView.start();
     }
 
@@ -105,9 +110,9 @@ public class MainMenuPresenter implements MainMenu.Presenter{
     }
 
     private void prepareMusic(){
-        String pathSelect = MainMenuView.class.getResource("/music/select.wav").toString();
-        String pathHoverM = MainMenuView.class.getResource("/music/hover.wav").toString();
-        String path = MainMenuView.class.getResource("/music/funny_arcade.mp3").toString();
+        String pathSelect = getClass().getResource("/music/select.wav").toString();
+        String pathHoverM = getClass().getResource("/music/hover.wav").toString();
+        String path = getClass().getResource("/music/funny_arcade.mp3").toString();
 
         Media media = new Media(path);
         Media mediaSelect = new Media(pathSelect);
@@ -145,9 +150,9 @@ public class MainMenuPresenter implements MainMenu.Presenter{
 
     private List<Pair<String, Runnable>> getDifficultyData() {
         return Arrays.asList(
-                new Pair<String, Runnable>("EASY", this::initGame),
-                new Pair<String, Runnable>("NORMAL", this::initGame),
-                new Pair<String, Runnable>("HARD", this::initGame),
+                new Pair<String, Runnable>("EASY", () -> initGame(GamePresenter.EASY)),
+                new Pair<String, Runnable>("NORMAL", () -> initGame(GamePresenter.NORMAL)),
+                new Pair<String, Runnable>("HARD", () -> initGame(GamePresenter.HARD)),
                 new Pair<String, Runnable>("CUSTOM", () -> addMenu(getCustomDifficultyData())),
                 new Pair<String, Runnable>("BACK", () -> addMenu(getMenuData()))
         );
@@ -163,7 +168,7 @@ public class MainMenuPresenter implements MainMenu.Presenter{
                     this.changeCarCapacity();
                     this.itemPressed.setText("BIKE CAPACITY CAR  " + carCapacity);
                 }),
-                new Pair<String, Runnable>("PLAY", this::initGame),
+                new Pair<String, Runnable>("PLAY", () -> initGame(GamePresenter.CUSTOM)),
                 new Pair<String, Runnable>("BACK", () -> addMenu(getDifficultyData()))
         );
     }
