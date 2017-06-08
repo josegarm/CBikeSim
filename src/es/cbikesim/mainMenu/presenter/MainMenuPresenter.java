@@ -4,7 +4,6 @@ import es.cbikesim.game.contract.Game;
 import es.cbikesim.game.presenter.GamePresenter;
 import es.cbikesim.game.view.GameView;
 import es.cbikesim.mainMenu.contract.MainMenu;
-import es.cbikesim.mainMenu.view.MainMenuView;
 import es.cbikesim.mainMenu.view.MenuItemView;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;

@@ -1,14 +1,11 @@
 package es.cbikesim.game.view;
 
 import es.cbikesim.game.contract.Game;
-import es.cbikesim.mainMenu.view.MainMenuView;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
