@@ -51,8 +51,8 @@ public class MenuItemView extends Pane {
 
         bg.fillProperty().bind(
                 Bindings.when(pressedProperty())
-                        .then(Color.color(0, 0, 0, 0.85))
-                        .otherwise(Color.color(0, 0, 0, 0.55))
+                        .then(Color.color(0, 0, 0, 1))
+                        .otherwise(Color.color(0, 0, 0, 0.50))
         );
 
         return bg;
