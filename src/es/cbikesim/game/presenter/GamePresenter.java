@@ -1,6 +1,7 @@
 package es.cbikesim.game.presenter;
 
 import es.cbikesim.game.contract.Game;
+import es.cbikesim.game.model.Bike;
 import es.cbikesim.game.model.Scenario;
 import es.cbikesim.game.model.Station;
 import es.cbikesim.game.usecase.CreateScenarioUseCase;
@@ -35,7 +36,7 @@ public class GamePresenter implements Game.Presenter {
         prepareMusic();
         mp.play();
 
-        paint();
+        paintMap();
     }
 
     @Override
@@ -75,7 +76,7 @@ public class GamePresenter implements Game.Presenter {
     public void showDataFromStation(String id) {
         Station station = getSelectedStationWith(id);
         selectedStation = station;
-        System.out.println(station);
+        paintStationBikePanel(selectedStation);
     }
 
     @Override
@@ -83,19 +84,32 @@ public class GamePresenter implements Game.Presenter {
         this.view = view;
     }
 
-    public void addBikesFromStationToBikePane(){
-        if(selectedStation != null){
-            for(int i = 0; i < selectedStation.getAvailableBikeList().size(); i++){
-                view.getBikePane().getChildren().add(new ImageView(new Image(getClass().getResource("/img/bike.png").toExternalForm())));
+
+    private void paintStationBikePanel(Station station){
+        int count = 0;
+        for (int row = 0; row < station.getMaxCapacity()/3; row++){
+            for( int column = 0; column < 3 && count < station.getMaxCapacity(); column++){
+                ImageView imageBikeEmpty = new ImageView(new Image(getClass().getResource("/img/bike_empty.png").toExternalForm()));
+                imageBikeEmpty.setFitWidth(50.0);
+                imageBikeEmpty.setFitHeight(50.0);
+                view.getBikePane().add(imageBikeEmpty,column,row);
+                count++;
             }
         }
 
+        /*
+        for(Bike bike : station.getAvailableBikeList()){
+            view.getBikePane().getChildren().add(new ImageView(new Image(getClass().getResource("/img/bike.png").toExternalForm())));
+        }
+        */
     }
 
-    private void paint(){
+    private void paintMap(){
         for(Station station : scenario.getStationList()){
             paintStation(station);
         }
+
+
     }
 
     private void paintStation(Station station){
