@@ -1,17 +1,15 @@
 package es.cbikesim.game.presenter;
 
 import es.cbikesim.game.contract.Game;
-import es.cbikesim.game.model.Bike;
 import es.cbikesim.game.model.Scenario;
 import es.cbikesim.game.model.Station;
 import es.cbikesim.game.usecase.CreateScenarioUseCase;
+import es.cbikesim.game.view.BikeStallView;
 import es.cbikesim.game.view.StationView;
 import es.cbikesim.lib.exception.UseCaseException;
 import es.cbikesim.lib.pattern.Command;
 import es.cbikesim.lib.pattern.Invoker;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -87,35 +85,32 @@ public class GamePresenter implements Game.Presenter {
 
 
     private void paintStationBikePanel(Station station){
-        GridPane bikePane = view.getBikePane();
-        int count = 0;
-        for (int row = 0; row < station.getMaxCapacity()/3; row++){
-            for( int column = 0; column < 3 && count < station.getMaxCapacity(); column++){
-                ImageView imageBikeEmpty = new ImageView(new Image(getClass().getResource("/img/bike_empty.png").toExternalForm()));
-                imageBikeEmpty.setFitWidth(50.0);
-                imageBikeEmpty.setFitHeight(50.0);
-                bikePane.add(imageBikeEmpty,column,row);
-                count++;
-            }
-        }
-        for (int row = 0; row < station.getAvailableBikeList().size(); row++){
-            for( int column = 0; column < 3 && count < station.getAvailableBikeList().size(); column++){
-                ImageView imageBikeEmpty = new ImageView(new Image(getClass().getResource("/img/bike.png").toExternalForm()));
-                imageBikeEmpty.setFitWidth(50.0);
-                imageBikeEmpty.setFitHeight(50.0);
-                bikePane.add(imageBikeEmpty,column,row);
-                count++;
-            }
-        }
+        view.getBikePane().getChildren().clear();
 
+        int count = 0;
+        int rows = view.getBikePane().getRowConstraints().size();
+        int columns = view.getBikePane().getColumnConstraints().size();
+        int numBikes = station.getAvailableBikeList().size();
+
+        Image bikeEmptyImage = new Image(getClass().getResource("/img/bike_empty.png").toExternalForm());
+        Image bikeImage = new Image(getClass().getResource("/img/bike.png").toExternalForm());
+
+        for (int row = 0; row < rows; row++){
+            for(int column = 0; column < columns && count < station.getMaxCapacity(); column++){
+                if(count < numBikes){
+                    view.getBikePane().add(new BikeStallView(bikeImage, station.getAvailableBikeList().get(count).getId(),this), column, row);
+                } else {
+                    view.getBikePane().add(new BikeStallView(bikeEmptyImage), column, row);
+                }
+                count++;
+            }
+        }
     }
 
     private void paintMap(){
         for(Station station : scenario.getStationList()){
             paintStation(station);
         }
-
-
     }
 
     private void paintStation(Station station){
