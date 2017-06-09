@@ -7,7 +7,10 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.List;
@@ -23,7 +26,7 @@ public class GameView implements Game.View {
     //ELEMENTS PASSIVE
     private VBox sideBar;
     private Pane topUtilityPane;
-    private Pane titlePaneBike;
+    private AnchorPane topPane;
     private GridPane bikeGridPane;
     private Pane titlePaneClient;
     private GridPane clientGridPane;
@@ -33,6 +36,7 @@ public class GameView implements Game.View {
     private ImageView ui;
     private Pane mapPane;
     private ImageView map;
+    private Text topTitle;
 
     //STATIONS
     private List<Circle> stations;
@@ -69,8 +73,8 @@ public class GameView implements Game.View {
     }
 
     @Override
-    public Pane getTitlePaneBike() {
-        return titlePaneBike;
+    public Text getTopTitle() {
+        return topTitle;
     }
 
     @Override
@@ -96,7 +100,7 @@ public class GameView implements Game.View {
         root = new Pane();
         sideBar = new VBox();
         topUtilityPane = new Pane();
-        titlePaneBike = new Pane();
+        topPane = new AnchorPane();
         bikeGridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
         rowConstraints = new RowConstraints();
@@ -105,6 +109,8 @@ public class GameView implements Game.View {
         hBox = new HBox();
         ui = new ImageView();
         mapPane = new Pane();
+        topTitle = new Text();
+
     }
 
     private void setSizes(){
@@ -119,20 +125,21 @@ public class GameView implements Game.View {
         topUtilityPane.setPrefHeight(101.0);
         topUtilityPane.setPrefWidth(232.0);
 
-        titlePaneBike.setPrefHeight(44.0);
-        titlePaneBike.setPrefWidth(232.0);
+        topPane.setPrefHeight(44.0);
+        topPane.setPrefWidth(232.0);
+
 
         bikeGridPane.setPrefHeight(186.0);
         bikeGridPane.setPrefWidth(232.0);
         bikeGridPane.setAlignment(Pos.CENTER);
 
-        columnConstraints.setHgrow(javafx.scene.layout.Priority.SOMETIMES);
+        columnConstraints.setHgrow(Priority.SOMETIMES);
         columnConstraints.setMinWidth(10.0);
         columnConstraints.setPrefWidth(100.0);
 
         rowConstraints.setMinHeight(10.0);
         rowConstraints.setPrefHeight(30.0);
-        rowConstraints.setVgrow(javafx.scene.layout.Priority.SOMETIMES);
+        rowConstraints.setVgrow(Priority.SOMETIMES);
 
         titlePaneClient.setPrefHeight(44.0);
         titlePaneClient.setPrefWidth(232.0);
@@ -151,6 +158,11 @@ public class GameView implements Game.View {
         mapPane.setLayoutY(27.0);
         mapPane.setPrefHeight(667.0);
         mapPane.setPrefWidth(980.0);
+
+        topTitle.setTranslateX(45);
+        topTitle.setTranslateY(20);
+        topTitle.setFont(Font.loadFont(getClass().getResource("/font/Penumbra-HalfSerif-Std_35114.ttf").toExternalForm(), 14));
+        topTitle.setFill(Color.WHITE);
     }
 
     private void addBackground() {
@@ -161,7 +173,7 @@ public class GameView implements Game.View {
     }
 
     private void addMap(){
-        map = new ImageView(new Image(getClass().getResource("/img/map_google.png").toExternalForm()));
+        map = new ImageView(new Image(getClass().getResource("/img/map.png").toExternalForm()));
         map.setFitHeight(667.0);
         map.setFitWidth(980.0);
     }
@@ -192,12 +204,13 @@ public class GameView implements Game.View {
 
         sideBar.getChildren().addAll(
                 topUtilityPane,
-                titlePaneBike,
+                topPane,
                 bikeGridPane,
                 titlePaneClient,
                 clientGridPane,
                 hBox
         );
+        topPane.getChildren().add(topTitle);
 
         mapPane.getChildren().addAll(map);
 
