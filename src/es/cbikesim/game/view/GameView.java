@@ -1,6 +1,7 @@
 package es.cbikesim.game.view;
 
 import es.cbikesim.game.contract.Game;
+import javafx.geometry.HPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -223,7 +224,7 @@ public class GameView implements Game.View {
     }
 
     private void addMap(){
-        map = new ImageView(new Image(getClass().getResource("/img/map.png").toExternalForm()));
+        map = new ImageView(new Image(getClass().getResource("/img/map_google.png").toExternalForm()));
         map.setFitHeight(667.0);
         map.setFitWidth(980.0);
     }
@@ -248,6 +249,7 @@ public class GameView implements Game.View {
         sideBar.getChildren().add(clientGridPane);
         sideBar.getChildren().add(hBox);
         mapPane.getChildren().add(map);
+
 
         root.getChildren().add(sideBar);
         root.getChildren().add(ui);

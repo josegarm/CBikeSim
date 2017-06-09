@@ -140,9 +140,9 @@ public class MainMenuPresenter implements MainMenu.Presenter{
         return Arrays.asList(
                 new Pair<String, Runnable>("SINGLE PLAYER", () -> addMenu(getDifficultyData())),
                 new Pair<String, Runnable>("GAME OPTIONS", () -> addMenu(getSettingsData())),
-                new Pair<String, Runnable>("ADDITIONAL CONTENT", () -> {} ),
-                new Pair<String, Runnable>("TUTORIAL", () -> {}),
-                new Pair<String, Runnable>("CREDITS", () -> {}),
+                //new Pair<String, Runnable>("ADDITIONAL CONTENT", () -> {} ),
+                //new Pair<String, Runnable>("TUTORIAL", () -> {}),
+                //new Pair<String, Runnable>("CREDITS", () -> {}),
                 new Pair<String, Runnable>("EXIT TO DESKTOP", Platform::exit)
         );
     }
