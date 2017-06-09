@@ -1,6 +1,7 @@
 package es.cbikesim.game.usecase;
 
 import es.cbikesim.game.model.Bike;
+import es.cbikesim.game.model.Client;
 import es.cbikesim.game.model.Scenario;
 import es.cbikesim.game.model.Station;
 import es.cbikesim.lib.exception.UseCaseException;
@@ -30,6 +31,10 @@ public class CreateScenarioUseCase implements Command {
         scenario.getStationList().add(station1);
         scenario.getStationList().add(station2);
         scenario.getStationList().add(station3);
+
+        station1.getClientWaitingToPickUpList().add(new Client("Jose"));
+        station1.getClientWaitingToPickUpList().add(new Client("Manuel"));
+        station1.getClientWaitingToPickUpList().add(new Client("Pedro"));
 
 
 

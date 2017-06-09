@@ -6,11 +6,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
-public class BikeStallView extends ImageView{
+public class ClientListView extends ImageView{
 
     private Game.Presenter context;
 
-    public BikeStallView(Image image, String id, Game.Presenter context){
+    public ClientListView(Image image, String id, Game.Presenter context){
         this(image);
 
         this.context = context;
@@ -22,9 +22,9 @@ public class BikeStallView extends ImageView{
         });
     }
 
-    public BikeStallView(Image image){
+    public ClientListView(Image image){
         super(image);
-        super.setFitWidth(60.0);
+        super.setFitWidth(40.0);
         super.setFitHeight(50.0);
         super.setOpacity(0.75);
 

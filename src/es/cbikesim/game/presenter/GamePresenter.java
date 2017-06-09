@@ -5,6 +5,7 @@ import es.cbikesim.game.model.Scenario;
 import es.cbikesim.game.model.Station;
 import es.cbikesim.game.usecase.CreateScenarioUseCase;
 import es.cbikesim.game.view.BikeStallView;
+import es.cbikesim.game.view.ClientListView;
 import es.cbikesim.game.view.StationView;
 import es.cbikesim.lib.exception.UseCaseException;
 import es.cbikesim.lib.pattern.Command;
@@ -76,6 +77,7 @@ public class GamePresenter implements Game.Presenter {
         Station station = getSelectedStationWith(id);
         selectedStation = station;
         paintStationBikePanel(selectedStation);
+        paintStationClientPanel(selectedStation);
     }
 
     @Override
@@ -105,6 +107,31 @@ public class GamePresenter implements Game.Presenter {
                 count++;
             }
         }
+        view.getTopTitle().setText(station.getId() + " - Bikes Status");
+    }
+
+    private void paintStationClientPanel(Station station){
+        view.getClientPane().getChildren().clear();
+
+        int count = 0;
+        int rows = view.getClientPane().getRowConstraints().size();
+        int columns = view.getClientPane().getColumnConstraints().size();
+        int numClients = station.getAvailableBikeList().size();
+
+        Image clientEmptyImage = new Image(getClass().getResource("/img/client_empty.png").toExternalForm());
+        Image clientImage = new Image(getClass().getResource("/img/client.png").toExternalForm());
+
+        for (int row = 0; row < rows; row++){
+            for(int column = 0; column < columns && count < station.getClientWaitingToPickUpList().size(); column++){
+                if(count < numClients){
+                    view.getClientPane().add(new ClientListView(clientImage, station.getClientWaitingToPickUpList().get(count).getId(),this), column, row);
+                } else {
+                    view.getClientPane().add(new ClientListView(clientEmptyImage), column, row);
+                }
+                count++;
+            }
+        }
+        view.getTopTitle().setText(station.getId() + " - Bikes Status");
     }
 
     private void paintMap(){
