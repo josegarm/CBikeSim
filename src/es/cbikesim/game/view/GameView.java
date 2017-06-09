@@ -1,6 +1,7 @@
 package es.cbikesim.game.view;
 
 import es.cbikesim.game.contract.Game;
+import javafx.geometry.HPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -148,29 +149,29 @@ public class GameView implements Game.View {
         bikeGridPane.setPrefHeight(186.0);
         bikeGridPane.setPrefWidth(232.0);
 
-        columnConstraints.setHgrow(javafx.scene.layout.Priority.NEVER);
+        columnConstraints.setHgrow(javafx.scene.layout.Priority.SOMETIMES);
         columnConstraints.setMinWidth(10.0);
         columnConstraints.setPrefWidth(100.0);
 
-        columnConstraints0.setHgrow(javafx.scene.layout.Priority.NEVER);
+        columnConstraints0.setHgrow(javafx.scene.layout.Priority.SOMETIMES);
         columnConstraints0.setMinWidth(10.0);
         columnConstraints0.setPrefWidth(100.0);
 
-        columnConstraints1.setHgrow(javafx.scene.layout.Priority.NEVER);
+        columnConstraints1.setHgrow(javafx.scene.layout.Priority.SOMETIMES);
         columnConstraints1.setMinWidth(10.0);
         columnConstraints1.setPrefWidth(100.0);
 
         rowConstraints.setMinHeight(10.0);
         rowConstraints.setPrefHeight(30.0);
-        rowConstraints.setVgrow(javafx.scene.layout.Priority.NEVER);
+        rowConstraints.setVgrow(javafx.scene.layout.Priority.SOMETIMES);
 
         rowConstraints0.setMinHeight(10.0);
         rowConstraints0.setPrefHeight(30.0);
-        rowConstraints0.setVgrow(javafx.scene.layout.Priority.NEVER);
+        rowConstraints0.setVgrow(javafx.scene.layout.Priority.SOMETIMES);
 
         rowConstraints1.setMinHeight(10.0);
         rowConstraints1.setPrefHeight(30.0);
-        rowConstraints1.setVgrow(javafx.scene.layout.Priority.NEVER);
+        rowConstraints1.setVgrow(javafx.scene.layout.Priority.SOMETIMES);
 
         titlePaneClient.setPrefHeight(44.0);
         titlePaneClient.setPrefWidth(232.0);
@@ -178,29 +179,29 @@ public class GameView implements Game.View {
         clientGridPane.setPrefHeight(175.0);
         clientGridPane.setPrefWidth(232.0);
 
-        columnConstraints2.setHgrow(javafx.scene.layout.Priority.NEVER);
+        columnConstraints2.setHgrow(javafx.scene.layout.Priority.SOMETIMES);
         columnConstraints2.setMinWidth(10.0);
         columnConstraints2.setPrefWidth(100.0);
 
-        columnConstraints3.setHgrow(javafx.scene.layout.Priority.NEVER);
+        columnConstraints3.setHgrow(javafx.scene.layout.Priority.SOMETIMES);
         columnConstraints3.setMinWidth(10.0);
         columnConstraints3.setPrefWidth(100.0);
 
-        columnConstraints4.setHgrow(javafx.scene.layout.Priority.NEVER);
+        columnConstraints4.setHgrow(javafx.scene.layout.Priority.SOMETIMES);
         columnConstraints4.setMinWidth(10.0);
         columnConstraints4.setPrefWidth(100.0);
 
         rowConstraints2.setMinHeight(10.0);
         rowConstraints2.setPrefHeight(30.0);
-        rowConstraints2.setVgrow(javafx.scene.layout.Priority.NEVER);
+        rowConstraints2.setVgrow(javafx.scene.layout.Priority.SOMETIMES);
 
         rowConstraints3.setMinHeight(10.0);
         rowConstraints3.setPrefHeight(30.0);
-        rowConstraints3.setVgrow(javafx.scene.layout.Priority.NEVER);
+        rowConstraints3.setVgrow(javafx.scene.layout.Priority.SOMETIMES);
 
         rowConstraints4.setMinHeight(10.0);
         rowConstraints4.setPrefHeight(30.0);
-        rowConstraints4.setVgrow(javafx.scene.layout.Priority.NEVER);
+        rowConstraints4.setVgrow(javafx.scene.layout.Priority.SOMETIMES);
 
         hBox.setPrefHeight(105.0);
         hBox.setPrefWidth(232.0);
@@ -248,7 +249,6 @@ public class GameView implements Game.View {
         sideBar.getChildren().add(clientGridPane);
         sideBar.getChildren().add(hBox);
         mapPane.getChildren().add(map);
-
 
 
         root.getChildren().add(sideBar);
