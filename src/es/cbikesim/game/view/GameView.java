@@ -1,5 +1,6 @@
 package es.cbikesim.game.view;
 
+import com.sun.javafx.css.Size;
 import es.cbikesim.game.contract.Game;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -25,10 +26,10 @@ public class GameView implements Game.View {
 
     //ELEMENTS PASSIVE
     private VBox sideBar;
-    private Pane topUtilityPane;
+    private Pane utilityPane;
     private AnchorPane topPane;
     private GridPane bikeGridPane;
-    private Pane titlePaneClient;
+    private Pane bottomPane;
     private GridPane clientGridPane;
     private ColumnConstraints columnConstraints;
     private RowConstraints rowConstraints;
@@ -37,6 +38,7 @@ public class GameView implements Game.View {
     private Pane mapPane;
     private ImageView map;
     private Text topTitle;
+    private Text bottomTitle;
 
     //STATIONS
     private List<Circle> stations;
@@ -69,7 +71,7 @@ public class GameView implements Game.View {
 
     @Override
     public Pane getUtilityPane() {
-        return topUtilityPane;
+        return utilityPane;
     }
 
     @Override
@@ -78,8 +80,13 @@ public class GameView implements Game.View {
     }
 
     @Override
-    public Pane getTitlePaneClient() {
-        return titlePaneClient;
+    public Text getBottomTitle() {
+        return bottomTitle;
+    }
+
+    @Override
+    public Pane getBottomPane() {
+        return bottomPane;
     }
 
     @Override
@@ -99,17 +106,18 @@ public class GameView implements Game.View {
     private void initComponents(){
         root = new Pane();
         sideBar = new VBox();
-        topUtilityPane = new Pane();
+        utilityPane = new Pane();
         topPane = new AnchorPane();
         bikeGridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
         rowConstraints = new RowConstraints();
-        titlePaneClient = new Pane();
+        bottomPane = new Pane();
         clientGridPane = new GridPane();
         hBox = new HBox();
         ui = new ImageView();
         mapPane = new Pane();
         topTitle = new Text();
+        bottomTitle = new Text();
 
     }
 
@@ -122,8 +130,8 @@ public class GameView implements Game.View {
         sideBar.setPrefHeight(654.0);
         sideBar.setPrefWidth(232.0);
 
-        topUtilityPane.setPrefHeight(101.0);
-        topUtilityPane.setPrefWidth(232.0);
+        utilityPane.setPrefHeight(101.0);
+        utilityPane.setPrefWidth(232.0);
 
         topPane.setPrefHeight(44.0);
         topPane.setPrefWidth(232.0);
@@ -141,8 +149,8 @@ public class GameView implements Game.View {
         rowConstraints.setPrefHeight(30.0);
         rowConstraints.setVgrow(Priority.SOMETIMES);
 
-        titlePaneClient.setPrefHeight(44.0);
-        titlePaneClient.setPrefWidth(232.0);
+        bottomPane.setPrefHeight(44.0);
+        bottomPane.setPrefWidth(232.0);
 
         clientGridPane.setPrefHeight(175.0);
         clientGridPane.setPrefWidth(232.0);
@@ -159,10 +167,15 @@ public class GameView implements Game.View {
         mapPane.setPrefHeight(667.0);
         mapPane.setPrefWidth(980.0);
 
-        topTitle.setTranslateX(45);
         topTitle.setTranslateY(20);
-        topTitle.setFont(Font.loadFont(getClass().getResource("/font/Penumbra-HalfSerif-Std_35114.ttf").toExternalForm(), 14));
+        topTitle.setTranslateX(10);
+        topTitle.setFont(Font.font ("Verdana", 14));
         topTitle.setFill(Color.WHITE);
+
+        bottomTitle.setTranslateY(20);
+        bottomTitle.setTranslateX(10);
+        bottomTitle.setFont(Font.font ("Verdana", 14));
+        bottomTitle.setFill(Color.WHITE);
     }
 
     private void addBackground() {
@@ -203,14 +216,15 @@ public class GameView implements Game.View {
         );
 
         sideBar.getChildren().addAll(
-                topUtilityPane,
+                utilityPane,
                 topPane,
                 bikeGridPane,
-                titlePaneClient,
+                bottomPane,
                 clientGridPane,
                 hBox
         );
         topPane.getChildren().add(topTitle);
+        bottomPane.getChildren().add(bottomTitle);
 
         mapPane.getChildren().addAll(map);
 

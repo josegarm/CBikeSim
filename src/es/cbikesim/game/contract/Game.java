@@ -13,7 +13,8 @@ public interface Game {
         Pane getMapPane();
         Pane getUtilityPane();
         Text getTopTitle();
-        Pane getTitlePaneClient();
+        Text getBottomTitle();
+        Pane getBottomPane();
     }
 
     interface Presenter {
