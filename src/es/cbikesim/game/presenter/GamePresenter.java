@@ -10,6 +10,8 @@ import es.cbikesim.game.view.StationView;
 import es.cbikesim.lib.exception.UseCaseException;
 import es.cbikesim.lib.pattern.Command;
 import es.cbikesim.lib.pattern.Invoker;
+import es.cbikesim.lib.util.Timer;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -22,6 +24,7 @@ public class GamePresenter implements Game.Presenter {
     private Scenario scenario;
     private Station selectedStation;
     private MediaPlayer mp, mpSelect;
+    private Timer timer;
 
     private Invoker invoker = new Invoker();
 
@@ -33,10 +36,12 @@ public class GamePresenter implements Game.Presenter {
 
     @Override
     public void load() {
+        timerStart();
         prepareMusic();
         mp.play();
 
         paintMap();
+
     }
 
     @Override
@@ -53,12 +58,15 @@ public class GamePresenter implements Game.Presenter {
         switch (difficulty){
             case EASY:
                 createScenario = new CreateScenarioUseCase(scenario);
+                prepareTimer(120);
                 break;
             case NORMAL:
                 createScenario = new CreateScenarioUseCase(scenario);
+                prepareTimer(160);
                 break;
             case HARD:
                 createScenario = new CreateScenarioUseCase(scenario);
+                prepareTimer(180);
                 break;
             case CUSTOM:
                 createScenario = new CreateScenarioUseCase(scenario);
@@ -84,6 +92,7 @@ public class GamePresenter implements Game.Presenter {
     public void setView(Game.View view) {
         this.view = view;
     }
+
 
 
     private void paintStationBikePanel(Station station){
@@ -131,7 +140,7 @@ public class GamePresenter implements Game.Presenter {
                 count++;
             }
         }
-        view.getTopTitle().setText(station.getId() + " - Bikes Status");
+        view.getBottomTitle().setText("Clients Waiting");
     }
 
     private void paintMap(){
@@ -163,6 +172,23 @@ public class GamePresenter implements Game.Presenter {
         this.mp = new MediaPlayer(media);
 
         this.mpSelect.setVolume(1.0);
+    }
+
+    private void prepareTimer(int seconds){
+        timer = new Timer(seconds);
+    }
+
+    //DURATION in SECONDS
+    private void timerStart(){
+        //countdown
+        timer.startTimer();
+        Label timerText = timer.getTimerLabel();
+        timerText.setTranslateX(180);
+        view.getUtilityPane().getChildren().addAll(
+                timer.getTimerTitle(),
+                timerText
+        );
+
     }
 
 }
