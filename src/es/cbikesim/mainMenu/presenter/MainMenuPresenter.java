@@ -193,9 +193,9 @@ public class MainMenuPresenter implements MainMenu.Presenter{
     }
 
     private void changeNumBikes(){
-        if(numBikes == GamePresenter.FEW_BIKES) numBikes = GamePresenter.NORMAL_BIKES;
-        else if(numBikes == GamePresenter.NORMAL_BIKES) numBikes = GamePresenter.MANY_BIKES;
-        else if(numBikes == GamePresenter.MANY_BIKES) numBikes = GamePresenter.FEW_BIKES;
+        if(numBikes.equals(GamePresenter.FEW_BIKES)) numBikes = GamePresenter.NORMAL_BIKES;
+        else if(numBikes.equals(GamePresenter.NORMAL_BIKES)) numBikes = GamePresenter.MANY_BIKES;
+        else if(numBikes.equals(GamePresenter.MANY_BIKES)) numBikes = GamePresenter.FEW_BIKES;
     }
 
     private void changeCarCapacity(){

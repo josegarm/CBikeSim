@@ -5,8 +5,11 @@ import es.cbikesim.game.command.CreateStations;
 import es.cbikesim.game.command.GenerateEasyStationBikes;
 import es.cbikesim.game.command.GenerateNormalStationBikes;
 import es.cbikesim.game.contract.Game;
+import es.cbikesim.game.model.Bike;
+import es.cbikesim.game.model.Client;
 import es.cbikesim.game.model.Scenario;
 import es.cbikesim.game.model.Station;
+import es.cbikesim.game.usecase.ClientPickUpBikeUseCase;
 import es.cbikesim.game.util.ClientGenerator;
 import es.cbikesim.game.view.BikeStallView;
 import es.cbikesim.game.view.ClientListView;
@@ -93,18 +96,39 @@ public class GamePresenter implements Game.Presenter {
     @Override
     public void showDataFromStation(String id) {
         Station station = getSelectedStationWith(id);
-        paintStationBikePanel(station);
-        paintStationClientPanel(station);
         selectedStation = station;
+        paintStationPanel(station);
     }
+
+    @Override
+    public void clientPicksUpBike(String idClient, String idBike) {
+        Client client = getClientWaitingToPickUpWith(idClient);
+        Bike bike = getBikeWith(idBike);
+
+        Command clientPicksUpBike = new ClientPickUpBikeUseCase(client, bike, scenario);
+
+        invoker.clear();
+        invoker.addCommand(clientPicksUpBike);
+        try { invoker.invoke(); }
+        catch (UseCaseException e) { e.printStackTrace(); }
+
+        paintStationPanel(selectedStation);
+    }
+
 
     @Override
     public void setView(Game.View view) {
         this.view = view;
     }
 
+    private void paintStationPanel(Station station){
+        paintStationBikePanel(station);
+        paintStationClientPanel(station);
+    }
+
 
     private void paintStationBikePanel(Station station){
+        view.getTopTitle().setText(station.getId() + " - Bikes Status");
         view.getBikePane().getChildren().clear();
 
         int count = 0;
@@ -125,22 +149,22 @@ public class GamePresenter implements Game.Presenter {
                 count++;
             }
         }
-        view.getTopTitle().setText(station.getId() + " - Bikes Status");
     }
 
     private void paintStationClientPanel(Station station){
+        view.getBottomTitle().setText("Clients Waiting");
         view.getClientPane().getChildren().clear();
 
         int count = 0;
         int rows = view.getClientPane().getRowConstraints().size();
         int columns = view.getClientPane().getColumnConstraints().size();
-        int numClients = station.getAvailableBikeList().size();
+        int numClients = station.getClientWaitingToPickUpList().size();
 
         Image clientEmptyImage = new Image(getClass().getResource("/img/client_empty.png").toExternalForm());
         Image clientImage = new Image(getClass().getResource("/img/client.png").toExternalForm());
 
         for (int row = 0; row < rows; row++){
-            for(int column = 0; column < columns && count < station.getClientWaitingToPickUpList().size(); column++){
+            for(int column = 0; column < columns && count < 6; column++){
                 if(count < numClients){
                     view.getClientPane().add(new ClientListView(clientImage, station.getClientWaitingToPickUpList().get(count).getId(),this), column, row);
                 } else {
@@ -149,7 +173,6 @@ public class GamePresenter implements Game.Presenter {
                 count++;
             }
         }
-        view.getBottomTitle().setText("Clients Waiting");
     }
 
     private void paintMap(){
@@ -167,6 +190,22 @@ public class GamePresenter implements Game.Presenter {
         for(Station station : scenario.getStationList()){
             if(station.getId().equals(id)) return station;
         }
+        return null;
+    }
+
+    public Client getClientWaitingToPickUpWith(String id){
+        for (Client client : selectedStation.getClientWaitingToPickUpList()) {
+            if(client.getId().equals(id)) return client;
+        }
+        // throw error
+        return null;
+    }
+
+    public Bike getBikeWith(String id){
+        for (Bike bike : selectedStation.getAvailableBikeList()) {
+            if(bike.getId().equals(id)) return bike;
+        }
+        // throw error
         return null;
     }
 

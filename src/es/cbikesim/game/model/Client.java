@@ -38,8 +38,8 @@ public class Client {
                 "{ \n" +
                 "   id = '" + id + "\'" + ",\n" +
                 "   bike = " + bike + ",\n" +
-                "   from = " + from + ",\n" +
-                "   to = " + to + "\n" +
+                "   from = " + from.getId() + ",\n" +
+                "   to = " + to.getId() + "\n" +
                 "}";
     }
 }

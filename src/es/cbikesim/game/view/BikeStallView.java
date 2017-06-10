@@ -3,7 +3,6 @@ package es.cbikesim.game.view;
 import es.cbikesim.game.contract.Game;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
-import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -35,6 +34,7 @@ public class BikeStallView extends ImageView{
                         db.setDragView(new Image(getClass().getResource("/img/bike_drag.png").toExternalForm()));
                         db.setDragViewOffsetX(40);
                         db.setDragViewOffsetY(40);
+
                         ClipboardContent content = new ClipboardContent();
                         content.putString(BikeStallView.super.getId());
                         db.setContent(content);

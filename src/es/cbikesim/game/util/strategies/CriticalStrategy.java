@@ -1,5 +1,6 @@
 package es.cbikesim.game.util.strategies;
 
+import es.cbikesim.game.model.Client;
 import es.cbikesim.game.model.Scenario;
 import es.cbikesim.game.model.Station;
 import es.cbikesim.game.util.factories.ClientFactory;
@@ -23,8 +24,19 @@ public class CriticalStrategy implements Strategy{
 
     @Override
     public void generateClient() {
-        int indexSelectedStation = (new Random().nextInt(stations.size()));
-        stations.get(indexSelectedStation).getClientWaitingToPickUpList().add(ClientFactory.makeClient());
+        int indexFrom = (new Random().nextInt(stations.size()));
+        int indexTo = (new Random().nextInt(scenario.getStationList().size()));
+
+        while (indexFrom == indexTo) indexTo = (new Random().nextInt(scenario.getStationList().size()));
+
+        Station from = stations.get(indexFrom);
+        Station to = scenario.getStationList().get(indexTo);
+
+        Client client = ClientFactory.makeClient();
+        client.setFrom(from);
+        client.setTo(to);
+
+        from.getClientWaitingToPickUpList().add(client);
     }
 
 
