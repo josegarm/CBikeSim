@@ -1,9 +1,12 @@
 package es.cbikesim.game.presenter;
 
+import es.cbikesim.game.command.GenerateEasyStationBikes;
+import es.cbikesim.game.command.GenerateNormalStationBikes;
 import es.cbikesim.game.contract.Game;
 import es.cbikesim.game.model.Scenario;
 import es.cbikesim.game.model.Station;
-import es.cbikesim.game.usecase.CreateScenarioUseCase;
+import es.cbikesim.game.command.CreateStations;
+import es.cbikesim.game.util.ClientGenerator;
 import es.cbikesim.game.view.BikeStallView;
 import es.cbikesim.game.view.ClientListView;
 import es.cbikesim.game.view.StationView;
@@ -19,80 +22,87 @@ import javafx.scene.media.MediaPlayer;
 public class GamePresenter implements Game.Presenter {
 
     public static final int EASY = 0, NORMAL = 1, HARD = 2, CUSTOM = 3;
+    public static final String FEW_BIKES = "FEW", NORMAL_BIKES = "NORMAL", MANY_BIKES = "MANY";
 
     private Game.View view;
     private Scenario scenario;
     private Station selectedStation;
+
+    private boolean audioState;
     private MediaPlayer mp, mpSelect;
     private Timer timer;
 
     private Invoker invoker = new Invoker();
+    private ClientGenerator clientGenerator;
 
     private int difficulty;
 
-    public GamePresenter(){
+    public GamePresenter(boolean audioState){
         scenario = new Scenario();
+        this.audioState = audioState;
     }
 
     @Override
-    public void load() {
-        timerStart();
-        prepareMusic();
-        mp.play();
-
-        paintMap();
-
-    }
-
-    @Override
-    public void playSelect() {
-        mpSelect.stop();
-        mpSelect.play();
-    }
-
-    @Override
-    public void createScenario(int difficulty, int numBikes, int carCapacity) {
+    public void createScenario(int difficulty, int time, String numBikes, int carCapacity) {
         this.difficulty = difficulty;
-        Command createScenario;
+        prepareTimer(time);
+
+        Command createStations = new CreateStations(scenario);
+        Command generateBikes;
 
         switch (difficulty){
             case EASY:
-                createScenario = new CreateScenarioUseCase(scenario);
-                prepareTimer(120);
+                generateBikes = new GenerateEasyStationBikes(scenario);
                 break;
             case NORMAL:
-                createScenario = new CreateScenarioUseCase(scenario);
-                prepareTimer(160);
+                generateBikes = new GenerateNormalStationBikes(scenario);
                 break;
             case HARD:
-                createScenario = new CreateScenarioUseCase(scenario);
-                prepareTimer(180);
+                generateBikes = new GenerateNormalStationBikes(scenario);
                 break;
             case CUSTOM:
-                createScenario = new CreateScenarioUseCase(scenario);
+                generateBikes = new GenerateNormalStationBikes(scenario);
                 break;
             default:
-                createScenario = new CreateScenarioUseCase(scenario);
+                generateBikes = new GenerateNormalStationBikes(scenario);
         }
 
-        invoker.setCommand(createScenario);
+        invoker.clear();
+        invoker.addCommand(createStations);
+        invoker.addCommand(generateBikes);
         try { invoker.invoke(); }
         catch (UseCaseException e) { e.printStackTrace(); }
     }
 
     @Override
+    public void load() {
+        prepareMusic();
+        paintMap();
+        timerStart();
+        startClientGenerator();
+        if(audioState) mp.play();
+    }
+
+    @Override
+    public void playSelect() {
+        if(audioState) {
+            mpSelect.stop();
+            mpSelect.play();
+        }
+    }
+
+    @Override
     public void showDataFromStation(String id) {
         Station station = getSelectedStationWith(id);
+        paintStationBikePanel(station);
+        paintStationClientPanel(station);
         selectedStation = station;
-        paintStationBikePanel(selectedStation);
-        paintStationClientPanel(selectedStation);
     }
 
     @Override
     public void setView(Game.View view) {
         this.view = view;
     }
-
 
 
     private void paintStationBikePanel(Station station){
@@ -176,6 +186,12 @@ public class GamePresenter implements Game.Presenter {
 
     private void prepareTimer(int seconds){
         timer = new Timer(seconds);
+    }
+
+    private void startClientGenerator(){
+        clientGenerator = new ClientGenerator(scenario, 3000);
+        clientGenerator.start();
+        view.getPrimaryStage().setOnCloseRequest(event -> clientGenerator.cancel());
     }
 
     //DURATION in SECONDS

@@ -3,11 +3,13 @@ package es.cbikesim.game.contract;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public interface Game {
 
     interface View {
         void start();
+        Stage getPrimaryStage();
         GridPane getBikePane();
         GridPane getClientPane();
         Pane getMapPane();
@@ -20,7 +22,7 @@ public interface Game {
     interface Presenter {
         void load();
         void playSelect();
-        void createScenario(int difficulty, int numBikes, int carCapacity);
+        void createScenario(int difficulty, int time, String numBikes, int carCapacity);
         void showDataFromStation(String id);
         void setView(Game.View view);
     }

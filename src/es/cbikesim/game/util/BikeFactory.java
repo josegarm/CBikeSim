@@ -1,4 +1,4 @@
-package es.cbikesim.lib.pattern;
+package es.cbikesim.game.util;
 
 
 import es.cbikesim.game.model.Bike;
@@ -7,10 +7,11 @@ import es.cbikesim.game.model.NormalBike;
 
 public class BikeFactory {
 
-    public static int id = 0;
+    private static int id = 0;
 
-    public static Bike spawnBike(int type){
+    public static Bike makeBike(int type){
         Bike bike = null;
+
         switch(type){
             case Bike.NORMAL:
                 bike = new NormalBike(""+id++);
@@ -18,10 +19,15 @@ public class BikeFactory {
             case Bike.ELECTRIC:
                 bike = new ElectricBike(""+id++);
                 break;
+            case Bike.RANDOM:
+                if (id%2 == 0)  bike = new NormalBike(""+id++);
+                else            bike = new ElectricBike(""+id++);
+                break;
             default:
                 //throw exception
                 break;
         }
+
         return bike;
     }
 }

@@ -7,12 +7,8 @@ import javafx.scene.shape.Circle;
 
 public class StationView extends Circle{
 
-    private Game.Presenter context;
-
     public StationView(Point position, String id, Game.Presenter context){
         super(position.getX(), position.getY(),20.0);
-
-        this.context = context;
 
         super.setId(id);
         super.setFill(Color.rgb(0,128,255));

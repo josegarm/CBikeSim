@@ -27,18 +27,19 @@ public class GameView implements Game.View {
     //ELEMENTS PASSIVE
     private VBox sideBar;
     private Pane utilityPane;
-    private AnchorPane topPane;
+    private StackPane topPane;
+    private Text topTitle;
+    private StackPane bottomPane;
+    private Text bottomTitle;
     private GridPane bikeGridPane;
-    private Pane bottomPane;
     private GridPane clientGridPane;
     private ColumnConstraints columnConstraints;
     private RowConstraints rowConstraints;
+
     private HBox hBox;
     private ImageView ui;
     private Pane mapPane;
     private ImageView map;
-    private Text topTitle;
-    private Text bottomTitle;
 
     //STATIONS
     private List<Circle> stations;
@@ -56,6 +57,11 @@ public class GameView implements Game.View {
         this.primaryStage.setTitle("CBike Sim GameView");
         this.primaryStage.setScene(scene);
         this.primaryStage.show();
+    }
+
+    @Override
+    public Stage getPrimaryStage() {
+        return this.primaryStage;
     }
 
     @Override
@@ -107,11 +113,11 @@ public class GameView implements Game.View {
         root = new Pane();
         sideBar = new VBox();
         utilityPane = new Pane();
-        topPane = new AnchorPane();
+        topPane = new StackPane();
         bikeGridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
         rowConstraints = new RowConstraints();
-        bottomPane = new Pane();
+        bottomPane = new StackPane();
         clientGridPane = new GridPane();
         hBox = new HBox();
         ui = new ImageView();
@@ -135,7 +141,7 @@ public class GameView implements Game.View {
 
         topPane.setPrefHeight(44.0);
         topPane.setPrefWidth(232.0);
-
+        topPane.setAlignment(Pos.CENTER);
 
         bikeGridPane.setPrefHeight(186.0);
         bikeGridPane.setPrefWidth(232.0);
@@ -167,14 +173,10 @@ public class GameView implements Game.View {
         mapPane.setPrefHeight(667.0);
         mapPane.setPrefWidth(980.0);
 
-        topTitle.setTranslateY(20);
-        topTitle.setTranslateX(10);
-        topTitle.setFont(Font.font ("Verdana", 14));
+        topTitle.setFont(Font.font ("Verdana", 12));
         topTitle.setFill(Color.WHITE);
 
-        bottomTitle.setTranslateY(20);
-        bottomTitle.setTranslateX(10);
-        bottomTitle.setFont(Font.font ("Verdana", 14));
+        bottomTitle.setFont(Font.font ("Verdana", 12));
         bottomTitle.setFill(Color.WHITE);
     }
 

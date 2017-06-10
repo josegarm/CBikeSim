@@ -20,18 +20,22 @@ import java.util.List;
 
 public class MainMenuPresenter implements MainMenu.Presenter{
 
-    private static final int FEW_BIKES = 0, NORMAL_BIKES = 1;
+
 
     private MainMenu.View view;
 
-    private boolean audioState = true;
-    private int numBikes, carCapacity;
+    private boolean audioState;
+    private int carCapacity, time;
+
+    private String numBikes;
     private MediaPlayer mp, mpSelect, mpHover;
 
     private MenuItemView itemPressed;
 
     public MainMenuPresenter(){
-        numBikes = FEW_BIKES;
+        audioState = true;
+        time = 180;
+        numBikes = GamePresenter.FEW_BIKES;
         carCapacity = 3;
     }
 
@@ -39,19 +43,23 @@ public class MainMenuPresenter implements MainMenu.Presenter{
     public void load() {
         addMenu(this.getMenuData());
         prepareMusic();
-        mp.play();
+        if (audioState) mp.play();
     }
 
     @Override
     public void playHover() {
-        mpHover.stop();
-        mpHover.play();
+        if (audioState) {
+            mpHover.stop();
+            mpHover.play();
+        }
     }
 
     @Override
     public void playSelect() {
-        mpSelect.stop();
-        mpSelect.play();
+        if (audioState) {
+            mpSelect.stop();
+            mpSelect.play();
+        }
     }
 
     @Override
@@ -66,9 +74,9 @@ public class MainMenuPresenter implements MainMenu.Presenter{
 
     private void initGame(int difficulty) {
         mp.stop();
-        Game.Presenter gamePresenter = new GamePresenter();
+        Game.Presenter gamePresenter = new GamePresenter(audioState);
         Game.View gameView = new GameView(view.getPrimaryStage(), gamePresenter);
-        gamePresenter.createScenario(difficulty, numBikes, carCapacity);
+        gamePresenter.createScenario(difficulty, time, numBikes, carCapacity);
         gameView.start();
     }
 
@@ -159,9 +167,13 @@ public class MainMenuPresenter implements MainMenu.Presenter{
 
     private List<Pair<String, Runnable>> getCustomDifficultyData() {
         return Arrays.asList(
-                new Pair<String, Runnable>("NUMBER OF BIKES    " + (numBikes == FEW_BIKES ? "FEW" : "NORMAL"), () -> {
+                new Pair<String, Runnable>("TIME                          " + time + " sec", () -> {
+                    this.changeTime();
+                    this.itemPressed.setText("TIME                          " + time + " sec");
+                }),
+                new Pair<String, Runnable>("NUMBER OF BIKES    " + numBikes, () -> {
                     this.changeNumBikes();
-                    this.itemPressed.setText("NUMBER OF BIKES    " + (numBikes == FEW_BIKES ? "FEW" : "NORMAL"));
+                    this.itemPressed.setText("NUMBER OF BIKES    " + numBikes);
                 }),
                 new Pair<String, Runnable>("BIKE CAPACITY CAR  " + carCapacity, () -> {
                     this.changeCarCapacity();
@@ -178,9 +190,15 @@ public class MainMenuPresenter implements MainMenu.Presenter{
         else mp.stop();
     }
 
+    private void changeTime(){
+        if(time >= 300) time = 120;
+        else time = time + 30;
+    }
+
     private void changeNumBikes(){
-        if(numBikes == FEW_BIKES) numBikes = NORMAL_BIKES;
-        else numBikes = FEW_BIKES;
+        if(numBikes == GamePresenter.FEW_BIKES) numBikes = GamePresenter.NORMAL_BIKES;
+        else if(numBikes == GamePresenter.NORMAL_BIKES) numBikes = GamePresenter.MANY_BIKES;
+        else if(numBikes == GamePresenter.MANY_BIKES) numBikes = GamePresenter.FEW_BIKES;
     }
 
     private void changeCarCapacity(){

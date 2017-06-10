@@ -2,7 +2,7 @@ package es.cbikesim.game.model;
 
 public abstract class Bike {
 
-    public static final int NORMAL = 0, ELECTRIC = 1;
+    public static final int NORMAL = 0, ELECTRIC = 1, RANDOM = 2;
     private final String id;
     private int type;
 

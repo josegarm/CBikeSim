@@ -7,9 +7,12 @@ import java.util.List;
 
 public class Station{
 
+    public final static int MORNING = 0, AFTERNOON = 1;
+
     private final String id;
     private final int maxCapacity;
     private final Point position;
+    private int critical;
 
     private List<Bike> availableBikeList;
     private List<Client> clientWaitingToDepositList;
@@ -24,6 +27,11 @@ public class Station{
         this.clientWaitingToDepositList = new ArrayList<>();
         this.clientWaitingToPickUpList = new ArrayList<>();
         this.vehicleList = new ArrayList<>();
+    }
+
+    public Station(String id, int maxCapacity, Point position, int critical) {
+        this(id,maxCapacity,position);
+        this.critical = critical;
     }
 
     public List<Bike> getAvailableBikeList() {
@@ -52,6 +60,10 @@ public class Station{
 
     public Point getPosition() {
         return position;
+    }
+
+    public int getCritical() {
+        return critical;
     }
 
     @Override

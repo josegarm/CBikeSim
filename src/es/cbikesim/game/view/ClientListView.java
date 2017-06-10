@@ -8,12 +8,9 @@ import javafx.scene.layout.GridPane;
 
 public class ClientListView extends ImageView{
 
-    private Game.Presenter context;
-
     public ClientListView(Image image, String id, Game.Presenter context){
         this(image);
 
-        this.context = context;
         super.setId(id);
 
         super.setOnMouseClicked(e -> {
@@ -24,7 +21,7 @@ public class ClientListView extends ImageView{
 
     public ClientListView(Image image){
         super(image);
-        super.setFitWidth(40.0);
+        super.setFitWidth(50.0);
         super.setFitHeight(50.0);
         super.setOpacity(0.75);
 
