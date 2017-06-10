@@ -2,6 +2,9 @@ package es.cbikesim.game.util;
 
 import es.cbikesim.game.model.Scenario;
 import es.cbikesim.game.model.Station;
+import es.cbikesim.game.util.strategies.CriticalStrategy;
+import es.cbikesim.game.util.strategies.RandomStrategy;
+import es.cbikesim.game.util.strategies.Strategy;
 
 public class ClientGenerator extends Thread {
 

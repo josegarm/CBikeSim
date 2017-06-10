@@ -1,6 +1,5 @@
 package es.cbikesim.game.view;
 
-import com.sun.javafx.css.Size;
 import es.cbikesim.game.contract.Game;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;

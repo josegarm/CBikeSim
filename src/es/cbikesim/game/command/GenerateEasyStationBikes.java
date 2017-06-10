@@ -3,12 +3,9 @@ package es.cbikesim.game.command;
 import es.cbikesim.game.model.Bike;
 import es.cbikesim.game.model.Scenario;
 import es.cbikesim.game.model.Station;
-import es.cbikesim.game.util.BikeFactory;
+import es.cbikesim.game.util.factories.BikeFactory;
 import es.cbikesim.lib.exception.UseCaseException;
 import es.cbikesim.lib.pattern.Command;
-import es.cbikesim.lib.util.Point;
-
-import java.util.Arrays;
 
 public class GenerateEasyStationBikes implements Command {
 

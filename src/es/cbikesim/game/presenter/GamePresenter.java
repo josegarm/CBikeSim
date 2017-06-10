@@ -1,11 +1,11 @@
 package es.cbikesim.game.presenter;
 
+import es.cbikesim.game.command.CreateStations;
 import es.cbikesim.game.command.GenerateEasyStationBikes;
 import es.cbikesim.game.command.GenerateNormalStationBikes;
 import es.cbikesim.game.contract.Game;
 import es.cbikesim.game.model.Scenario;
 import es.cbikesim.game.model.Station;
-import es.cbikesim.game.command.CreateStations;
 import es.cbikesim.game.util.ClientGenerator;
 import es.cbikesim.game.view.BikeStallView;
 import es.cbikesim.game.view.ClientListView;

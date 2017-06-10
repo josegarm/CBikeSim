@@ -1,4 +1,4 @@
-package es.cbikesim.game.util;
+package es.cbikesim.game.util.strategies;
 
 public interface Strategy {
 

@@ -1,4 +1,4 @@
-package es.cbikesim.game.util;
+package es.cbikesim.game.util.factories;
 
 
 import es.cbikesim.game.model.Bike;

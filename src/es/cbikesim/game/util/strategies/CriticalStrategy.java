@@ -1,7 +1,8 @@
-package es.cbikesim.game.util;
+package es.cbikesim.game.util.strategies;
 
 import es.cbikesim.game.model.Scenario;
 import es.cbikesim.game.model.Station;
+import es.cbikesim.game.util.factories.ClientFactory;
 
 import java.util.ArrayList;
 import java.util.List;
