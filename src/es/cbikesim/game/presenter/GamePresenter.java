@@ -11,6 +11,7 @@ import es.cbikesim.game.model.Scenario;
 import es.cbikesim.game.model.Station;
 import es.cbikesim.game.usecase.ClientPickUpBikeUseCase;
 import es.cbikesim.game.util.ClientGenerator;
+import es.cbikesim.game.util.factories.pathAnimationFactory;
 import es.cbikesim.game.view.BikeStallView;
 import es.cbikesim.game.view.ClientInStationView;
 import es.cbikesim.game.view.ClientView;
@@ -20,6 +21,7 @@ import es.cbikesim.lib.pattern.Command;
 import es.cbikesim.lib.pattern.Invoker;
 import es.cbikesim.lib.util.Point;
 import es.cbikesim.lib.util.Timer;
+import javafx.animation.PathTransition;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
@@ -115,7 +117,12 @@ public class GamePresenter implements Game.Presenter {
         catch (UseCaseException e) { e.printStackTrace(); }
 
         paintStationPanel(selectedStation);
-        view.getMapPane().getChildren().add(new ClientView(new Point(selectedStation.getPosition().getX()+20, selectedStation.getPosition().getY()+20), client.getId(),this));
+        ClientView clientView = new ClientView(new Point(selectedStation.getPosition().getX()+20, selectedStation.getPosition().getY()+20), client.getId(),this);
+        PathTransition animation = pathAnimationFactory.pathAnimationFactory(selectedStation.getPosition().getX(), selectedStation.getPosition().getY(), client.getTo().getPosition().getX(), client.getTo().getPosition().getY(), 15);
+        animation.setNode(clientView);
+        view.getMapPane().getChildren().add(clientView);
+        animation.play();
+
     }
 
 
