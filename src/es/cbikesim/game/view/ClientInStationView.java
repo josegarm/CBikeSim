@@ -8,9 +8,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 
-public class ClientListView extends ImageView{
+public class ClientInStationView extends ImageView{
 
-    public ClientListView(Image image, String id, Game.Presenter context){
+    public ClientInStationView(Image image, String id, Game.Presenter context){
         this(image);
 
         super.setId(id);
@@ -18,10 +18,6 @@ public class ClientListView extends ImageView{
         super.setOnMouseClicked(e -> {
             context.playSelect();
 
-        });
-
-        super.setOnMouseEntered(e -> {
-            //method to show path client would take in between stations
         });
 
         super.setOnDragEntered(e -> {
@@ -51,7 +47,7 @@ public class ClientListView extends ImageView{
         });
     }
 
-    public ClientListView(Image image){
+    public ClientInStationView(Image image){
         super(image);
         super.setFitWidth(50.0);
         super.setFitHeight(50.0);

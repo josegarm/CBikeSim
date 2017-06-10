@@ -12,11 +12,13 @@ import es.cbikesim.game.model.Station;
 import es.cbikesim.game.usecase.ClientPickUpBikeUseCase;
 import es.cbikesim.game.util.ClientGenerator;
 import es.cbikesim.game.view.BikeStallView;
-import es.cbikesim.game.view.ClientListView;
+import es.cbikesim.game.view.ClientInStationView;
+import es.cbikesim.game.view.ClientView;
 import es.cbikesim.game.view.StationView;
 import es.cbikesim.lib.exception.UseCaseException;
 import es.cbikesim.lib.pattern.Command;
 import es.cbikesim.lib.pattern.Invoker;
+import es.cbikesim.lib.util.Point;
 import es.cbikesim.lib.util.Timer;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -113,6 +115,7 @@ public class GamePresenter implements Game.Presenter {
         catch (UseCaseException e) { e.printStackTrace(); }
 
         paintStationPanel(selectedStation);
+        view.getMapPane().getChildren().add(new ClientView(new Point(selectedStation.getPosition().getX()+20, selectedStation.getPosition().getY()+20), client.getId(),this));
     }
 
 
@@ -166,9 +169,9 @@ public class GamePresenter implements Game.Presenter {
         for (int row = 0; row < rows; row++){
             for(int column = 0; column < columns && count < 6; column++){
                 if(count < numClients){
-                    view.getClientPane().add(new ClientListView(clientImage, station.getClientWaitingToPickUpList().get(count).getId(),this), column, row);
+                    view.getClientPane().add(new ClientInStationView(clientImage, station.getClientWaitingToPickUpList().get(count).getId(),this), column, row);
                 } else {
-                    view.getClientPane().add(new ClientListView(clientEmptyImage), column, row);
+                    view.getClientPane().add(new ClientInStationView(clientEmptyImage), column, row);
                 }
                 count++;
             }
