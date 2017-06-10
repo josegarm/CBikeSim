@@ -2,10 +2,17 @@ package es.cbikesim.game.view;
 
 import es.cbikesim.game.contract.Game;
 import es.cbikesim.lib.util.Point;
+import javafx.animation.PathTransition;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 
-public class ClientView extends Circle{
+public class ClientView extends Circle implements Runnable{
+
+    Game.Presenter context;
+
+    private int waitSecond;
+    private PathTransition animation;
 
     public ClientView(Point position, String id, Game.Presenter context){
         super(position.getX(), position.getY(),10.0);
@@ -15,15 +22,43 @@ public class ClientView extends Circle{
         super.setStroke(Color.rgb(150, 90, 0));
         super.setStrokeWidth(3);
 
+        this.context = context;
+
         super.setOnMouseClicked(e -> {
             context.playSelect();
-            context.showDataFromStation(id);
+            //context.showDataFromStation(id);
         });
 
         super.setOnMouseEntered(e -> {
             //method to show path client would take in between stations
-            System.out.println("Hello");
+
         });
     }
 
+    @Override
+    public void run() {
+        move();
+        context.clientDepositsBike(super.getId(), this);
+
+
+    }
+
+    public void setAnimation(PathTransition animation){
+        this.animation = animation;
+        this.animation.setNode(this);
+    }
+
+    public void setDuration(int seconds){
+        this.waitSecond = seconds;
+        this.animation.setDuration(Duration.seconds(waitSecond));
+    }
+
+    private void move(){
+        animation.play();
+        try {
+            Thread.sleep((long) Duration.seconds(waitSecond).toMillis());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }
