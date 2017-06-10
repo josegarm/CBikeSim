@@ -21,16 +21,16 @@ public class ClientDepositBikeUseCase implements Command{
 
     @Override
     public void execute() throws UseCaseException {
-        Station currentStation = client.getTo();
-        client.setFrom(currentStation);
+        Station to = client.getTo();
+        client.setFrom(to);
         client.setTo(null);
         scenario.getClientsInTransit().remove(client);
 
-        if (currentStation.getAvailableBikeList().size() < currentStation.getMaxCapacity()){
-            currentStation.getAvailableBikeList().add(client.getBike());
+        if (to.getAvailableBikeList().size() < to.getMaxCapacity()){
+            to.getAvailableBikeList().add(client.getBike());
             client.setBike(null);
         } else {
-            currentStation.getClientWaitingToDepositList().add(client);
+            to.getClientWaitingToDepositList().add(client);
         }
     }
 }

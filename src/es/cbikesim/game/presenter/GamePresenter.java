@@ -9,9 +9,10 @@ import es.cbikesim.game.model.Bike;
 import es.cbikesim.game.model.Client;
 import es.cbikesim.game.model.Scenario;
 import es.cbikesim.game.model.Station;
+import es.cbikesim.game.usecase.ClientDepositBikeUseCase;
 import es.cbikesim.game.usecase.ClientPickUpBikeUseCase;
 import es.cbikesim.game.util.ClientGenerator;
-import es.cbikesim.game.util.factories.pathAnimationFactory;
+import es.cbikesim.game.util.factories.PathAnimationFactory;
 import es.cbikesim.game.view.BikeStallView;
 import es.cbikesim.game.view.ClientInStationView;
 import es.cbikesim.game.view.ClientView;
@@ -19,9 +20,9 @@ import es.cbikesim.game.view.StationView;
 import es.cbikesim.lib.exception.UseCaseException;
 import es.cbikesim.lib.pattern.Command;
 import es.cbikesim.lib.pattern.Invoker;
-import es.cbikesim.lib.util.Point;
 import es.cbikesim.lib.util.Timer;
 import javafx.animation.PathTransition;
+import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
@@ -106,7 +107,7 @@ public class GamePresenter implements Game.Presenter {
 
     @Override
     public void clientPicksUpBike(String idClient, String idBike) {
-        Client client = getClientWaitingToPickUpWith(idClient);
+        Client client = getClientWith(idClient);
         Bike bike = getBikeWith(idBike);
 
         Command clientPicksUpBike = new ClientPickUpBikeUseCase(client, bike, scenario);
@@ -117,11 +118,27 @@ public class GamePresenter implements Game.Presenter {
         catch (UseCaseException e) { e.printStackTrace(); }
 
         paintStationPanel(selectedStation);
-        ClientView clientView = new ClientView(new Point(selectedStation.getPosition().getX()+20, selectedStation.getPosition().getY()+20), client.getId(),this);
-        PathTransition animation = pathAnimationFactory.pathAnimationFactory(selectedStation.getPosition().getX(), selectedStation.getPosition().getY(), client.getTo().getPosition().getX(), client.getTo().getPosition().getY(), 15);
-        animation.setNode(clientView);
-        view.getMapPane().getChildren().add(clientView);
-        animation.play();
+        paintClientInTransit(client);
+    }
+
+    @Override
+    public void clientDepositsBike(String idClient, ClientView clientView) {
+        Client client = getClientWith(idClient);
+
+        Command clientDepositBike = new ClientDepositBikeUseCase(client, scenario);
+
+        invoker.clear();
+        invoker.addCommand(clientDepositBike);
+        try { invoker.invoke(); }
+        catch (UseCaseException e) { e.printStackTrace(); }
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                view.getMapPane().getChildren().remove(clientView);
+            }
+        });
+
 
     }
 
@@ -131,11 +148,42 @@ public class GamePresenter implements Game.Presenter {
         this.view = view;
     }
 
+
+    private void paintMap(){
+        for(Station station : scenario.getStationList()){
+            paintStation(station);
+        }
+    }
+
+    private void paintStation(Station station){
+        StationView stationView = new StationView(station.getPosition(), station.getId(),this);
+        view.getMapPane().getChildren().add(stationView);
+    }
+
+    private void paintClientInTransit(Client client){
+        ClientView clientView = new ClientView(client.getFrom().getPosition(), client.getId(),this);
+        view.getMapPane().getChildren().add(clientView);
+        int seconds = calculateDuration(client);
+
+        clientView.setAnimation(PathAnimationFactory.pathAnimationFactory(client.getFrom().getPosition(), client.getTo().getPosition()));
+        clientView.setDuration(seconds);
+
+        new Thread(clientView).start();
+    }
+
+    private int calculateDuration(Client client){
+        int duration;
+        double distance =
+                Math.abs(client.getTo().getPosition().getX() - client.getFrom().getPosition().getX()) +
+                Math.abs(client.getTo().getPosition().getY() - client.getFrom().getPosition().getY());
+        duration = (int) distance/35;
+        return duration;
+    }
+
     private void paintStationPanel(Station station){
         paintStationBikePanel(station);
         paintStationClientPanel(station);
     }
-
 
     private void paintStationBikePanel(Station station){
         view.getTopTitle().setText(station.getId() + " - Bikes Status");
@@ -185,17 +233,6 @@ public class GamePresenter implements Game.Presenter {
         }
     }
 
-    private void paintMap(){
-        for(Station station : scenario.getStationList()){
-            paintStation(station);
-        }
-    }
-
-    private void paintStation(Station station){
-        StationView stationView = new StationView(station.getPosition(), station.getId(),this);
-        view.getMapPane().getChildren().add(stationView);
-    }
-
     private Station getSelectedStationWith(String id){
         for(Station station : scenario.getStationList()){
             if(station.getId().equals(id)) return station;
@@ -203,9 +240,17 @@ public class GamePresenter implements Game.Presenter {
         return null;
     }
 
-    public Client getClientWaitingToPickUpWith(String id){
-        for (Client client : selectedStation.getClientWaitingToPickUpList()) {
+    public Client getClientWith(String id){
+        for (Client client : scenario.getClientsInTransit()) {
             if(client.getId().equals(id)) return client;
+        }
+        for (Station station : scenario.getStationList()) {
+            for (Client client : station.getClientWaitingToPickUpList()){
+                if(client.getId().equals(id)) return client;
+            }
+            for (Client client : station.getClientWaitingToDepositList()){
+                if(client.getId().equals(id)) return client;
+            }
         }
         // throw error
         return null;

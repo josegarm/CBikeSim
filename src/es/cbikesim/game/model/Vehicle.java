@@ -6,8 +6,8 @@ import java.util.List;
 public class Vehicle {
 
     private final int id;
-    private Station to;
     private Station from;
+    private Station to;
 
     private List<Bike> bikeList;
 
