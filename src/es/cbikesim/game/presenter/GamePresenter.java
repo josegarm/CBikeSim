@@ -1,5 +1,6 @@
 package es.cbikesim.game.presenter;
 
+import es.cbikesim.app.CBikeSimState;
 import es.cbikesim.game.command.CreateStations;
 import es.cbikesim.game.command.GenerateEasyStationBikes;
 import es.cbikesim.game.command.GenerateNormalStationBikes;
@@ -28,7 +29,6 @@ public class GamePresenter implements Game.Presenter {
     private Scenario scenario;
     private Station selectedStation;
 
-    private boolean audioState;
     private MediaPlayer mp, mpSelect;
     private Timer timer;
 
@@ -37,9 +37,8 @@ public class GamePresenter implements Game.Presenter {
 
     private int difficulty;
 
-    public GamePresenter(boolean audioState){
+    public GamePresenter(){
         scenario = new Scenario();
-        this.audioState = audioState;
     }
 
     @Override
@@ -80,12 +79,12 @@ public class GamePresenter implements Game.Presenter {
         paintMap();
         timerStart();
         startClientGenerator();
-        if(audioState) mp.play();
+        if(CBikeSimState.getInstance().getAudio()) mp.play();
     }
 
     @Override
     public void playSelect() {
-        if(audioState) {
+        if(CBikeSimState.getInstance().getAudio()) {
             mpSelect.stop();
             mpSelect.play();
         }
@@ -191,7 +190,7 @@ public class GamePresenter implements Game.Presenter {
     private void startClientGenerator(){
         clientGenerator = new ClientGenerator(scenario, 3000);
         clientGenerator.start();
-        view.getPrimaryStage().setOnCloseRequest(event -> clientGenerator.cancel());
+        CBikeSimState.getInstance().getPrimaryStage().setOnCloseRequest(event -> clientGenerator.cancel());
     }
 
     //DURATION in SECONDS

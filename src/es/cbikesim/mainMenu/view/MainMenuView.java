@@ -1,5 +1,6 @@
 package es.cbikesim.mainMenu.view;
 
+import es.cbikesim.app.CBikeSimState;
 import es.cbikesim.mainMenu.contract.MainMenu;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -19,7 +20,6 @@ public class MainMenuView implements MainMenu.View {
     private static final int WIDTH = 1280, HEIGHT = 720;
 
     private MainMenu.Presenter presenter;
-    private Stage primaryStage;
 
     private int lineX = WIDTH / 2 - 100;
     private int lineY = HEIGHT / 3 + 50;
@@ -28,23 +28,19 @@ public class MainMenuView implements MainMenu.View {
     private VBox menuBox;
     private Line line;
 
-    public MainMenuView(Stage primaryStage, MainMenu.Presenter presenter){
-        this.primaryStage = primaryStage;
+    public MainMenuView(MainMenu.Presenter presenter){
         this.presenter = presenter;
         this.presenter.setView(this);
     }
 
     @Override
     public void start() {
+        Stage primaryStage = CBikeSimState.getInstance().getPrimaryStage();
         Scene scene = new Scene(createContent());
-        this.primaryStage.setTitle("CBike Sim GameView");
-        this.primaryStage.setScene(scene);
-        this.primaryStage.show();
-    }
 
-    @Override
-    public Stage getPrimaryStage() {
-        return this.primaryStage;
+        primaryStage.setTitle("CBikeSim Menu");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     @Override

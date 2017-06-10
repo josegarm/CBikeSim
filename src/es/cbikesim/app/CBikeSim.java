@@ -16,8 +16,10 @@ public class CBikeSim extends Application {
         primaryStage.initStyle(StageStyle.UTILITY);
         primaryStage.setResizable(false);
 
+        CBikeSimState.getInstance().setPrimaryStage(primaryStage);
+
         MainMenu.Presenter mainMenuPresenter = new MainMenuPresenter();
-        MainMenu.View mainMenuView = new MainMenuView(primaryStage, mainMenuPresenter);
+        MainMenu.View mainMenuView = new MainMenuView(mainMenuPresenter);
         mainMenuView.start();
 
     }

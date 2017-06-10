@@ -9,7 +9,6 @@ public interface MainMenu {
 
     interface View{
         void start();
-        Stage getPrimaryStage();
         VBox getMenuBox();
         Line getLine();
     }

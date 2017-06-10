@@ -1,5 +1,6 @@
 package es.cbikesim.game.view;
 
+import es.cbikesim.app.CBikeSimState;
 import es.cbikesim.game.contract.Game;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -20,7 +21,6 @@ public class GameView implements Game.View {
     private static final int WIDTH = 1280, HEIGHT = 720;
 
     private Game.Presenter presenter;
-    private Stage primaryStage;
     private Pane root;
 
     //ELEMENTS PASSIVE
@@ -44,30 +44,25 @@ public class GameView implements Game.View {
     private List<Circle> stations;
 
 
-    public GameView(Stage primaryStage, Game.Presenter presenter) {
-        this.primaryStage = primaryStage;
+    public GameView(Game.Presenter presenter) {
         this.presenter = presenter;
         this.presenter.setView(this);
     }
 
     @Override
     public void start() {
+        Stage primaryStage = CBikeSimState.getInstance().getPrimaryStage();
         Scene scene = new Scene(createContent());
-        this.primaryStage.setTitle("CBike Sim GameView");
-        this.primaryStage.setScene(scene);
-        this.primaryStage.show();
-    }
 
-    @Override
-    public Stage getPrimaryStage() {
-        return this.primaryStage;
+        primaryStage.setTitle("CBikeSim Game");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     @Override
     public GridPane getBikePane() {
         return bikeGridPane;
     }
-
 
     @Override
     public GridPane getClientPane() {

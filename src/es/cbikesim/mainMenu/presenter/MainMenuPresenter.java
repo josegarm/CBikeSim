@@ -1,5 +1,6 @@
 package es.cbikesim.mainMenu.presenter;
 
+import es.cbikesim.app.CBikeSimState;
 import es.cbikesim.game.contract.Game;
 import es.cbikesim.game.presenter.GamePresenter;
 import es.cbikesim.game.view.GameView;
@@ -20,11 +21,8 @@ import java.util.List;
 
 public class MainMenuPresenter implements MainMenu.Presenter{
 
-
-
     private MainMenu.View view;
 
-    private boolean audioState;
     private int carCapacity, time;
 
     private String numBikes;
@@ -33,7 +31,6 @@ public class MainMenuPresenter implements MainMenu.Presenter{
     private MenuItemView itemPressed;
 
     public MainMenuPresenter(){
-        audioState = true;
         time = 180;
         numBikes = GamePresenter.FEW_BIKES;
         carCapacity = 3;
@@ -43,12 +40,12 @@ public class MainMenuPresenter implements MainMenu.Presenter{
     public void load() {
         addMenu(this.getMenuData());
         prepareMusic();
-        if (audioState) mp.play();
+        if (CBikeSimState.getInstance().getAudio()) mp.play();
     }
 
     @Override
     public void playHover() {
-        if (audioState) {
+        if (CBikeSimState.getInstance().getAudio()){
             mpHover.stop();
             mpHover.play();
         }
@@ -56,7 +53,7 @@ public class MainMenuPresenter implements MainMenu.Presenter{
 
     @Override
     public void playSelect() {
-        if (audioState) {
+        if (CBikeSimState.getInstance().getAudio()){
             mpSelect.stop();
             mpSelect.play();
         }
@@ -74,8 +71,8 @@ public class MainMenuPresenter implements MainMenu.Presenter{
 
     private void initGame(int difficulty) {
         mp.stop();
-        Game.Presenter gamePresenter = new GamePresenter(audioState);
-        Game.View gameView = new GameView(view.getPrimaryStage(), gamePresenter);
+        Game.Presenter gamePresenter = new GamePresenter();
+        Game.View gameView = new GameView(gamePresenter);
         gamePresenter.createScenario(difficulty, time, numBikes, carCapacity);
         gameView.start();
     }
@@ -136,9 +133,9 @@ public class MainMenuPresenter implements MainMenu.Presenter{
 
     private List<Pair<String, Runnable>> getSettingsData() {
         return Arrays.asList(
-                new Pair<String, Runnable>("AUDIO   " + (audioState ? "ON" : "OFF"), () -> {
+                new Pair<String, Runnable>("AUDIO   " + (CBikeSimState.getInstance().getAudio() ? "ON" : "OFF"), () -> {
                     this.changeMusic();
-                    this.itemPressed.setText("AUDIO   " + (audioState ? "ON" : "OFF"));
+                    this.itemPressed.setText("AUDIO   " + (CBikeSimState.getInstance().getAudio() ? "ON" : "OFF"));
                 }),
                 new Pair<String, Runnable>("BACK", () -> addMenu(getMenuData()))
         );
@@ -185,8 +182,8 @@ public class MainMenuPresenter implements MainMenu.Presenter{
     }
 
     private void changeMusic(){
-        audioState = !audioState;
-        if(audioState) mp.play();
+        CBikeSimState.getInstance().turnAudio();
+        if(CBikeSimState.getInstance().getAudio()) mp.play();
         else mp.stop();
     }
 

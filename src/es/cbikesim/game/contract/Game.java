@@ -9,7 +9,6 @@ public interface Game {
 
     interface View {
         void start();
-        Stage getPrimaryStage();
         GridPane getBikePane();
         GridPane getClientPane();
         Pane getMapPane();
