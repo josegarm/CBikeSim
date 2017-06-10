@@ -1,4 +1,4 @@
-package es.cbikesim.game.util;
+package es.cbikesim.game.util.factories;
 
 
 import javafx.animation.PathTransition;
