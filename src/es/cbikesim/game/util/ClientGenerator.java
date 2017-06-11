@@ -1,6 +1,7 @@
 package es.cbikesim.game.util;
 
 import es.cbikesim.game.contract.Game;
+import es.cbikesim.game.model.Client;
 import es.cbikesim.game.model.Scenario;
 import es.cbikesim.game.model.Station;
 import es.cbikesim.game.util.strategies.CriticalStrategy;
@@ -34,7 +35,7 @@ public class ClientGenerator extends Thread {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            generateClient();
+            context.notifyNewClient(generateClient());
         }
     }
 
@@ -42,8 +43,8 @@ public class ClientGenerator extends Thread {
         this.alive = false;
     }
 
-    public void generateClient(){
-        strategy.generateClient();
+    public Client generateClient(){
+        return strategy.generateClient();
     }
 
     public void changeStrategy(int selectedStrategy){
