@@ -228,9 +228,9 @@ public class GamePresenter implements Game.Presenter {
         for (int row = 0; row < rows; row++){
             for(int column = 0; column < columns && count < station.getMaxCapacity(); column++){
                 if(count < numBikes){
-                    view.getTopPane().add(new BikeStallView(bikeImage, station.getAvailableBikeList().get(count).getId(),this), column, row);
+                    view.getTopPane().add(new BikeStallView(bikeImage, station.getAvailableBikeList().get(count).getId(), this, BikeStallView.STATION, true, false), column, row);
                 } else {
-                    view.getTopPane().add(new BikeStallView(bikeEmptyImage), column, row);
+                    view.getTopPane().add(new BikeStallView(bikeEmptyImage, this, BikeStallView.STATION, false, true), column, row);
                 }
                 count++;
             }
@@ -276,9 +276,9 @@ public class GamePresenter implements Game.Presenter {
         for (int row = 0; row < rows; row++){
             for(int column = 0; column < columns && count < vehicle.getMaxCapacity(); column++){
                 if(count < numBikes){
-                    view.getBottomPane().add(new BikeStallView(bikeImage, vehicle.getBikeList().get(count).getId(),this), column, row);
+                    view.getBottomPane().add(new BikeStallView(bikeImage, vehicle.getBikeList().get(count).getId(), this, BikeStallView.VEHICLE, true, false), column, row);
                 } else {
-                    view.getBottomPane().add(new BikeStallView(bikeEmptyImage, this, true), column, row);
+                    view.getBottomPane().add(new BikeStallView(bikeEmptyImage, this, BikeStallView.VEHICLE, false, true), column, row);
                 }
                 count++;
             }
