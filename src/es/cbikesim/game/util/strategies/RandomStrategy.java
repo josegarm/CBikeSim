@@ -16,7 +16,7 @@ public class RandomStrategy implements Strategy{
     }
 
     @Override
-    public void generateClient() {
+    public Client generateClient() {
         int indexFrom = (new Random().nextInt(scenario.getStationList().size()));
         int indexTo = (new Random().nextInt(scenario.getStationList().size()));
 
@@ -30,6 +30,8 @@ public class RandomStrategy implements Strategy{
         client.setTo(to);
 
         from.getClientWaitingToPickUpList().add(client);
+
+        return client;
     }
 
 

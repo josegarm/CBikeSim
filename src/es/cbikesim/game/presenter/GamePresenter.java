@@ -120,6 +120,16 @@ public class GamePresenter implements Game.Presenter {
     }
 
     @Override
+    public void notifyNewClient(Client client) {
+        //ponemos icono en la estacion client.getFrom()
+        //y se elimina al pasar 1 segundo o asi
+        //Como se modifica la vista desde un thread deberas usar
+        // Platform.runLater(() -> {
+        //  metodo que quieras usar
+        // });
+    }
+
+    @Override
     public void clientPicksUpBike(String idClient, String idBike) {
         Client client = getClientWith(idClient);
         Bike bike = getBikeWith(idBike);
@@ -439,7 +449,7 @@ public class GamePresenter implements Game.Presenter {
     }
 
     private void startClientGenerator(){
-        clientGenerator = new ClientGenerator(scenario, 3000);
+        clientGenerator = new ClientGenerator(scenario,this, 3000);
         clientGenerator.start();
         CBikeSimState.getInstance().getPrimaryStage().setOnCloseRequest(event -> clientGenerator.cancel());
     }

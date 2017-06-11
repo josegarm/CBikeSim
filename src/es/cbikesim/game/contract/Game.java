@@ -1,5 +1,6 @@
 package es.cbikesim.game.contract;
 
+import es.cbikesim.game.model.Client;
 import es.cbikesim.game.model.Station;
 import es.cbikesim.game.view.ClientView;
 import es.cbikesim.game.view.VehicleView;
@@ -26,6 +27,7 @@ public interface Game {
         void createScenario(int difficulty, int time, String numBikes, int carCapacity);
         void showDataFromStation(String id);
         void showDataFromVehicle(String id);
+        void notifyNewClient(Client client);
         void clientPicksUpBike(String idClient, String idBike);
         void clientDepositsBike(String idClient, ClientView clientView);
         void vehiclePicksUpBike(String idBike);

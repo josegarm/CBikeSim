@@ -23,7 +23,7 @@ public class CriticalStrategy implements Strategy{
     }
 
     @Override
-    public void generateClient() {
+    public Client generateClient() {
         int indexFrom = (new Random().nextInt(stations.size()));
         int indexTo = (new Random().nextInt(scenario.getStationList().size()));
 
@@ -37,6 +37,8 @@ public class CriticalStrategy implements Strategy{
         client.setTo(to);
 
         from.getClientWaitingToPickUpList().add(client);
+
+        return client;
     }
 
 

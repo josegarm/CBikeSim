@@ -1,5 +1,6 @@
 package es.cbikesim.game.util;
 
+import es.cbikesim.game.contract.Game;
 import es.cbikesim.game.model.Scenario;
 import es.cbikesim.game.model.Station;
 import es.cbikesim.game.util.strategies.CriticalStrategy;
@@ -13,12 +14,14 @@ public class ClientGenerator extends Thread {
     private boolean alive;
     private int waitTime;
 
+    private Game.Presenter context;
     private Scenario scenario;
     private Strategy strategy;
 
-    public ClientGenerator(Scenario scenario, int waitTime){
-        this.waitTime = waitTime;
+    public ClientGenerator(Scenario scenario, Game.Presenter context, int waitTime){
         this.scenario = scenario;
+        this.context = context;
+        this.waitTime = waitTime;
         this.strategy = new RandomStrategy(scenario);
     }
 
