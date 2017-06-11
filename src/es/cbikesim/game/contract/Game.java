@@ -7,7 +7,6 @@ import es.cbikesim.game.view.VehicleView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 public interface Game {
 
@@ -19,6 +18,7 @@ public interface Game {
         Pane getUtilityPane();
         Text getTopTitle();
         Text getBottomTitle();
+        javafx.scene.image.ImageView getClientHasArrivedIcon();
     }
 
     interface Presenter {
