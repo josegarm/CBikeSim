@@ -1,4 +1,4 @@
-package es.cbikesim.game.usecase;
+package es.cbikesim.game.usecase.client;
 
 
 import es.cbikesim.game.model.Bike;
@@ -25,13 +25,19 @@ public class ClientPickUpBikeUseCase implements Command{
 
     @Override
     public void execute() throws UseCaseException {
-        Station from = client.getFrom();
+        validate();
 
+        Station from = client.getFrom();
         client.setBike(bike);
         from.getAvailableBikeList().remove(bike);
 
-
         from.getClientWaitingToPickUpList().remove(client);
         scenario.getClientsInTransit().add(client);
+    }
+
+    private void validate() throws UseCaseException{
+        if(client == null)      throw new UseCaseException("Error: ClientPickUpBikeUseCase -> Client is null");
+        if(bike == null)        throw new UseCaseException("Error: ClientPickUpBikeUseCase -> Bike is null");
+        if(scenario == null)    throw new UseCaseException("Error: ClientPickUpBikeUseCase -> Scenario is null");
     }
 }

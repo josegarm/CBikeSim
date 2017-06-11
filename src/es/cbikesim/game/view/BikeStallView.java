@@ -5,10 +5,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 
 public class BikeStallView extends ImageView{
@@ -45,7 +42,30 @@ public class BikeStallView extends ImageView{
                     }
                 }
         );
+    }
 
+    public BikeStallView(Image image, Game.Presenter context, boolean dropEvents){
+        this(image);
+        this.context = context;
+        if(dropEvents){
+            super.setOnDragOver(new EventHandler<DragEvent>() {
+                @Override
+                public void handle(DragEvent event) {
+                    if (event.getGestureSource() != super.getClass() && event.getDragboard().hasString()) {
+                    /* allow for both copying and moving, whatever user chooses */
+                        event.acceptTransferModes(TransferMode.ANY);
+                    }
+
+                    event.consume();
+                }
+            });
+
+            super.setOnDragDropped(event -> {
+                //call method use case for client pick up bike
+                //context.clientPicksUpBike(super.getId(), event.getDragboard().getString());
+                System.out.println("Hola");
+            });
+        }
     }
 
     public BikeStallView(Image image){
@@ -56,6 +76,5 @@ public class BikeStallView extends ImageView{
 
         GridPane.setHalignment(this, HPos.CENTER);
     }
-
 
 }

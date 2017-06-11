@@ -5,18 +5,21 @@ import java.util.List;
 
 public class Vehicle {
 
-    private final int id;
+    private final String id;
+    private final int maxCapacity;
     private Station from;
     private Station to;
 
     private List<Bike> bikeList;
 
-    public Vehicle(int id){
+    public Vehicle(String id, int maxCapacity, Station from) {
         this.id = id;
+        this.maxCapacity = maxCapacity;
+        this.from = from;
         this.bikeList = new ArrayList<>();
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -38,6 +41,10 @@ public class Vehicle {
 
     public void setFrom(Station from) {
         this.from = from;
+    }
+
+    public int getMaxCapacity(){
+        return this.maxCapacity;
     }
 
     @Override

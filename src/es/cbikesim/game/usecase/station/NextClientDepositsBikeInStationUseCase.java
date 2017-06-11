@@ -1,4 +1,4 @@
-package es.cbikesim.game.usecase;
+package es.cbikesim.game.usecase.station;
 
 
 import es.cbikesim.game.model.Client;

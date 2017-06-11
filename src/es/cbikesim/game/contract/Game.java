@@ -10,13 +10,12 @@ public interface Game {
 
     interface View {
         void start();
-        GridPane getBikePane();
-        GridPane getClientPane();
+        GridPane getTopPane();
+        GridPane getBottomPane();
         Pane getMapPane();
         Pane getUtilityPane();
         Text getTopTitle();
         Text getBottomTitle();
-        Pane getBottomPane();
     }
 
     interface Presenter {
@@ -24,6 +23,7 @@ public interface Game {
         void playSelect();
         void createScenario(int difficulty, int time, String numBikes, int carCapacity);
         void showDataFromStation(String id);
+        void showDataFromVehicle(String id);
         void clientPicksUpBike(String idClient, String idBike);
         void clientDepositsBike(String idClient, ClientView clientView);
         void setView(Game.View view);
