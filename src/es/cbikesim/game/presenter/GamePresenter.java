@@ -19,12 +19,15 @@ import es.cbikesim.lib.pattern.Command;
 import es.cbikesim.lib.pattern.Invoker;
 import es.cbikesim.lib.util.Point;
 import es.cbikesim.lib.util.Timer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 public class GamePresenter implements Game.Presenter {
 
@@ -122,28 +125,14 @@ public class GamePresenter implements Game.Presenter {
 
     @Override
     public void notifyNewClient(Client client) {
-        ImageView stationClient = view.getClientHasArrivedIcon();
-        Platform.runLater(()->{
-            stationClient.setLayoutX(client.getFrom().getPosition().getX()-20);
-            stationClient.setLayoutY(client.getFrom().getPosition().getY()-60);
-            stationClient.setVisible(true);
-            stationClient.toFront();
-            try {
-                wait(1000);
-                stationClient.setVisible(false);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        ImageView newClientNotification = new ClientNotificationView(client.getFrom().getPosition());
+
+        Platform.runLater(() -> {
+            view.getMapPane().getChildren().add(newClientNotification);
+            new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+                view.getMapPane().getChildren().remove(newClientNotification);
+            })).play();
         });
-
-
-
-        //ponemos icono en la estacion client.getFrom()
-        //y se elimina al pasar 1 segundo o asi
-        //Como se modifica la vista desde un thread deberas usar
-        // Platform.runLater(() -> {
-        //  metodo que quieras usar
-        // });
     }
 
     @Override
@@ -466,7 +455,7 @@ public class GamePresenter implements Game.Presenter {
     }
 
     private void startClientGenerator(){
-        clientGenerator = new ClientGenerator(scenario,this, 3000);
+        clientGenerator = new ClientGenerator(scenario,this, 5000);
         clientGenerator.start();
         CBikeSimState.getInstance().getPrimaryStage().setOnCloseRequest(event -> clientGenerator.cancel());
     }

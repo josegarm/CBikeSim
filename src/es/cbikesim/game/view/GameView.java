@@ -40,8 +40,6 @@ public class GameView implements Game.View {
     private Pane mapPane;
     private ImageView map;
 
-    private ImageView clientArrived;
-
     //STATIONS
     private List<Circle> stations;
 
@@ -89,16 +87,12 @@ public class GameView implements Game.View {
     @Override
     public Pane getMapPane(){ return mapPane; }
 
-    @Override
-    public ImageView getClientHasArrivedIcon(){ return clientArrived; }
-
 
     private Parent createContent(){
         initComponents();
         setSizes();
         addBackground();
         addMap();
-        addStationIcons();
         addComponents();
         presenter.load();
         return root;
@@ -119,7 +113,6 @@ public class GameView implements Game.View {
         mapPane = new Pane();
         topTitle = new Text();
         bottomTitle = new Text();
-        clientArrived = new ImageView();
     }
 
     private void setSizes(){
@@ -162,8 +155,6 @@ public class GameView implements Game.View {
 
         ui.setFitHeight(720.0);
         ui.setFitWidth(1280.0);
-
-        clientArrived.setVisible(false);
 
         mapPane.setLayoutX(23.0);
         mapPane.setLayoutY(27.0);
@@ -226,13 +217,9 @@ public class GameView implements Game.View {
         bottomPane.getChildren().add(bottomTitle);
 
 
-        mapPane.getChildren().addAll(map, clientArrived);
+        mapPane.getChildren().addAll(map);
 
         root.getChildren().addAll(sideBar, ui, mapPane);
-    }
-
-    private void addStationIcons(){
-        clientArrived = new ImageView(new Image(getClass().getResource("/img/client_arrived.png").toExternalForm()));
     }
 
 }

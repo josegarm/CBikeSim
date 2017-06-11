@@ -18,7 +18,6 @@ public interface Game {
         Pane getUtilityPane();
         Text getTopTitle();
         Text getBottomTitle();
-        javafx.scene.image.ImageView getClientHasArrivedIcon();
     }
 
     interface Presenter {

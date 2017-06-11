@@ -11,7 +11,7 @@ import javafx.util.Duration;
 
 public class Timer{
 
-    private Integer STARTTIME;
+    private Integer START_TIME;
     private Timeline timeline;
     private Label timerLabel = new Label();
     private Label timerTitle = new Label();
@@ -20,8 +20,8 @@ public class Timer{
 
 
     public Timer(int seconds){
-        STARTTIME = seconds;
-        timeSeconds  = new SimpleIntegerProperty(STARTTIME);
+        START_TIME = seconds;
+        timeSeconds  = new SimpleIntegerProperty(START_TIME);
         // Bind the timerLabel text property to the timeSeconds property
         timerLabel.textProperty().bind(timeSeconds.asString());
         timerTitle.setText("Time: ");
@@ -38,10 +38,10 @@ public class Timer{
         if (timeline != null) {
             timeline.stop();
         }
-        timeSeconds.set(STARTTIME);
+        timeSeconds.set(START_TIME);
         timeline = new Timeline();
         timeline.getKeyFrames().add(
-                new KeyFrame(Duration.seconds(STARTTIME+1),
+                new KeyFrame(Duration.seconds(START_TIME +1),
                         new KeyValue(timeSeconds, 0)));
         timeline.playFromStart();
     }
