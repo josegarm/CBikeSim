@@ -9,13 +9,14 @@ public class Vehicle {
     private final int maxCapacity;
     private Station from;
     private Station to;
+    private Station at;
 
     private List<Bike> bikeList;
 
     public Vehicle(String id, int maxCapacity, Station at) {
         this.id = id;
         this.maxCapacity = maxCapacity;
-        this.from = at;
+        this.at = at;
         this.bikeList = new ArrayList<>();
     }
 
@@ -44,12 +45,11 @@ public class Vehicle {
     }
 
     public Station getAt() {
-        return from;
+        return at;
     }
 
     public void setAt(Station at) {
-        this.from = at;
-        this.to = null;
+        this.at = at;
     }
 
     public int getMaxCapacity(){

@@ -23,9 +23,11 @@ public class VehicleView extends Rectangle implements Runnable{
     private int waitSecond;
     private PathTransition animation;
 
-    public VehicleView(Point position, String id, Game.Presenter context, Vehicle vehicle){
+    public VehicleView(Point position, String id, Game.Presenter context){
         super(25.0, 25.0);
 
+        super.setX(position.getX());
+        super.setY(position.getY());
         setCenterX(position.getX());
         setCenterY(position.getY());
 
@@ -48,6 +50,7 @@ public class VehicleView extends Rectangle implements Runnable{
         });
 
         super.setOnDragDetected(e -> {
+            context.showDataFromVehicle(id);
             context.setVehicleView(this);
 
             this.setStroke(Color.rgb(255,255,255));
@@ -71,7 +74,6 @@ public class VehicleView extends Rectangle implements Runnable{
     @Override
     public void run() {
         alive = true;
-        super.toFront();
         move();
         context.vehicleArriveStation(super.getId(), this);
     }

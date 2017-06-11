@@ -20,8 +20,12 @@ public class VehicleArrivesStationUseCase implements Command {
     public void execute() throws UseCaseException {
         validate();
 
-        scenario.getVehiclesInTransit().remove(vehicle);
         vehicle.setAt(vehicle.getTo());
+        vehicle.setTo(null);
+        vehicle.setFrom(null);
+
+        vehicle.getAt().getVehicleList().add(vehicle);
+        scenario.getVehiclesInTransit().remove(vehicle);
     }
 
     private void validate() throws UseCaseException{

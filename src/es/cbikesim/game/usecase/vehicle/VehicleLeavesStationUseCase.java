@@ -24,6 +24,7 @@ public class VehicleLeavesStationUseCase implements Command {
 
         vehicle.setFrom(vehicle.getAt());
         vehicle.setTo(to);
+        vehicle.setAt(null);
 
         vehicle.getFrom().getVehicleList().remove(vehicle);
         scenario.getVehiclesInTransit().add(vehicle);

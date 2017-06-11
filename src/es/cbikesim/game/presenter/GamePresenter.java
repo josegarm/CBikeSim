@@ -119,7 +119,7 @@ public class GamePresenter implements Game.Presenter {
     public void showDataFromVehicle(String id) {
         Vehicle vehicle = getVehicleWith(id);
         selectedVehicle = vehicle;
-        selectedStation = vehicle.getFrom();
+        selectedStation = vehicle.getAt();
         paintVehiclePanel(vehicle);
     }
 
@@ -180,7 +180,7 @@ public class GamePresenter implements Game.Presenter {
         Vehicle vehicle = selectedVehicle;
 
         Invoker invoker = new Invoker();
-        Command vehiclePicksUpBike = new VehiclePickUpBikesUseCase(vehicle,scenario);
+        Command vehiclePicksUpBike = new VehiclePickUpBikesUseCase(vehicle, scenario);
 
         invoker.addCommand(vehiclePicksUpBike);
         try{
@@ -218,6 +218,7 @@ public class GamePresenter implements Game.Presenter {
         invoker.addCommand(vehicleLeavesStation);
         try {
             invoker.invoke();
+            showDataFromVehicle(idVehicle);
             paintVehicleInTransit(vehicle);
         }
         catch (UseCaseException e) { System.err.println(e.getMessage()); }
@@ -234,6 +235,7 @@ public class GamePresenter implements Game.Presenter {
         try {
             invoker.invoke();
             vehicleView.stop();
+
         }
         catch (UseCaseException e) { System.err.println(e.getMessage()); }
     }
@@ -268,8 +270,8 @@ public class GamePresenter implements Game.Presenter {
 
     private void paintVehicle(Vehicle vehicle){
         vehicle.setFrom(vehicle.getAt());
-        Point point = new Point(vehicle.getFrom().getPosition().getX() + 40.0, vehicle.getFrom().getPosition().getY());
-        VehicleView vehicleView = new VehicleView(point, vehicle.getId(), this, vehicle);
+        Point point = new Point(vehicle.getAt().getPosition().getX() + 40.0, vehicle.getAt().getPosition().getY());
+        VehicleView vehicleView = new VehicleView(point, vehicle.getId(), this);
         view.getMapPane().getChildren().add(vehicleView);
     }
 
@@ -286,8 +288,14 @@ public class GamePresenter implements Game.Presenter {
 
     private void paintVehicleInTransit(Vehicle vehicle){
         VehicleView vehicleView = selectedVehicleView;
+        vehicleView.toFront();
 
-        vehicleView.setAnimation(PathAnimationFactory.pathAnimationFactory(vehicle.getFrom().getPosition(), vehicle.getTo().getPosition()));
+        Point secondPoint = vehicle.getFrom().getPosition();
+        Point startPoint = new Point(secondPoint.getX() + 40.00, secondPoint.getY());
+        Point thirdPoint = vehicle.getTo().getPosition();
+        Point endPoint = new Point(thirdPoint.getX() + 40.00, thirdPoint.getY());
+
+        vehicleView.setAnimation(PathAnimationFactory.pathAnimationFactory(startPoint,secondPoint,thirdPoint,endPoint));
         vehicleView.setDuration(calculateDurationVehicle(vehicle));
 
         new Thread(selectedVehicleView).start();
@@ -317,13 +325,17 @@ public class GamePresenter implements Game.Presenter {
     }
 
     private void paintVehiclePanel(Vehicle vehicle){
-        paintStationBikePanel(vehicle.getFrom());
+        paintStationBikePanel(vehicle.getAt());
         paintVehicleBikePanel(vehicle);
     }
 
     private void paintStationBikePanel(Station station){
-        view.getTopTitle().setText(station.getId() + " - Bikes Status");
+        view.getTopTitle().setText("");
         view.getTopPane().getChildren().clear();
+
+        if(station == null) return;
+
+        view.getTopTitle().setText(station.getId() + " - Bikes Status");
 
         int count = 0;
         int rows = view.getTopPane().getRowConstraints().size();
@@ -346,8 +358,12 @@ public class GamePresenter implements Game.Presenter {
     }
 
     private void paintStationClientPanel(Station station){
-        view.getBottomTitle().setText("Clients Waiting");
+        view.getBottomTitle().setText("");
         view.getBottomPane().getChildren().clear();
+
+        if(station == null) return;
+
+        view.getBottomTitle().setText("Clients Waiting");
 
         int count = 0;
         int rows = view.getBottomPane().getRowConstraints().size();
@@ -370,8 +386,12 @@ public class GamePresenter implements Game.Presenter {
     }
 
     private void paintVehicleBikePanel(Vehicle vehicle){
-        view.getBottomTitle().setText("Vehicle Bikes");
+        view.getBottomTitle().setText("");
         view.getBottomPane().getChildren().clear();
+
+        if(vehicle == null) return;
+
+        view.getBottomTitle().setText("Vehicle Bikes");
 
         int count = 0;
         int rows = view.getTopPane().getRowConstraints().size();

@@ -24,10 +24,10 @@ public class VehiclePickUpBikesUseCase implements Command{
     public void execute() throws UseCaseException {
         validate();
 
-        Station currentStation = vehicle.getFrom();
+        Station at = vehicle.getAt();
 
-        if(currentStation.getAvailableBikeList().size() >= 1){
-            vehicle.getBikeList().add(currentStation.getAvailableBikeList().remove(0));
+        if(at.getAvailableBikeList().size() >= 1){
+            vehicle.getBikeList().add(at.getAvailableBikeList().remove(0));
         }
     }
 
