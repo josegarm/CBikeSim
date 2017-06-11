@@ -39,8 +39,6 @@ public class StationView extends Circle{
         });
 
         super.setOnDragDropped(event -> {
-            //call method move car
-            System.out.println("Car to move to new station");
             context.vehicleToAnotherStation(station);
         });
 
