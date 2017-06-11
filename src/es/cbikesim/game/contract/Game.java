@@ -31,7 +31,8 @@ public interface Game {
         void clientDepositsBike(String idClient, ClientView clientView);
         void vehiclePicksUpBike(String idBike);
         void vehicleDepositsBike(String idBike);
-        void vehicleToAnotherStation(Station to);
+        void moveVehicleToAnotherStation(String idVehicle, String idStationTarget);
+        void vehicleArriveStation(String idVehicle, VehicleView vehicleView);
         void setVehicleView(VehicleView vehicleView);
         void setView(Game.View view);
 

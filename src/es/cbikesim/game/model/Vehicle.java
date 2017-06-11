@@ -17,7 +17,6 @@ public class Vehicle {
         this.id = id;
         this.maxCapacity = maxCapacity;
         this.at = at;
-        this.from = at;
         this.bikeList = new ArrayList<>();
     }
 
@@ -45,9 +44,13 @@ public class Vehicle {
         this.from = from;
     }
 
-    public Station getAt() { return at; }
+    public Station getAt() {
+        return at;
+    }
 
-    public void setAt(Station at) { this.at = at; }
+    public void setAt(Station at) {
+        this.at = at;
+    }
 
     public int getMaxCapacity(){
         return this.maxCapacity;

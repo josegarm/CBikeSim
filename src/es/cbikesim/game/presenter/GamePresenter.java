@@ -9,7 +9,9 @@ import es.cbikesim.game.contract.Game;
 import es.cbikesim.game.model.*;
 import es.cbikesim.game.usecase.client.ClientDepositBikeUseCase;
 import es.cbikesim.game.usecase.client.ClientPickUpBikeUseCase;
+import es.cbikesim.game.usecase.vehicle.VehicleArrivesStationUseCase;
 import es.cbikesim.game.usecase.vehicle.VehicleDepositBikeUseCase;
+import es.cbikesim.game.usecase.vehicle.VehicleLeavesStationUseCase;
 import es.cbikesim.game.usecase.vehicle.VehiclePickUpBikesUseCase;
 import es.cbikesim.game.util.ClientGenerator;
 import es.cbikesim.game.util.factories.PathAnimationFactory;
@@ -43,14 +45,12 @@ public class GamePresenter implements Game.Presenter {
     private MediaPlayer mp, mpSelect;
     private Timer timer;
 
-    private Invoker invoker;
     private ClientGenerator clientGenerator;
 
     private int difficulty;
 
     public GamePresenter(){
         scenario = new Scenario();
-        invoker = new Invoker();
     }
 
     @Override
@@ -58,6 +58,7 @@ public class GamePresenter implements Game.Presenter {
         this.difficulty = difficulty;
         prepareTimer(time);
 
+        Invoker invoker = new Invoker();
         Command createStations = new CreateStations(scenario);
         Command generateVehicles, generateBikes;
 
@@ -83,7 +84,6 @@ public class GamePresenter implements Game.Presenter {
                 generateBikes = new GenerateNormalStationBikes(scenario);
         }
 
-        invoker.clear();
         invoker.addCommand(createStations);
         invoker.addCommand(generateVehicles);
         invoker.addCommand(generateBikes);
@@ -117,9 +117,9 @@ public class GamePresenter implements Game.Presenter {
 
     @Override
     public void showDataFromVehicle(String id) {
-        Vehicle vehicle = getSelectedVehicleWith(id);
+        Vehicle vehicle = getVehicleWith(id);
         selectedVehicle = vehicle;
-        selectedStation = vehicle.getFrom();
+        selectedStation = vehicle.getAt();
         paintVehiclePanel(vehicle);
     }
 
@@ -140,9 +140,9 @@ public class GamePresenter implements Game.Presenter {
         Client client = getClientWith(idClient);
         Bike bike = getBikeWith(idBike);
 
+        Invoker invoker = new Invoker();
         Command clientPicksUpBike = new ClientPickUpBikeUseCase(client, bike, scenario);
 
-        invoker.clear();
         invoker.addCommand(clientPicksUpBike);
         try {
             invoker.invoke();
@@ -156,9 +156,9 @@ public class GamePresenter implements Game.Presenter {
     public void clientDepositsBike(String idClient, ClientView clientView) {
         Client client = getClientWith(idClient);
 
+        Invoker invoker = new Invoker();
         Command clientDepositBike = new ClientDepositBikeUseCase(client, scenario);
 
-        invoker.clear();
         invoker.addCommand(clientDepositBike);
         try {
             invoker.invoke();
@@ -179,15 +179,13 @@ public class GamePresenter implements Game.Presenter {
     public void vehiclePicksUpBike(String idBike) {
         Vehicle vehicle = selectedVehicle;
 
-        Command vehiclePicksUpBike = new VehiclePickUpBikesUseCase(vehicle,scenario);
+        Invoker invoker = new Invoker();
+        Command vehiclePicksUpBike = new VehiclePickUpBikesUseCase(vehicle, scenario);
 
-        invoker.clear();
         invoker.addCommand(vehiclePicksUpBike);
         try{
             invoker.invoke();
-            paintVehicleBikePanel(vehicle);
-            paintStationBikePanel(selectedStation);
-
+            paintVehiclePanel(vehicle);
         } catch (UseCaseException e) {
             System.err.println(e.getMessage());
         }
@@ -197,36 +195,49 @@ public class GamePresenter implements Game.Presenter {
     public void vehicleDepositsBike(String idBike) {
         Vehicle vehicle = selectedVehicle;
 
+        Invoker invoker = new Invoker();
         Command vehiclePicksUpBike = new VehicleDepositBikeUseCase(vehicle,scenario);
 
-        invoker.clear();
         invoker.addCommand(vehiclePicksUpBike);
         try{
             invoker.invoke();
-            paintVehicleBikePanel(vehicle);
-            paintStationBikePanel(selectedStation);
-
+            paintVehiclePanel(vehicle);
         } catch (UseCaseException e) {
             System.err.println(e.getMessage());
         }
     }
 
     @Override
-    public void vehicleToAnotherStation(Station to){
-        VehicleView vehicleView = selectedVehicleView;
-        removeVehicleFromStation( vehicleView.getVehicle().getAt(), vehicleView.getVehicle());
-        try{
-            Point pointEndStation = new Point(to.getPosition().getX()+30, to.getPosition().getY());
-            vehicleView.setAnimation(PathAnimationFactory.pathAnimationFactory(vehicleView.getVehicle().getAt().getPosition(), pointEndStation));
-            vehicleView.setDuration(calculateDurationVehicle(vehicleView.getVehicle().getAt(), to));
-            new Thread(selectedVehicleView).start();
-        }catch (Exception e){
-            System.out.println(e.toString());
-        }
-        addVehicleToStation(to, vehicleView.getVehicle());
-        vehicleView.getVehicle().setAt(to);
-        vehicleView.getVehicle().setFrom(to);
+    public void moveVehicleToAnotherStation(String idVehicle, String idStationTarget){
+        Vehicle vehicle = getVehicleWith(idVehicle);
+        Station to = getStationWith(idStationTarget);
 
+        Invoker invoker = new Invoker();
+        Command vehicleLeavesStation = new VehicleLeavesStationUseCase(vehicle, to, scenario);
+
+        invoker.addCommand(vehicleLeavesStation);
+        try {
+            invoker.invoke();
+            showDataFromVehicle(idVehicle);
+            paintVehicleInTransit(vehicle);
+        }
+        catch (UseCaseException e) { System.err.println(e.getMessage()); }
+    }
+
+    @Override
+    public void vehicleArriveStation(String idVehicle, VehicleView vehicleView) {
+        Vehicle vehicle = getVehicleWith(idVehicle);
+
+        Invoker invoker = new Invoker();
+        Command vehicleArrivesStation = new VehicleArrivesStationUseCase(vehicle, scenario);
+
+        invoker.addCommand(vehicleArrivesStation);
+        try {
+            invoker.invoke();
+            vehicleView.stop();
+
+        }
+        catch (UseCaseException e) { System.err.println(e.getMessage()); }
     }
 
     @Override
@@ -253,21 +264,21 @@ public class GamePresenter implements Game.Presenter {
     }
 
     private void paintStation(Station station){
-        StationView stationView = new StationView(station.getPosition(), station.getId(),this, station);
+        StationView stationView = new StationView(station.getPosition(), station.getId(),this);
         view.getMapPane().getChildren().add(stationView);
     }
 
     private void paintVehicle(Vehicle vehicle){
         vehicle.setFrom(vehicle.getAt());
-        Point point = new Point(vehicle.getFrom().getPosition().getX() + 40.0, vehicle.getFrom().getPosition().getY());
-        VehicleView vehicleView = new VehicleView(point, vehicle.getId(), this, vehicle);
+        Point point = new Point(vehicle.getAt().getPosition().getX() + 40.0, vehicle.getAt().getPosition().getY());
+        VehicleView vehicleView = new VehicleView(point, vehicle.getId(), this);
         view.getMapPane().getChildren().add(vehicleView);
     }
 
     private void paintClientInTransit(Client client){
         ClientView clientView = new ClientView(client.getFrom().getPosition(), client.getId(),this);
         view.getMapPane().getChildren().add(clientView);
-        int seconds = calculateDuration(client);
+        int seconds = calculateDurationClient(client);
 
         clientView.setAnimation(PathAnimationFactory.pathAnimationFactory(client.getFrom().getPosition(), client.getTo().getPosition()));
         clientView.setDuration(seconds);
@@ -275,21 +286,22 @@ public class GamePresenter implements Game.Presenter {
         new Thread(clientView).start();
     }
 
-    private void removeVehicleFromStation(Station station, Vehicle vehicle){
-        try{
-            getStation(station.getId()).getVehicleList().remove(vehicle);
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
+    private void paintVehicleInTransit(Vehicle vehicle){
+        VehicleView vehicleView = selectedVehicleView;
+        vehicleView.toFront();
 
+        Point secondPoint = vehicle.getFrom().getPosition();
+        Point startPoint = new Point(secondPoint.getX() + 40.00, secondPoint.getY());
+        Point thirdPoint = vehicle.getTo().getPosition();
+        Point endPoint = new Point(thirdPoint.getX() + 40.00, thirdPoint.getY());
+
+        vehicleView.setAnimation(PathAnimationFactory.pathAnimationFactory(startPoint,secondPoint,thirdPoint,endPoint));
+        vehicleView.setDuration(calculateDurationVehicle(vehicle));
+
+        new Thread(selectedVehicleView).start();
     }
 
-    private void addVehicleToStation(Station station, Vehicle vehicle){
-        getStation(station.getId()).getVehicleList().add(vehicle);
-    }
-
-
-    private int calculateDuration(Client client){
+    private int calculateDurationClient(Client client){
         int duration;
         double distance =
                 Math.abs(client.getTo().getPosition().getX() - client.getFrom().getPosition().getX()) +
@@ -298,10 +310,11 @@ public class GamePresenter implements Game.Presenter {
         return duration;
     }
 
-    private int calculateDurationVehicle(Station at, Station to){
+    private int calculateDurationVehicle(Vehicle vehicle){
         int duration;
         double distance =
-                Math.abs(to.getPosition().getX() - at.getPosition().getX()) + Math.abs(to.getPosition().getY() - at.getPosition().getY());
+                Math.abs(vehicle.getTo().getPosition().getX() - vehicle.getFrom().getPosition().getX()) +
+                        Math.abs(vehicle.getTo().getPosition().getY() - vehicle.getFrom().getPosition().getY());
         duration = (int) distance/45;
         return duration;
     }
@@ -312,13 +325,17 @@ public class GamePresenter implements Game.Presenter {
     }
 
     private void paintVehiclePanel(Vehicle vehicle){
+        paintStationBikePanel(vehicle.getAt());
         paintVehicleBikePanel(vehicle);
-        paintStationBikePanel(vehicle.getFrom());
     }
 
     private void paintStationBikePanel(Station station){
-        view.getTopTitle().setText(station.getId() + " - Bikes Status");
+        view.getTopTitle().setText("");
         view.getTopPane().getChildren().clear();
+
+        if(station == null) return;
+
+        view.getTopTitle().setText(station.getId() + " - Bikes Status");
 
         int count = 0;
         int rows = view.getTopPane().getRowConstraints().size();
@@ -341,8 +358,12 @@ public class GamePresenter implements Game.Presenter {
     }
 
     private void paintStationClientPanel(Station station){
-        view.getBottomTitle().setText("Clients Waiting");
+        view.getBottomTitle().setText("");
         view.getBottomPane().getChildren().clear();
+
+        if(station == null) return;
+
+        view.getBottomTitle().setText("Clients Waiting");
 
         int count = 0;
         int rows = view.getBottomPane().getRowConstraints().size();
@@ -365,8 +386,12 @@ public class GamePresenter implements Game.Presenter {
     }
 
     private void paintVehicleBikePanel(Vehicle vehicle){
-        view.getBottomTitle().setText("Vehicle Bikes");
+        view.getBottomTitle().setText("");
         view.getBottomPane().getChildren().clear();
+
+        if(vehicle == null) return;
+
+        view.getBottomTitle().setText("Vehicle Bikes");
 
         int count = 0;
         int rows = view.getTopPane().getRowConstraints().size();
@@ -395,7 +420,10 @@ public class GamePresenter implements Game.Presenter {
         return null;
     }
 
-    private Vehicle getSelectedVehicleWith(String id){
+    private Vehicle getVehicleWith(String id){
+        for(Vehicle vehicle : scenario.getVehiclesInTransit()){
+            if (id.equals(vehicle.getId())) return vehicle;
+        }
         for(Station station : scenario.getStationList()){
             for(Vehicle vehicle : station.getVehicleList()){
                 if (id.equals(vehicle.getId())) return vehicle;
@@ -428,7 +456,7 @@ public class GamePresenter implements Game.Presenter {
         return null;
     }
 
-    public Station getStation(String id){
+    public Station getStationWith(String id){
         for(Station station : scenario.getStationList()){
             if(station.getId().equals(id)) return station;
         }
