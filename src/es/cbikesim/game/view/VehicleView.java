@@ -1,8 +1,15 @@
 package es.cbikesim.game.view;
 
 import es.cbikesim.game.contract.Game;
+import es.cbikesim.game.model.Vehicle;
 import es.cbikesim.lib.util.Point;
 import javafx.animation.PathTransition;
+import javafx.event.EventHandler;
+import javafx.scene.image.Image;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -15,8 +22,9 @@ public class VehicleView extends Rectangle implements Runnable{
     private boolean alive;
     private int waitSecond;
     private PathTransition animation;
+    private Vehicle vehicle;
 
-    public VehicleView(Point position, String id, Game.Presenter context){
+    public VehicleView(Point position, String id, Game.Presenter context, Vehicle vehicle){
         super(25.0, 25.0);
 
         setCenterX(position.getX());
@@ -32,12 +40,42 @@ public class VehicleView extends Rectangle implements Runnable{
         super.setOnMouseClicked(e -> {
             context.playSelect();
             context.showDataFromVehicle(id);
+            context.setVehicleView(this);
         });
 
         super.setOnMouseEntered(e -> {
             //method to show path client would take in between stations
 
         });
+
+
+        super.setOnDragDetected(
+                new EventHandler<MouseEvent>() {
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        VehicleView.super.setStroke(Color.rgb(255,255,255));
+                        Dragboard db = VehicleView.super.startDragAndDrop(TransferMode.ANY);
+                        db.setDragView(new Image(getClass().getResource("/img/pointer.png").toExternalForm()));
+                        db.setDragViewOffsetY(40);
+                        db.setDragViewOffsetX(15);
+
+                        ClipboardContent content = new ClipboardContent();
+                        content.putString(VehicleView.super.getId());
+                        db.setContent(content);
+
+                        event.consume();
+                    }
+                }
+        );
+
+        super.setOnDragDone(e ->{
+            super.setStroke(Color.rgb(0, 150, 73));
+        });
+
+        this.vehicle = vehicle;
+
+
     }
 
     @Override
@@ -67,6 +105,10 @@ public class VehicleView extends Rectangle implements Runnable{
     public void setDuration(int seconds){
         this.waitSecond = seconds;
         this.animation.setDuration(Duration.seconds(waitSecond));
+    }
+
+    public Vehicle getVehicle(){
+        return vehicle;
     }
 
     public void stop() {

@@ -13,14 +13,14 @@ import es.cbikesim.lib.pattern.Command;
 public class VehiclePickUpBikesUseCase implements Command{
 
     private Vehicle vehicle;
-    private Station to;
-    private int bikesToPickUp;
+    //private Station to;
+    //private int bikesToPickUp;
     private Scenario scenario;
 
-    public VehiclePickUpBikesUseCase(Vehicle vehicle, Station to, int bikesToPickUp, Scenario scenario) {
+    public VehiclePickUpBikesUseCase(Vehicle vehicle, Scenario scenario) {
         this.vehicle = vehicle;
-        this.to = to;
-        this.bikesToPickUp = bikesToPickUp;
+        //this.to = to;
+        //this.bikesToPickUp = bikesToPickUp;
         this.scenario = scenario;
     }
 
@@ -28,13 +28,14 @@ public class VehiclePickUpBikesUseCase implements Command{
     public void execute() throws UseCaseException {
         Station currentStation = vehicle.getFrom();
 
-        if(currentStation.getAvailableBikeList().size() - bikesToPickUp >= 0){
-            for ( ; bikesToPickUp > 0; bikesToPickUp-- ){
-                vehicle.getBikeList().add(currentStation.getAvailableBikeList().remove(0));
-            }
+        if(currentStation.getAvailableBikeList().size() >= 1){
+            vehicle.getBikeList().add(currentStation.getAvailableBikeList().remove(0));
+
+            /**
             vehicle.setTo(to);
             currentStation.getVehicleList().remove(vehicle);
             scenario.getVehiclesInTransit().add(vehicle);
+             **/
         }
     }
 }

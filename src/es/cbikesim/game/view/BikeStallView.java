@@ -68,10 +68,12 @@ public class BikeStallView extends ImageView{
         });
 
         super.setOnDragDropped(event -> {
-            //call method use case for client pick up bike
-            //context.clientPicksUpBike(super.getId(), event.getDragboard().getString());
-            if (type == VEHICLE) System.out.println("de estacion a vehiculo");
-            else System.out.println("vehiculo a estacion");
+            if (type == VEHICLE){
+                context.vehiclePicksUpBike(event.getDragboard().getString());
+            }
+            else{
+                context.vehicleDepositsBike(event.getDragboard().getString());
+            }
         });
     }
 
