@@ -1,13 +1,19 @@
 package es.cbikesim.game.view;
 
 import es.cbikesim.game.contract.Game;
+import es.cbikesim.game.model.Station;
 import es.cbikesim.lib.util.Point;
+import javafx.event.EventHandler;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 public class StationView extends Circle{
 
-    public StationView(Point position, String id, Game.Presenter context){
+    Station station;
+
+    public StationView(Point position, String id, Game.Presenter context, Station station){
         super(position.getX(), position.getY(),20.0);
 
         super.setId(id);
@@ -19,6 +25,26 @@ public class StationView extends Circle{
             context.playSelect();
             context.showDataFromStation(id);
         });
+
+        super.setOnDragOver(new EventHandler<DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                if (event.getGestureSource() != super.getClass() && event.getDragboard().hasString()) {
+                    /* allow for both copying and moving, whatever user chooses */
+                    event.acceptTransferModes(TransferMode.ANY);
+                }
+
+                event.consume();
+            }
+        });
+
+        super.setOnDragDropped(event -> {
+            //call method move car
+            System.out.println("Car to move to new station");
+            context.vehicleToAnotherStation(station);
+        });
+
+        this.station = station;
     }
 
 }

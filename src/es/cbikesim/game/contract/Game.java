@@ -1,5 +1,6 @@
 package es.cbikesim.game.contract;
 
+import es.cbikesim.game.model.Station;
 import es.cbikesim.game.view.ClientView;
 import es.cbikesim.game.view.VehicleView;
 import javafx.scene.layout.GridPane;
@@ -29,6 +30,8 @@ public interface Game {
         void clientDepositsBike(String idClient, ClientView clientView);
         void vehiclePicksUpBike(String idBike);
         void vehicleDepositsBike(String idBike);
+        void vehicleToAnotherStation(Station to);
+        void setVehicleView(VehicleView vehicleView);
         void setView(Game.View view);
 
     }

@@ -34,6 +34,7 @@ public class GamePresenter implements Game.Presenter {
     private Scenario scenario;
     private Station selectedStation;
     private Vehicle selectedVehicle;
+    private VehicleView selectedVehicleView;
 
     private MediaPlayer mp, mpSelect;
     private Timer timer;
@@ -194,6 +195,31 @@ public class GamePresenter implements Game.Presenter {
         }
     }
 
+    @Override
+    public void vehicleToAnotherStation(Station to){
+        VehicleView vehicleView = selectedVehicleView;
+        removeVehicleFromStation( vehicleView.getVehicle().getAt(), vehicleView.getVehicle());
+        try{
+            Point pointEndStation = new Point(to.getPosition().getX()+30, to.getPosition().getY());
+            vehicleView.setAnimation(PathAnimationFactory.pathAnimationFactory(vehicleView.getVehicle().getAt().getPosition(), pointEndStation));
+            vehicleView.setDuration(calculateDurationVehicle(vehicleView.getVehicle().getAt(), to));
+            new Thread(selectedVehicleView).start();
+        }catch (Exception e){
+            System.out.println(e.toString());
+        }
+        addVehicleToStation(to, vehicleView.getVehicle());
+        vehicleView.getVehicle().setAt(to);
+        vehicleView.getVehicle().setFrom(to);
+
+    }
+
+    @Override
+    public void setVehicleView(VehicleView vehicleView) {
+        selectedVehicleView = vehicleView;
+    }
+
+
+
 
     @Override
     public void setView(Game.View view) {
@@ -211,13 +237,14 @@ public class GamePresenter implements Game.Presenter {
     }
 
     private void paintStation(Station station){
-        StationView stationView = new StationView(station.getPosition(), station.getId(),this);
+        StationView stationView = new StationView(station.getPosition(), station.getId(),this, station);
         view.getMapPane().getChildren().add(stationView);
     }
 
     private void paintVehicle(Vehicle vehicle){
+        vehicle.setFrom(vehicle.getAt());
         Point point = new Point(vehicle.getFrom().getPosition().getX() + 40.0, vehicle.getFrom().getPosition().getY());
-        VehicleView vehicleView = new VehicleView(point, vehicle.getId(), this);
+        VehicleView vehicleView = new VehicleView(point, vehicle.getId(), this, vehicle);
         view.getMapPane().getChildren().add(vehicleView);
     }
 
@@ -232,12 +259,34 @@ public class GamePresenter implements Game.Presenter {
         new Thread(clientView).start();
     }
 
+    private void removeVehicleFromStation(Station station, Vehicle vehicle){
+        try{
+            getStation(station.getId()).getVehicleList().remove(vehicle);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    private void addVehicleToStation(Station station, Vehicle vehicle){
+        getStation(station.getId()).getVehicleList().add(vehicle);
+    }
+
+
     private int calculateDuration(Client client){
         int duration;
         double distance =
                 Math.abs(client.getTo().getPosition().getX() - client.getFrom().getPosition().getX()) +
                 Math.abs(client.getTo().getPosition().getY() - client.getFrom().getPosition().getY());
         duration = (int) distance/35;
+        return duration;
+    }
+
+    private int calculateDurationVehicle(Station at, Station to){
+        int duration;
+        double distance =
+                Math.abs(to.getPosition().getX() - at.getPosition().getX()) + Math.abs(to.getPosition().getY() - at.getPosition().getY());
+        duration = (int) distance/45;
         return duration;
     }
 
@@ -360,6 +409,14 @@ public class GamePresenter implements Game.Presenter {
             if(bike.getId().equals(id)) return bike;
         }
         // throw error
+        return null;
+    }
+
+    public Station getStation(String id){
+        for(Station station : scenario.getStationList()){
+            if(station.getId().equals(id)) return station;
+        }
+        //throw error
         return null;
     }
 
