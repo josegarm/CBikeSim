@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.util.Random;
 
@@ -37,7 +38,6 @@ public class MainMenuView implements MainMenu.View {
     public void start() {
         Stage primaryStage = CBikeSimState.getInstance().getPrimaryStage();
         Scene scene = new Scene(createContent());
-
         primaryStage.setTitle("CBikeSim Menu");
         primaryStage.setScene(scene);
         primaryStage.show();

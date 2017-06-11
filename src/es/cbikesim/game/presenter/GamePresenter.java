@@ -6,6 +6,7 @@ import es.cbikesim.game.command.GenerateEasyStationBikes;
 import es.cbikesim.game.command.GenerateNormalStationBikes;
 import es.cbikesim.game.command.GenerateVehicles;
 import es.cbikesim.game.contract.Game;
+import es.cbikesim.game.gameMenu.GameMenuView;
 import es.cbikesim.game.model.*;
 import es.cbikesim.game.usecase.client.ClientDepositBikeUseCase;
 import es.cbikesim.game.usecase.client.ClientPickUpBikeUseCase;
@@ -29,6 +30,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public class GamePresenter implements Game.Presenter {
@@ -89,6 +92,7 @@ public class GamePresenter implements Game.Presenter {
         invoker.addCommand(generateBikes);
         try { invoker.invoke(); }
         catch (UseCaseException e) { e.printStackTrace(); }
+
     }
 
     @Override
@@ -96,6 +100,7 @@ public class GamePresenter implements Game.Presenter {
         prepareMusic();
         paintMap();
         timerStart();
+        addPause();
         startClientGenerator();
         if(CBikeSimState.getInstance().getAudio()) mp.play();
     }
@@ -500,5 +505,21 @@ public class GamePresenter implements Game.Presenter {
         );
 
     }
+
+    private void addPause(){
+        ImageView play_pause = new ImageView(new Image(getClass().getResource("/img/pause-play-button.png").toExternalForm()));
+        play_pause.setLayoutX(10);
+        play_pause.setLayoutY(10);
+        view.getMapPane().getChildren().add(play_pause);
+        play_pause.setOnMouseClicked(e -> {
+            try {
+                new GameMenuView(this).start(new Stage(StageStyle.UNDECORATED));
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        });
+    }
+
+
 
 }
