@@ -5,27 +5,37 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 
 public class BikeStallView extends ImageView{
 
-    private Game.Presenter context;
+    public static final int STATION = 0, VEHICLE = 1;
 
-    public BikeStallView(Image image, String id, Game.Presenter context){
-        this(image);
+    private Game.Presenter context;
+    private int type;
+
+    public BikeStallView(Image image, String id, Game.Presenter context, int type, boolean dragEvents, boolean dropEvents){
+        this(image, context, type, dragEvents, dropEvents);
+        super.setId(id);
+    }
+
+    public BikeStallView(Image image, Game.Presenter context, int type, boolean dragEvents, boolean dropEvents){
+        super(image);
+        super.setFitWidth(60.0);
+        super.setFitHeight(50.0);
+        super.setOpacity(0.75);
+
+        GridPane.setHalignment(this, HPos.CENTER);
 
         this.context = context;
-        super.setId(id);
+        this.type = type;
 
-        super.setOnMouseClicked(e -> {
-            context.playSelect();
-            System.out.println(id);
-        });
+        if (dragEvents) startDragEvents();
+        if (dropEvents) startDropEvents();
+    }
 
+    public void startDragEvents(){
         super.setOnDragDetected(
                 new EventHandler<MouseEvent>() {
                     @Override
@@ -39,23 +49,30 @@ public class BikeStallView extends ImageView{
                         content.putString(BikeStallView.super.getId());
                         db.setContent(content);
 
-                        //Change cursor
-                        //getScene().getCursor().DragDropEffects.None;
                         event.consume();
                     }
                 }
         );
-
     }
 
-    public BikeStallView(Image image){
-        super(image);
-        super.setFitWidth(60.0);
-        super.setFitHeight(50.0);
-        super.setOpacity(0.75);
+    public void startDropEvents(){
+        super.setOnDragOver(new EventHandler<DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                if (event.getGestureSource() != super.getClass() && event.getDragboard().hasString()) {
+                    event.acceptTransferModes(TransferMode.ANY);
+                }
 
-        GridPane.setHalignment(this, HPos.CENTER);
+                event.consume();
+            }
+        });
+
+        super.setOnDragDropped(event -> {
+            //call method use case for client pick up bike
+            //context.clientPicksUpBike(super.getId(), event.getDragboard().getString());
+            if (type == VEHICLE) System.out.println("de estacion a vehiculo");
+            else System.out.println("vehiculo a estacion");
+        });
     }
-
 
 }

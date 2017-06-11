@@ -4,24 +4,19 @@ import es.cbikesim.app.CBikeSimState;
 import es.cbikesim.game.command.CreateStations;
 import es.cbikesim.game.command.GenerateEasyStationBikes;
 import es.cbikesim.game.command.GenerateNormalStationBikes;
+import es.cbikesim.game.command.GenerateVehicles;
 import es.cbikesim.game.contract.Game;
-import es.cbikesim.game.model.Bike;
-import es.cbikesim.game.model.Client;
-import es.cbikesim.game.model.Scenario;
-import es.cbikesim.game.model.Station;
-import es.cbikesim.game.usecase.ClientDepositBikeUseCase;
-import es.cbikesim.game.usecase.ClientPickUpBikeUseCase;
+import es.cbikesim.game.model.*;
+import es.cbikesim.game.usecase.client.ClientDepositBikeUseCase;
+import es.cbikesim.game.usecase.client.ClientPickUpBikeUseCase;
 import es.cbikesim.game.util.ClientGenerator;
 import es.cbikesim.game.util.factories.PathAnimationFactory;
-import es.cbikesim.game.view.BikeStallView;
-import es.cbikesim.game.view.ClientInStationView;
-import es.cbikesim.game.view.ClientView;
-import es.cbikesim.game.view.StationView;
+import es.cbikesim.game.view.*;
 import es.cbikesim.lib.exception.UseCaseException;
 import es.cbikesim.lib.pattern.Command;
 import es.cbikesim.lib.pattern.Invoker;
+import es.cbikesim.lib.util.Point;
 import es.cbikesim.lib.util.Timer;
-import javafx.animation.PathTransition;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -36,17 +31,19 @@ public class GamePresenter implements Game.Presenter {
     private Game.View view;
     private Scenario scenario;
     private Station selectedStation;
+    private Vehicle selectedVehicle;
 
     private MediaPlayer mp, mpSelect;
     private Timer timer;
 
-    private Invoker invoker = new Invoker();
+    private Invoker invoker;
     private ClientGenerator clientGenerator;
 
     private int difficulty;
 
     public GamePresenter(){
         scenario = new Scenario();
+        invoker = new Invoker();
     }
 
     @Override
@@ -55,27 +52,33 @@ public class GamePresenter implements Game.Presenter {
         prepareTimer(time);
 
         Command createStations = new CreateStations(scenario);
-        Command generateBikes;
+        Command generateVehicles, generateBikes;
 
         switch (difficulty){
             case EASY:
+                generateVehicles = new GenerateVehicles(scenario, 9);
                 generateBikes = new GenerateEasyStationBikes(scenario);
                 break;
             case NORMAL:
+                generateVehicles = new GenerateVehicles(scenario, 6);
                 generateBikes = new GenerateNormalStationBikes(scenario);
                 break;
             case HARD:
+                generateVehicles = new GenerateVehicles(scenario, 3);
                 generateBikes = new GenerateNormalStationBikes(scenario);
                 break;
             case CUSTOM:
+                generateVehicles = new GenerateVehicles(scenario, carCapacity);
                 generateBikes = new GenerateNormalStationBikes(scenario);
                 break;
             default:
+                generateVehicles = new GenerateVehicles(scenario, 6);
                 generateBikes = new GenerateNormalStationBikes(scenario);
         }
 
         invoker.clear();
         invoker.addCommand(createStations);
+        invoker.addCommand(generateVehicles);
         invoker.addCommand(generateBikes);
         try { invoker.invoke(); }
         catch (UseCaseException e) { e.printStackTrace(); }
@@ -106,6 +109,14 @@ public class GamePresenter implements Game.Presenter {
     }
 
     @Override
+    public void showDataFromVehicle(String id) {
+        Vehicle vehicle = getSelectedVehicleWith(id);
+        selectedVehicle = vehicle;
+        selectedStation = vehicle.getFrom();
+        paintVehiclePanel(vehicle);
+    }
+
+    @Override
     public void clientPicksUpBike(String idClient, String idBike) {
         Client client = getClientWith(idClient);
         Bike bike = getBikeWith(idBike);
@@ -114,11 +125,12 @@ public class GamePresenter implements Game.Presenter {
 
         invoker.clear();
         invoker.addCommand(clientPicksUpBike);
-        try { invoker.invoke(); }
-        catch (UseCaseException e) { e.printStackTrace(); }
-
-        paintStationPanel(selectedStation);
-        paintClientInTransit(client);
+        try {
+            invoker.invoke();
+            paintStationPanel(selectedStation);
+            paintClientInTransit(client);
+        }
+        catch (UseCaseException e) { System.err.println(e.getMessage()); }
     }
 
     @Override
@@ -129,17 +141,19 @@ public class GamePresenter implements Game.Presenter {
 
         invoker.clear();
         invoker.addCommand(clientDepositBike);
-        try { invoker.invoke(); }
-        catch (UseCaseException e) { e.printStackTrace(); }
-
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                view.getMapPane().getChildren().remove(clientView);
+        try {
+            invoker.invoke();
+            if(client.getBike() == null) {
+                Platform.runLater(() -> view.getMapPane().getChildren().remove(clientView));
+                clientView.stop();
             }
-        });
-
-
+            else{
+                Platform.runLater(() ->
+                    clientView.setCenterX(client.getTo().getPosition().getX() - 25.0)
+                );
+            }
+        }
+        catch (UseCaseException e) { System.err.println(e.getMessage()); }
     }
 
 
@@ -152,12 +166,21 @@ public class GamePresenter implements Game.Presenter {
     private void paintMap(){
         for(Station station : scenario.getStationList()){
             paintStation(station);
+            for(Vehicle vehicle : station.getVehicleList()){
+                paintVehicle(vehicle);
+            }
         }
     }
 
     private void paintStation(Station station){
         StationView stationView = new StationView(station.getPosition(), station.getId(),this);
         view.getMapPane().getChildren().add(stationView);
+    }
+
+    private void paintVehicle(Vehicle vehicle){
+        Point point = new Point(vehicle.getFrom().getPosition().getX() + 40.0, vehicle.getFrom().getPosition().getY());
+        VehicleView vehicleView = new VehicleView(point, vehicle.getId(), this);
+        view.getMapPane().getChildren().add(vehicleView);
     }
 
     private void paintClientInTransit(Client client){
@@ -185,13 +208,18 @@ public class GamePresenter implements Game.Presenter {
         paintStationClientPanel(station);
     }
 
+    private void paintVehiclePanel(Vehicle vehicle){
+        paintStationBikePanel(vehicle.getFrom());
+        paintVehicleBikePanel(vehicle);
+    }
+
     private void paintStationBikePanel(Station station){
         view.getTopTitle().setText(station.getId() + " - Bikes Status");
-        view.getBikePane().getChildren().clear();
+        view.getTopPane().getChildren().clear();
 
         int count = 0;
-        int rows = view.getBikePane().getRowConstraints().size();
-        int columns = view.getBikePane().getColumnConstraints().size();
+        int rows = view.getTopPane().getRowConstraints().size();
+        int columns = view.getTopPane().getColumnConstraints().size();
         int numBikes = station.getAvailableBikeList().size();
 
         Image bikeEmptyImage = new Image(getClass().getResource("/img/bike_empty.png").toExternalForm());
@@ -200,9 +228,9 @@ public class GamePresenter implements Game.Presenter {
         for (int row = 0; row < rows; row++){
             for(int column = 0; column < columns && count < station.getMaxCapacity(); column++){
                 if(count < numBikes){
-                    view.getBikePane().add(new BikeStallView(bikeImage, station.getAvailableBikeList().get(count).getId(),this), column, row);
+                    view.getTopPane().add(new BikeStallView(bikeImage, station.getAvailableBikeList().get(count).getId(), this, BikeStallView.STATION, true, false), column, row);
                 } else {
-                    view.getBikePane().add(new BikeStallView(bikeEmptyImage), column, row);
+                    view.getTopPane().add(new BikeStallView(bikeEmptyImage, this, BikeStallView.STATION, false, true), column, row);
                 }
                 count++;
             }
@@ -211,11 +239,11 @@ public class GamePresenter implements Game.Presenter {
 
     private void paintStationClientPanel(Station station){
         view.getBottomTitle().setText("Clients Waiting");
-        view.getClientPane().getChildren().clear();
+        view.getBottomPane().getChildren().clear();
 
         int count = 0;
-        int rows = view.getClientPane().getRowConstraints().size();
-        int columns = view.getClientPane().getColumnConstraints().size();
+        int rows = view.getBottomPane().getRowConstraints().size();
+        int columns = view.getBottomPane().getColumnConstraints().size();
         int numClients = station.getClientWaitingToPickUpList().size();
 
         Image clientEmptyImage = new Image(getClass().getResource("/img/client_empty.png").toExternalForm());
@@ -224,9 +252,33 @@ public class GamePresenter implements Game.Presenter {
         for (int row = 0; row < rows; row++){
             for(int column = 0; column < columns && count < 6; column++){
                 if(count < numClients){
-                    view.getClientPane().add(new ClientInStationView(clientImage, station.getClientWaitingToPickUpList().get(count).getId(),this), column, row);
+                    view.getBottomPane().add(new ClientInStationView(clientImage, station.getClientWaitingToPickUpList().get(count).getId(),this), column, row);
                 } else {
-                    view.getClientPane().add(new ClientInStationView(clientEmptyImage), column, row);
+                    view.getBottomPane().add(new ClientInStationView(clientEmptyImage), column, row);
+                }
+                count++;
+            }
+        }
+    }
+
+    private void paintVehicleBikePanel(Vehicle vehicle){
+        view.getBottomTitle().setText("Vehicle Bikes");
+        view.getBottomPane().getChildren().clear();
+
+        int count = 0;
+        int rows = view.getTopPane().getRowConstraints().size();
+        int columns = view.getTopPane().getColumnConstraints().size();
+        int numBikes = vehicle.getBikeList().size();
+
+        Image bikeEmptyImage = new Image(getClass().getResource("/img/bike_empty.png").toExternalForm());
+        Image bikeImage = new Image(getClass().getResource("/img/bike.png").toExternalForm());
+
+        for (int row = 0; row < rows; row++){
+            for(int column = 0; column < columns && count < vehicle.getMaxCapacity(); column++){
+                if(count < numBikes){
+                    view.getBottomPane().add(new BikeStallView(bikeImage, vehicle.getBikeList().get(count).getId(), this, BikeStallView.VEHICLE, true, false), column, row);
+                } else {
+                    view.getBottomPane().add(new BikeStallView(bikeEmptyImage, this, BikeStallView.VEHICLE, false, true), column, row);
                 }
                 count++;
             }
@@ -236,6 +288,15 @@ public class GamePresenter implements Game.Presenter {
     private Station getSelectedStationWith(String id){
         for(Station station : scenario.getStationList()){
             if(station.getId().equals(id)) return station;
+        }
+        return null;
+    }
+
+    private Vehicle getSelectedVehicleWith(String id){
+        for(Station station : scenario.getStationList()){
+            for(Vehicle vehicle : station.getVehicleList()){
+                if (id.equals(vehicle.getId())) return vehicle;
+            }
         }
         return null;
     }

@@ -30,8 +30,8 @@ public class GameView implements Game.View {
     private Text topTitle;
     private StackPane bottomPane;
     private Text bottomTitle;
-    private GridPane bikeGridPane;
-    private GridPane clientGridPane;
+    private GridPane topGridPane;
+    private GridPane bottomGridPane;
     private ColumnConstraints columnConstraints;
     private RowConstraints rowConstraints;
 
@@ -60,13 +60,13 @@ public class GameView implements Game.View {
     }
 
     @Override
-    public GridPane getBikePane() {
-        return bikeGridPane;
+    public GridPane getTopPane() {
+        return topGridPane;
     }
 
     @Override
-    public GridPane getClientPane() {
-        return clientGridPane;
+    public GridPane getBottomPane() {
+        return bottomGridPane;
     }
 
     @Override
@@ -82,11 +82,6 @@ public class GameView implements Game.View {
     @Override
     public Text getBottomTitle() {
         return bottomTitle;
-    }
-
-    @Override
-    public Pane getBottomPane() {
-        return bottomPane;
     }
 
     @Override
@@ -108,11 +103,11 @@ public class GameView implements Game.View {
         sideBar = new VBox();
         utilityPane = new Pane();
         topPane = new StackPane();
-        bikeGridPane = new GridPane();
+        topGridPane = new GridPane();
         columnConstraints = new ColumnConstraints();
         rowConstraints = new RowConstraints();
         bottomPane = new StackPane();
-        clientGridPane = new GridPane();
+        bottomGridPane = new GridPane();
         hBox = new HBox();
         ui = new ImageView();
         mapPane = new Pane();
@@ -137,9 +132,9 @@ public class GameView implements Game.View {
         topPane.setPrefWidth(232.0);
         topPane.setAlignment(Pos.CENTER);
 
-        bikeGridPane.setPrefHeight(186.0);
-        bikeGridPane.setPrefWidth(232.0);
-        bikeGridPane.setAlignment(Pos.CENTER);
+        topGridPane.setPrefHeight(186.0);
+        topGridPane.setPrefWidth(232.0);
+        topGridPane.setAlignment(Pos.CENTER);
 
         columnConstraints.setHgrow(Priority.SOMETIMES);
         columnConstraints.setMinWidth(10.0);
@@ -152,9 +147,9 @@ public class GameView implements Game.View {
         bottomPane.setPrefHeight(44.0);
         bottomPane.setPrefWidth(232.0);
 
-        clientGridPane.setPrefHeight(175.0);
-        clientGridPane.setPrefWidth(232.0);
-        clientGridPane.setAlignment(Pos.CENTER);
+        bottomGridPane.setPrefHeight(175.0);
+        bottomGridPane.setPrefWidth(232.0);
+        bottomGridPane.setAlignment(Pos.CENTER);
 
         hBox.setPrefHeight(105.0);
         hBox.setPrefWidth(232.0);
@@ -189,23 +184,23 @@ public class GameView implements Game.View {
 
     private void addComponents(){
 
-        bikeGridPane.getColumnConstraints().addAll(
+        topGridPane.getColumnConstraints().addAll(
                 columnConstraints,
                 columnConstraints,
                 columnConstraints
         );
-        bikeGridPane.getRowConstraints().addAll(
+        topGridPane.getRowConstraints().addAll(
                 rowConstraints,
                 rowConstraints,
                 rowConstraints
         );
 
-        clientGridPane.getColumnConstraints().addAll(
+        bottomGridPane.getColumnConstraints().addAll(
                 columnConstraints,
                 columnConstraints,
                 columnConstraints
         );
-        clientGridPane.getRowConstraints().addAll(
+        bottomGridPane.getRowConstraints().addAll(
                 rowConstraints,
                 rowConstraints,
                 rowConstraints
@@ -214,9 +209,9 @@ public class GameView implements Game.View {
         sideBar.getChildren().addAll(
                 utilityPane,
                 topPane,
-                bikeGridPane,
+                topGridPane,
                 bottomPane,
-                clientGridPane,
+                bottomGridPane,
                 hBox
         );
         topPane.getChildren().add(topTitle);

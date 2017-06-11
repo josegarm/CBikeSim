@@ -12,10 +12,10 @@ public class PathAnimationFactory {
 
     public static PathTransition pathAnimationFactory(Point startPosition, Point endPosition){
 
-        int xStart = startPosition.getX();
-        int yStart = startPosition.getY();
-        int xEnd = endPosition.getX();
-        int yEnd = endPosition.getY();
+        double xStart = startPosition.getX();
+        double yStart = startPosition.getY();
+        double xEnd = endPosition.getX();
+        double yEnd = endPosition.getY();
 
         Path calculatedPath = new Path();
 

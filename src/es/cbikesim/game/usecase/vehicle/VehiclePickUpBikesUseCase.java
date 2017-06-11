@@ -1,4 +1,4 @@
-package es.cbikesim.game.usecase;
+package es.cbikesim.game.usecase.vehicle;
 
 
 import es.cbikesim.game.model.Scenario;
