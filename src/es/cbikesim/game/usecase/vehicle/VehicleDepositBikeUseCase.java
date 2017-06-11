@@ -21,14 +21,18 @@ public class VehicleDepositBikeUseCase implements Command{
 
     @Override
     public void execute() throws UseCaseException {
-        Station currentStation = vehicle.getAt();
-        //vehicle.setFrom(currentStation);
-        //vehicle.setTo(null);
-        //scenario.getVehiclesInTransit().remove(vehicle);
+        validate();
+
+        Station at = vehicle.getAt();
         vehicle.getFrom().getVehicleList().add(vehicle);
 
-        if (!vehicle.getBikeList().isEmpty() && currentStation.getAvailableBikeList().size() < currentStation.getMaxCapacity()){
-            currentStation.getAvailableBikeList().add(vehicle.getBikeList().remove(0));
+        if (!vehicle.getBikeList().isEmpty() && at.getAvailableBikeList().size() < at.getMaxCapacity()){
+            at.getAvailableBikeList().add(vehicle.getBikeList().remove(0));
         }
+    }
+
+    private void validate() throws UseCaseException{
+        if(vehicle == null)     throw new UseCaseException("Error: VehicleDepositBikeUseCase -> Vehicle is null");
+        if(scenario == null)    throw new UseCaseException("Error: VehicleDepositBikeUseCase -> Scenario is null");
     }
 }

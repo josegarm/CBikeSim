@@ -22,7 +22,6 @@ public class VehicleView extends Rectangle implements Runnable{
     private boolean alive;
     private int waitSecond;
     private PathTransition animation;
-    private Vehicle vehicle;
 
     public VehicleView(Point position, String id, Game.Presenter context, Vehicle vehicle){
         super(25.0, 25.0);
@@ -48,45 +47,33 @@ public class VehicleView extends Rectangle implements Runnable{
 
         });
 
+        super.setOnDragDetected(e -> {
+            context.setVehicleView(this);
 
-        super.setOnDragDetected(
-                new EventHandler<MouseEvent>() {
+            this.setStroke(Color.rgb(255,255,255));
+            Dragboard db = VehicleView.super.startDragAndDrop(TransferMode.ANY);
+            db.setDragView(new Image(getClass().getResource("/img/pointer.png").toExternalForm()));
+            db.setDragViewOffsetY(40);
+            db.setDragViewOffsetX(15);
 
-                    @Override
-                    public void handle(MouseEvent event) {
-                        VehicleView.super.setStroke(Color.rgb(255,255,255));
-                        Dragboard db = VehicleView.super.startDragAndDrop(TransferMode.ANY);
-                        db.setDragView(new Image(getClass().getResource("/img/pointer.png").toExternalForm()));
-                        db.setDragViewOffsetY(40);
-                        db.setDragViewOffsetX(15);
+            ClipboardContent content = new ClipboardContent();
+            content.putString(VehicleView.super.getId());
+            db.setContent(content);
 
-                        ClipboardContent content = new ClipboardContent();
-                        content.putString(VehicleView.super.getId());
-                        db.setContent(content);
-
-                        event.consume();
-                    }
-                }
-        );
+            e.consume();
+        });
 
         super.setOnDragDone(e ->{
             super.setStroke(Color.rgb(0, 150, 73));
         });
-
-        this.vehicle = vehicle;
-
-
     }
 
     @Override
     public void run() {
         alive = true;
+        super.toFront();
         move();
-        while (alive) {
-            //context.clientDepositsBike(super.getId(), this);
-            try { Thread.sleep(1000);
-            } catch (InterruptedException e) { e.printStackTrace(); }
-        }
+        context.vehicleArriveStation(super.getId(), this);
     }
 
     public void setCenterX(double x){
@@ -105,10 +92,6 @@ public class VehicleView extends Rectangle implements Runnable{
     public void setDuration(int seconds){
         this.waitSecond = seconds;
         this.animation.setDuration(Duration.seconds(waitSecond));
-    }
-
-    public Vehicle getVehicle(){
-        return vehicle;
     }
 
     public void stop() {
