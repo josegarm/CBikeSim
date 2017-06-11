@@ -43,14 +43,12 @@ public class GamePresenter implements Game.Presenter {
     private MediaPlayer mp, mpSelect;
     private Timer timer;
 
-    private Invoker invoker;
     private ClientGenerator clientGenerator;
 
     private int difficulty;
 
     public GamePresenter(){
         scenario = new Scenario();
-        invoker = new Invoker();
     }
 
     @Override
@@ -58,6 +56,7 @@ public class GamePresenter implements Game.Presenter {
         this.difficulty = difficulty;
         prepareTimer(time);
 
+        Invoker invoker = new Invoker();
         Command createStations = new CreateStations(scenario);
         Command generateVehicles, generateBikes;
 
@@ -83,7 +82,6 @@ public class GamePresenter implements Game.Presenter {
                 generateBikes = new GenerateNormalStationBikes(scenario);
         }
 
-        invoker.clear();
         invoker.addCommand(createStations);
         invoker.addCommand(generateVehicles);
         invoker.addCommand(generateBikes);
@@ -140,9 +138,9 @@ public class GamePresenter implements Game.Presenter {
         Client client = getClientWith(idClient);
         Bike bike = getBikeWith(idBike);
 
+        Invoker invoker = new Invoker();
         Command clientPicksUpBike = new ClientPickUpBikeUseCase(client, bike, scenario);
 
-        invoker.clear();
         invoker.addCommand(clientPicksUpBike);
         try {
             invoker.invoke();
@@ -156,9 +154,9 @@ public class GamePresenter implements Game.Presenter {
     public void clientDepositsBike(String idClient, ClientView clientView) {
         Client client = getClientWith(idClient);
 
+        Invoker invoker = new Invoker();
         Command clientDepositBike = new ClientDepositBikeUseCase(client, scenario);
 
-        invoker.clear();
         invoker.addCommand(clientDepositBike);
         try {
             invoker.invoke();
@@ -179,15 +177,13 @@ public class GamePresenter implements Game.Presenter {
     public void vehiclePicksUpBike(String idBike) {
         Vehicle vehicle = selectedVehicle;
 
+        Invoker invoker = new Invoker();
         Command vehiclePicksUpBike = new VehiclePickUpBikesUseCase(vehicle,scenario);
 
-        invoker.clear();
         invoker.addCommand(vehiclePicksUpBike);
         try{
             invoker.invoke();
-            paintVehicleBikePanel(vehicle);
-            paintStationBikePanel(selectedStation);
-
+            paintVehiclePanel(vehicle);
         } catch (UseCaseException e) {
             System.err.println(e.getMessage());
         }
@@ -197,15 +193,13 @@ public class GamePresenter implements Game.Presenter {
     public void vehicleDepositsBike(String idBike) {
         Vehicle vehicle = selectedVehicle;
 
+        Invoker invoker = new Invoker();
         Command vehiclePicksUpBike = new VehicleDepositBikeUseCase(vehicle,scenario);
 
-        invoker.clear();
         invoker.addCommand(vehiclePicksUpBike);
         try{
             invoker.invoke();
-            paintVehicleBikePanel(vehicle);
-            paintStationBikePanel(selectedStation);
-
+            paintVehiclePanel(vehicle);
         } catch (UseCaseException e) {
             System.err.println(e.getMessage());
         }
@@ -277,7 +271,7 @@ public class GamePresenter implements Game.Presenter {
 
     private void removeVehicleFromStation(Station station, Vehicle vehicle){
         try{
-            getStation(station.getId()).getVehicleList().remove(vehicle);
+            getStationWith(station.getId()).getVehicleList().remove(vehicle);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -285,7 +279,7 @@ public class GamePresenter implements Game.Presenter {
     }
 
     private void addVehicleToStation(Station station, Vehicle vehicle){
-        getStation(station.getId()).getVehicleList().add(vehicle);
+        getStationWith(station.getId()).getVehicleList().add(vehicle);
     }
 
 
@@ -428,7 +422,7 @@ public class GamePresenter implements Game.Presenter {
         return null;
     }
 
-    public Station getStation(String id){
+    public Station getStationWith(String id){
         for(Station station : scenario.getStationList()){
             if(station.getId().equals(id)) return station;
         }
