@@ -24,7 +24,7 @@ public class VehicleDepositBikeUseCase implements Command{
         validate();
 
         Station at = vehicle.getAt();
-        vehicle.getFrom().getVehicleList().add(vehicle);
+        vehicle.getAt().getVehicleList().add(vehicle);
 
         if (!vehicle.getBikeList().isEmpty() && at.getAvailableBikeList().size() < at.getMaxCapacity()){
             at.getAvailableBikeList().add(vehicle.getBikeList().remove(0));
