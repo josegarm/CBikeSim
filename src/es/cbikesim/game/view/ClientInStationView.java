@@ -18,26 +18,20 @@ public class ClientInStationView extends ImageView {
 
         super.setOnMouseClicked(e -> {
             context.playSelect();
-
         });
 
-        super.setOnDragEntered(e -> {
+        super.setOnDragEntered(event -> {
             super.setImage(new Image(getClass().getResource("/img/client_highlight.png").toExternalForm()));
-            e.acceptTransferModes(TransferMode.ANY);
+            event.acceptTransferModes(TransferMode.ANY);
         });
 
-        super.setOnDragExited(e -> {
+        super.setOnDragExited(event -> {
             super.setImage(new Image(getClass().getResource("/img/client.png").toExternalForm()));
         });
 
-        super.setOnDragOver(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent event) {
-                if (event.getGestureSource() != super.getClass() && event.getDragboard().hasString()) {
-                    /* allow for both copying and moving, whatever user chooses */
-                    event.acceptTransferModes(TransferMode.ANY);
-                }
-
+        super.setOnDragOver(event -> {
+            if (event.getGestureSource() != super.getClass() && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.ANY);
                 event.consume();
             }
         });

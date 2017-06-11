@@ -15,6 +15,7 @@ import es.cbikesim.game.usecase.vehicle.VehicleDepositBikeUseCase;
 import es.cbikesim.game.usecase.vehicle.VehicleLeavesStationUseCase;
 import es.cbikesim.game.usecase.vehicle.VehiclePickUpBikesUseCase;
 import es.cbikesim.game.util.ClientGenerator;
+import es.cbikesim.game.util.ClientGeneratorStrategySelector;
 import es.cbikesim.game.util.factories.PathAnimationFactory;
 import es.cbikesim.game.view.*;
 import es.cbikesim.lib.exception.UseCaseException;
@@ -49,6 +50,7 @@ public class GamePresenter implements Game.Presenter {
     private Timer timer;
 
     private ClientGenerator clientGenerator;
+    private ClientGeneratorStrategySelector clientGeneratorStrategySelector;
 
     private int difficulty;
 
@@ -59,6 +61,8 @@ public class GamePresenter implements Game.Presenter {
     @Override
     public void createScenario(int difficulty, int time, String numBikes, int carCapacity) {
         this.difficulty = difficulty;
+        this.clientGenerator = new ClientGenerator(ClientGenerator.RANDOM, scenario, this, 5);
+        this.clientGeneratorStrategySelector = new ClientGeneratorStrategySelector(clientGenerator,time,difficulty);
         prepareTimer(time);
 
         Invoker invoker = new Invoker();
@@ -95,7 +99,6 @@ public class GamePresenter implements Game.Presenter {
         } catch (UseCaseException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -105,6 +108,7 @@ public class GamePresenter implements Game.Presenter {
         timerStart();
         addPause();
         startClientGenerator();
+        startClientGeneratorStrategySelector();
         if (CBikeSimState.getInstance().getAudio()) mp.play();
     }
 
@@ -176,7 +180,7 @@ public class GamePresenter implements Game.Presenter {
                 clientView.stop();
             } else {
                 Platform.runLater(() ->
-                        clientView.setCenterX(client.getTo().getPosition().getX() - 25.0)
+                        clientView.setLayoutX(-25 + (-25.0 * client.getTo().getClientWaitingToDepositList().indexOf(client)))
                 );
             }
         } catch (UseCaseException e) {
@@ -441,7 +445,7 @@ public class GamePresenter implements Game.Presenter {
         return null;
     }
 
-    public Client getClientWith(String id) {
+    private Client getClientWith(String id) {
         for (Client client : scenario.getClientsInTransit()) {
             if (client.getId().equals(id)) return client;
         }
@@ -457,7 +461,7 @@ public class GamePresenter implements Game.Presenter {
         return null;
     }
 
-    public Bike getBikeWith(String id) {
+    private Bike getBikeWith(String id) {
         for (Bike bike : selectedStation.getAvailableBikeList()) {
             if (bike.getId().equals(id)) return bike;
         }
@@ -465,7 +469,7 @@ public class GamePresenter implements Game.Presenter {
         return null;
     }
 
-    public Station getStationWith(String id) {
+    private Station getStationWith(String id) {
         for (Station station : scenario.getStationList()) {
             if (station.getId().equals(id)) return station;
         }
@@ -491,12 +495,6 @@ public class GamePresenter implements Game.Presenter {
         timer = new Timer(seconds);
     }
 
-    private void startClientGenerator() {
-        clientGenerator = new ClientGenerator(scenario, this, 5000);
-        clientGenerator.start();
-        CBikeSimState.getInstance().getPrimaryStage().setOnCloseRequest(event -> clientGenerator.cancel());
-    }
-
     //DURATION in SECONDS
     private void timerStart() {
         //countdown
@@ -507,7 +505,15 @@ public class GamePresenter implements Game.Presenter {
                 timer.getTimerTitle(),
                 timerText
         );
+    }
 
+    private void startClientGenerator() {
+        clientGenerator.start();
+        CBikeSimState.getInstance().getPrimaryStage().setOnCloseRequest(event -> clientGenerator.cancel());
+    }
+
+    private void startClientGeneratorStrategySelector(){
+        clientGeneratorStrategySelector.start();
     }
 
     private void addPause() {

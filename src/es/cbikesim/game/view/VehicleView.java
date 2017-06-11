@@ -34,18 +34,13 @@ public class VehicleView extends Rectangle implements Runnable {
 
         this.context = context;
 
-        super.setOnMouseClicked(e -> {
+        super.setOnMouseClicked(event -> {
             context.playSelect();
             context.showDataFromVehicle(id);
             context.setVehicleView(this);
         });
 
-        super.setOnMouseEntered(e -> {
-            //method to show path client would take in between stations
-
-        });
-
-        super.setOnDragDetected(e -> {
+        super.setOnDragDetected(event -> {
             context.showDataFromVehicle(id);
             context.setVehicleView(this);
 
@@ -59,10 +54,10 @@ public class VehicleView extends Rectangle implements Runnable {
             content.putString(VehicleView.super.getId());
             db.setContent(content);
 
-            e.consume();
+            event.consume();
         });
 
-        super.setOnDragDone(e -> {
+        super.setOnDragDone(event -> {
             super.setStroke(Color.rgb(0, 150, 73));
         });
     }

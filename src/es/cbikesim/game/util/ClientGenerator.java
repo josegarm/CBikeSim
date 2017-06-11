@@ -14,17 +14,17 @@ public class ClientGenerator extends Thread {
     public final static int NULL = 0, RANDOM = 1, CRITICAL_MORNING = 2, CRITICAL_AFTERNOON = 3;
 
     private boolean alive;
-    private int waitTime;
+    private int waitSeconds;
 
     private Game.Presenter context;
     private Scenario scenario;
     private Strategy strategy;
 
-    public ClientGenerator(Scenario scenario, Game.Presenter context, int waitTime) {
+    public ClientGenerator(int strategy, Scenario scenario, Game.Presenter context, int waitSeconds) {
         this.scenario = scenario;
         this.context = context;
-        this.waitTime = waitTime;
-        this.strategy = new RandomStrategy(scenario);
+        this.waitSeconds = waitSeconds;
+        this.changeStrategy(strategy);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class ClientGenerator extends Thread {
         this.alive = true;
         while (alive) {
             try {
-                Thread.sleep(waitTime);
+                Thread.sleep(waitSeconds * 1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -70,7 +70,7 @@ public class ClientGenerator extends Thread {
         }
     }
 
-    public void setWaitTime(int waitTime) {
-        this.waitTime = waitTime;
+    public void setWaitSeconds(int waitSeconds) {
+        this.waitSeconds = waitSeconds;
     }
 }

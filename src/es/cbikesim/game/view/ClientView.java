@@ -27,7 +27,6 @@ public class ClientView extends Circle implements Runnable {
 
         super.setOnMouseClicked(e -> {
             context.playSelect();
-            //context.showDataFromStation(id);
         });
 
         super.setOnMouseEntered(e -> {

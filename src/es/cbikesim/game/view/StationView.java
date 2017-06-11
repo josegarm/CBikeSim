@@ -18,20 +18,16 @@ public class StationView extends Circle {
         super.setStroke(Color.rgb(0, 76, 153));
         super.setStrokeWidth(3);
 
-        super.setOnMouseClicked(e -> {
+        super.setOnMouseClicked(event -> {
             context.playSelect();
             context.showDataFromStation(id);
         });
 
-        super.setOnDragOver(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent event) {
-                if (event.getGestureSource() != super.getClass() && event.getDragboard().hasString()) {
-                    event.acceptTransferModes(TransferMode.ANY);
-                }
-
-                event.consume();
+        super.setOnDragOver(event -> {
+            if (event.getGestureSource() != super.getClass() && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.ANY);
             }
+            event.consume();
         });
 
         super.setOnDragDropped(event -> {
