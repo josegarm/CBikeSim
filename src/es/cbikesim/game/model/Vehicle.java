@@ -9,13 +9,15 @@ public class Vehicle {
     private final int maxCapacity;
     private Station from;
     private Station to;
+    private Station at;
 
     private List<Bike> bikeList;
 
-    public Vehicle(String id, int maxCapacity, Station from) {
+    public Vehicle(String id, int maxCapacity, Station at) {
         this.id = id;
         this.maxCapacity = maxCapacity;
-        this.from = from;
+        this.at = at;
+        this.from = at;
         this.bikeList = new ArrayList<>();
     }
 
@@ -43,6 +45,10 @@ public class Vehicle {
         this.from = from;
     }
 
+    public Station getAt() { return at; }
+
+    public void setAt(Station at) { this.at = at; }
+
     public int getMaxCapacity(){
         return this.maxCapacity;
     }
@@ -54,7 +60,7 @@ public class Vehicle {
                 "   id = '" + id + "\'" + ",\n" +
                 "   to = " + to + ",\n" +
                 "   from = " + from + ",\n" +
-                "   bikeList = " + bikeList + "\n" +
+                "   bikeList = " + bikeList + ",\n" +
                 "}";
     }
 }

@@ -9,6 +9,8 @@ import es.cbikesim.game.contract.Game;
 import es.cbikesim.game.model.*;
 import es.cbikesim.game.usecase.client.ClientDepositBikeUseCase;
 import es.cbikesim.game.usecase.client.ClientPickUpBikeUseCase;
+import es.cbikesim.game.usecase.vehicle.VehicleDepositBikeUseCase;
+import es.cbikesim.game.usecase.vehicle.VehiclePickUpBikesUseCase;
 import es.cbikesim.game.util.ClientGenerator;
 import es.cbikesim.game.util.factories.PathAnimationFactory;
 import es.cbikesim.game.view.*;
@@ -156,6 +158,42 @@ public class GamePresenter implements Game.Presenter {
         catch (UseCaseException e) { System.err.println(e.getMessage()); }
     }
 
+    @Override
+    public void vehiclePicksUpBike(String idBike) {
+        Vehicle vehicle = selectedVehicle;
+
+        Command vehiclePicksUpBike = new VehiclePickUpBikesUseCase(vehicle,scenario);
+
+        invoker.clear();
+        invoker.addCommand(vehiclePicksUpBike);
+        try{
+            invoker.invoke();
+            paintVehicleBikePanel(vehicle);
+            paintStationBikePanel(selectedStation);
+
+        } catch (UseCaseException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public void vehicleDepositsBike(String idBike) {
+        Vehicle vehicle = selectedVehicle;
+
+        Command vehiclePicksUpBike = new VehicleDepositBikeUseCase(vehicle,scenario);
+
+        invoker.clear();
+        invoker.addCommand(vehiclePicksUpBike);
+        try{
+            invoker.invoke();
+            paintVehicleBikePanel(vehicle);
+            paintStationBikePanel(selectedStation);
+
+        } catch (UseCaseException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
 
     @Override
     public void setView(Game.View view) {
@@ -209,8 +247,8 @@ public class GamePresenter implements Game.Presenter {
     }
 
     private void paintVehiclePanel(Vehicle vehicle){
-        paintStationBikePanel(vehicle.getFrom());
         paintVehicleBikePanel(vehicle);
+        paintStationBikePanel(vehicle.getFrom());
     }
 
     private void paintStationBikePanel(Station station){
@@ -324,6 +362,7 @@ public class GamePresenter implements Game.Presenter {
         // throw error
         return null;
     }
+
 
     private void prepareMusic(){
         String pathSelect = getClass().getResource("/music/select.wav").toString();

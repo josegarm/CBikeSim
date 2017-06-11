@@ -38,6 +38,8 @@ public class VehicleView extends Rectangle implements Runnable{
             //method to show path client would take in between stations
 
         });
+
+
     }
 
     @Override
