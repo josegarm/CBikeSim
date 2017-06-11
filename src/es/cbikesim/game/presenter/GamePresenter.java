@@ -22,6 +22,7 @@ import es.cbikesim.lib.util.Timer;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -121,6 +122,22 @@ public class GamePresenter implements Game.Presenter {
 
     @Override
     public void notifyNewClient(Client client) {
+        ImageView stationClient = view.getClientHasArrivedIcon();
+        Platform.runLater(()->{
+            stationClient.setLayoutX(client.getFrom().getPosition().getX()-20);
+            stationClient.setLayoutY(client.getFrom().getPosition().getY()-60);
+            stationClient.setVisible(true);
+            stationClient.toFront();
+            try {
+                wait(1000);
+                stationClient.setVisible(false);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+
+
         //ponemos icono en la estacion client.getFrom()
         //y se elimina al pasar 1 segundo o asi
         //Como se modifica la vista desde un thread deberas usar

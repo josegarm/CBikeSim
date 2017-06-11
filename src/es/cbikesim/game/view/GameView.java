@@ -89,6 +89,9 @@ public class GameView implements Game.View {
     @Override
     public Pane getMapPane(){ return mapPane; }
 
+    @Override
+    public ImageView getClientHasArrivedIcon(){ return clientArrived; }
+
 
     private Parent createContent(){
         initComponents();
@@ -160,8 +163,7 @@ public class GameView implements Game.View {
         ui.setFitHeight(720.0);
         ui.setFitWidth(1280.0);
 
-        //clientArrived.setLayoutX(100.0);
-        //clientArrived.setLayoutY(100.0);
+        clientArrived.setVisible(false);
 
         mapPane.setLayoutX(23.0);
         mapPane.setLayoutY(27.0);
