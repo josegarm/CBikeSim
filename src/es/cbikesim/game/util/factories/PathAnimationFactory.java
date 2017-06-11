@@ -10,7 +10,7 @@ import javafx.scene.shape.Path;
 public class PathAnimationFactory {
 
 
-    public static PathTransition pathAnimationFactory(Point startPosition, Point endPosition){
+    public static PathTransition pathAnimationFactory(Point startPosition, Point endPosition) {
         Path path = new Path();
 
         addPathSection(path, startPosition, endPosition);
@@ -22,7 +22,7 @@ public class PathAnimationFactory {
         return animation;
     }
 
-    public static PathTransition pathAnimationFactory(Point startPosition, Point secondPosition, Point thirdPosition, Point endPosition){
+    public static PathTransition pathAnimationFactory(Point startPosition, Point secondPosition, Point thirdPosition, Point endPosition) {
         Path path = new Path();
 
         addPathSection(path, startPosition, secondPosition);
@@ -32,17 +32,17 @@ public class PathAnimationFactory {
         return generateTransition(path);
     }
 
-    private static Path addPathSection(Path path, Point startPosition, Point endPosition){
+    private static Path addPathSection(Path path, Point startPosition, Point endPosition) {
         double xStart = startPosition.getX();
         double yStart = startPosition.getY();
         double xEnd = endPosition.getX();
         double yEnd = endPosition.getY();
 
-        if(xStart == xEnd || yStart == yEnd){
+        if (xStart == xEnd || yStart == yEnd) {
             //Vertical or Horizontal line
             path.getElements().add(new MoveTo(xStart, yStart));
-            path.getElements().add(new LineTo(xEnd,yEnd));
-        }  else {
+            path.getElements().add(new LineTo(xEnd, yEnd));
+        } else {
             //Multiple movements needed
             path.getElements().add(new MoveTo(xStart, yStart));
             path.getElements().add(new LineTo(xStart, yEnd));
@@ -52,7 +52,7 @@ public class PathAnimationFactory {
         return path;
     }
 
-    private static PathTransition generateTransition(Path path){
+    private static PathTransition generateTransition(Path path) {
         PathTransition animation = new PathTransition();
         animation.setPath(path);
         animation.setCycleCount(1);

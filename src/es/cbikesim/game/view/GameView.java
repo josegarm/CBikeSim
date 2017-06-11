@@ -85,10 +85,12 @@ public class GameView implements Game.View {
     }
 
     @Override
-    public Pane getMapPane(){ return mapPane; }
+    public Pane getMapPane() {
+        return mapPane;
+    }
 
 
-    private Parent createContent(){
+    private Parent createContent() {
         initComponents();
         setSizes();
         addBackground();
@@ -98,7 +100,7 @@ public class GameView implements Game.View {
         return root;
     }
 
-    private void initComponents(){
+    private void initComponents() {
         root = new Pane();
         sideBar = new VBox();
         utilityPane = new Pane();
@@ -115,7 +117,7 @@ public class GameView implements Game.View {
         bottomTitle = new Text();
     }
 
-    private void setSizes(){
+    private void setSizes() {
         root.setPrefHeight(720.0);
         root.setPrefWidth(1280.0);
 
@@ -161,10 +163,10 @@ public class GameView implements Game.View {
         mapPane.setPrefHeight(667.0);
         mapPane.setPrefWidth(980.0);
 
-        topTitle.setFont(Font.font ("Verdana", 12));
+        topTitle.setFont(Font.font("Verdana", 12));
         topTitle.setFill(Color.WHITE);
 
-        bottomTitle.setFont(Font.font ("Verdana", 12));
+        bottomTitle.setFont(Font.font("Verdana", 12));
         bottomTitle.setFill(Color.WHITE);
     }
 
@@ -175,13 +177,13 @@ public class GameView implements Game.View {
         root.getChildren().add(imageView);
     }
 
-    private void addMap(){
+    private void addMap() {
         map = new ImageView(new Image(getClass().getResource("/img/map.png").toExternalForm()));
         map.setFitHeight(667.0);
         map.setFitWidth(980.0);
     }
 
-    private void addComponents(){
+    private void addComponents() {
 
         topGridPane.getColumnConstraints().addAll(
                 columnConstraints,

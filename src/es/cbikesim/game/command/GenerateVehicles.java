@@ -6,7 +6,7 @@ import es.cbikesim.game.model.Vehicle;
 import es.cbikesim.lib.exception.UseCaseException;
 import es.cbikesim.lib.pattern.Command;
 
-public class GenerateVehicles implements Command{
+public class GenerateVehicles implements Command {
 
     private Scenario scenario;
     private int carCapacity;

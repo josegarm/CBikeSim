@@ -5,12 +5,13 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.*;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 
-public class ClientInStationView extends ImageView{
+public class ClientInStationView extends ImageView {
 
-    public ClientInStationView(Image image, String id, Game.Presenter context){
+    public ClientInStationView(Image image, String id, Game.Presenter context) {
         this(image);
 
         super.setId(id);
@@ -47,7 +48,7 @@ public class ClientInStationView extends ImageView{
         });
     }
 
-    public ClientInStationView(Image image){
+    public ClientInStationView(Image image) {
         super(image);
         super.setFitWidth(50.0);
         super.setFitHeight(50.0);

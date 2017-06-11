@@ -19,7 +19,7 @@ import javafx.util.Pair;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainMenuPresenter implements MainMenu.Presenter{
+public class MainMenuPresenter implements MainMenu.Presenter {
 
     private MainMenu.View view;
 
@@ -30,7 +30,7 @@ public class MainMenuPresenter implements MainMenu.Presenter{
 
     private MenuItemView itemPressed;
 
-    public MainMenuPresenter(){
+    public MainMenuPresenter() {
         time = 180;
         numBikes = GamePresenter.FEW_BIKES;
         carCapacity = 3;
@@ -45,7 +45,7 @@ public class MainMenuPresenter implements MainMenu.Presenter{
 
     @Override
     public void playHover() {
-        if (CBikeSimState.getInstance().getAudio()){
+        if (CBikeSimState.getInstance().getAudio()) {
             mpHover.stop();
             mpHover.play();
         }
@@ -53,14 +53,14 @@ public class MainMenuPresenter implements MainMenu.Presenter{
 
     @Override
     public void playSelect() {
-        if (CBikeSimState.getInstance().getAudio()){
+        if (CBikeSimState.getInstance().getAudio()) {
             mpSelect.stop();
             mpSelect.play();
         }
     }
 
     @Override
-    public void setItemPressed(MenuItemView itemPressed){
+    public void setItemPressed(MenuItemView itemPressed) {
         this.itemPressed = itemPressed;
     }
 
@@ -113,7 +113,7 @@ public class MainMenuPresenter implements MainMenu.Presenter{
         st.play();
     }
 
-    private void prepareMusic(){
+    private void prepareMusic() {
         String pathSelect = getClass().getResource("/music/select.wav").toString();
         String pathHoverM = getClass().getResource("/music/hover.wav").toString();
         String path = getClass().getResource("/music/funny_arcade.mp3").toString();
@@ -181,25 +181,25 @@ public class MainMenuPresenter implements MainMenu.Presenter{
         );
     }
 
-    private void changeMusic(){
+    private void changeMusic() {
         CBikeSimState.getInstance().turnAudio();
-        if(CBikeSimState.getInstance().getAudio()) mp.play();
+        if (CBikeSimState.getInstance().getAudio()) mp.play();
         else mp.stop();
     }
 
-    private void changeTime(){
-        if(time >= 300) time = 120;
+    private void changeTime() {
+        if (time >= 300) time = 120;
         else time = time + 30;
     }
 
-    private void changeNumBikes(){
-        if(numBikes.equals(GamePresenter.FEW_BIKES)) numBikes = GamePresenter.NORMAL_BIKES;
-        else if(numBikes.equals(GamePresenter.NORMAL_BIKES)) numBikes = GamePresenter.MANY_BIKES;
-        else if(numBikes.equals(GamePresenter.MANY_BIKES)) numBikes = GamePresenter.FEW_BIKES;
+    private void changeNumBikes() {
+        if (numBikes.equals(GamePresenter.FEW_BIKES)) numBikes = GamePresenter.NORMAL_BIKES;
+        else if (numBikes.equals(GamePresenter.NORMAL_BIKES)) numBikes = GamePresenter.MANY_BIKES;
+        else if (numBikes.equals(GamePresenter.MANY_BIKES)) numBikes = GamePresenter.FEW_BIKES;
     }
 
-    private void changeCarCapacity(){
-        if(carCapacity >= 9) carCapacity = 3;
+    private void changeCarCapacity() {
+        if (carCapacity >= 9) carCapacity = 3;
         else carCapacity = carCapacity + 3;
     }
 

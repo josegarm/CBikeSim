@@ -7,7 +7,7 @@ import es.cbikesim.game.model.Station;
 import es.cbikesim.lib.exception.UseCaseException;
 import es.cbikesim.lib.pattern.Command;
 
-public class NextClientDepositsBikeInStationUseCase implements Command{
+public class NextClientDepositsBikeInStationUseCase implements Command {
 
     private Station station;
     private Scenario scenario;
@@ -19,7 +19,7 @@ public class NextClientDepositsBikeInStationUseCase implements Command{
 
     @Override
     public void execute() throws UseCaseException {
-        if (!station.getClientWaitingToDepositList().isEmpty() && station.getAvailableBikeList().size() < station.getMaxCapacity()){
+        if (!station.getClientWaitingToDepositList().isEmpty() && station.getAvailableBikeList().size() < station.getMaxCapacity()) {
             Client client = station.getClientWaitingToDepositList().remove(0);
             station.getAvailableBikeList().add(client.getBike());
             client.setBike(null);

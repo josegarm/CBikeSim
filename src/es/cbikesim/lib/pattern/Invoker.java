@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  Class responsible for invoking method execute() of Command
+ * Class responsible for invoking method execute() of Command
  */
 public class Invoker {
 
@@ -17,15 +17,15 @@ public class Invoker {
         this.commands.add(command);
     }
 
-    public void addCommand(Command command){
+    public void addCommand(Command command) {
         this.commands.add(command);
     }
 
-    public void clear(){
+    public void clear() {
         this.commands.clear();
     }
 
-    public void invoke() throws UseCaseException{
+    public void invoke() throws UseCaseException {
         for (Command command : commands) {
             command.execute();
         }

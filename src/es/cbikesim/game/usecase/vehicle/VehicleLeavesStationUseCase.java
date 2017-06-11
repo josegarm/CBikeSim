@@ -30,10 +30,10 @@ public class VehicleLeavesStationUseCase implements Command {
         scenario.getVehiclesInTransit().add(vehicle);
     }
 
-    private void validate() throws UseCaseException{
-        if(vehicle == null)     throw new UseCaseException("Error: VehicleLeavesStationUseCase -> Vehicle is null");
-        if(to == null)          throw new UseCaseException("Error: VehicleLeavesStationUseCase -> Station is null");
-        if(scenario == null)    throw new UseCaseException("Error: VehicleLeavesStationUseCase -> Scenario is null");
+    private void validate() throws UseCaseException {
+        if (vehicle == null) throw new UseCaseException("Error: VehicleLeavesStationUseCase -> Vehicle is null");
+        if (to == null) throw new UseCaseException("Error: VehicleLeavesStationUseCase -> Station is null");
+        if (scenario == null) throw new UseCaseException("Error: VehicleLeavesStationUseCase -> Scenario is null");
     }
 }
 

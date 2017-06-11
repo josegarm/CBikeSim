@@ -15,9 +15,13 @@ public abstract class Bike {
         return id;
     }
 
-    public int getBikeType(){ return type; }
+    public int getBikeType() {
+        return type;
+    }
 
-    public void setBikeType(int type){ this.type = type; }
+    public void setBikeType(int type) {
+        this.type = type;
+    }
 
     @Override
     public String toString() {

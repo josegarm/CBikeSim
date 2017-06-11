@@ -52,7 +52,7 @@ public class Vehicle {
         this.at = at;
     }
 
-    public int getMaxCapacity(){
+    public int getMaxCapacity() {
         return this.maxCapacity;
     }
 

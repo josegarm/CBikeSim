@@ -1,7 +1,7 @@
 package es.cbikesim.game.model;
 
 
-public class NormalBike extends Bike{
+public class NormalBike extends Bike {
 
     public NormalBike(String id) {
         super(Bike.NORMAL, id);

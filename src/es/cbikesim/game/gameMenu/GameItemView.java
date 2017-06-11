@@ -2,8 +2,6 @@ package es.cbikesim.game.gameMenu;
 
 import es.cbikesim.app.CBikeSimState;
 import es.cbikesim.game.contract.Game;
-import es.cbikesim.game.presenter.GamePresenter;
-import es.cbikesim.mainMenu.contract.MainMenu;
 import javafx.beans.binding.Bindings;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.DropShadow;
@@ -73,20 +71,20 @@ public class GameItemView extends Pane {
     }
 
     public void playHover() {
-        if (CBikeSimState.getInstance().getAudio()){
+        if (CBikeSimState.getInstance().getAudio()) {
             mpHover.stop();
             mpHover.play();
         }
     }
 
     public void playSelect() {
-        if (CBikeSimState.getInstance().getAudio()){
+        if (CBikeSimState.getInstance().getAudio()) {
             mpSelect.stop();
             mpSelect.play();
         }
     }
 
-    private void prepareMusic(){
+    private void prepareMusic() {
         String pathSelect = getClass().getResource("/music/select.wav").toString();
         String pathHoverM = getClass().getResource("/music/hover.wav").toString();
 
@@ -100,7 +98,7 @@ public class GameItemView extends Pane {
         this.mpHover.setVolume(0.1);
     }
 
-    private void changeMusic(){
+    private void changeMusic() {
         CBikeSimState.getInstance().turnAudio();
     }
 

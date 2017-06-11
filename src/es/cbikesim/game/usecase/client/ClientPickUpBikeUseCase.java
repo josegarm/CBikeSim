@@ -11,7 +11,7 @@ import es.cbikesim.lib.pattern.Command;
 /**
  * Use Case: The client pick up a bike in the current station and go to other station
  */
-public class ClientPickUpBikeUseCase implements Command{
+public class ClientPickUpBikeUseCase implements Command {
 
     private Client client;
     private Bike bike;
@@ -35,9 +35,9 @@ public class ClientPickUpBikeUseCase implements Command{
         scenario.getClientsInTransit().add(client);
     }
 
-    private void validate() throws UseCaseException{
-        if(client == null)      throw new UseCaseException("Error: ClientPickUpBikeUseCase -> Client is null");
-        if(bike == null)        throw new UseCaseException("Error: ClientPickUpBikeUseCase -> Bike is null");
-        if(scenario == null)    throw new UseCaseException("Error: ClientPickUpBikeUseCase -> Scenario is null");
+    private void validate() throws UseCaseException {
+        if (client == null) throw new UseCaseException("Error: ClientPickUpBikeUseCase -> Client is null");
+        if (bike == null) throw new UseCaseException("Error: ClientPickUpBikeUseCase -> Bike is null");
+        if (scenario == null) throw new UseCaseException("Error: ClientPickUpBikeUseCase -> Scenario is null");
     }
 }

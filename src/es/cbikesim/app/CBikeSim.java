@@ -10,6 +10,10 @@ import javafx.stage.StageStyle;
 
 public class CBikeSim extends Application {
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -22,9 +26,5 @@ public class CBikeSim extends Application {
         MainMenu.View mainMenuView = new MainMenuView(mainMenuPresenter);
         mainMenuView.start();
 
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

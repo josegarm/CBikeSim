@@ -9,17 +9,17 @@ public class CBikeSimState {
     private Stage primaryStage;
     private boolean audio;
 
-    private CBikeSimState(){
+    private CBikeSimState() {
         this.audio = true;
 
     }
 
-    public static CBikeSimState getInstance(){
-        if(instance == null) instance = new CBikeSimState();
+    public static CBikeSimState getInstance() {
+        if (instance == null) instance = new CBikeSimState();
         return instance;
     }
 
-    public void turnAudio(){
+    public void turnAudio() {
         this.audio = !audio;
     }
 

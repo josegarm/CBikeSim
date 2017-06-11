@@ -9,7 +9,7 @@ public class Scenario {
     private List<Client> clientsInTransit;
     private List<Vehicle> vehiclesInTransit;
 
-    public Scenario(){
+    public Scenario() {
         this.stationList = new ArrayList<>();
         this.clientsInTransit = new ArrayList<>();
         this.vehiclesInTransit = new ArrayList<>();

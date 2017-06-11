@@ -1,9 +1,9 @@
 package es.cbikesim.game.gameMenu;
 
-import es.cbikesim.app.CBikeSimState;
 import es.cbikesim.game.contract.Game;
 import es.cbikesim.mainMenu.view.MenuItemView;
-import javafx.animation.*;
+import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Node;
@@ -14,20 +14,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javafx.util.Pair;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class GameMenuView extends Application{
+public class GameMenuView extends Application {
 
     private static final int WIDTH = 250;
     private static final int HEIGHT = 450;
@@ -40,8 +37,12 @@ public class GameMenuView extends Application{
     private MenuItemView itemPressed;
 
 
-    public GameMenuView(Game.Presenter context){
+    public GameMenuView(Game.Presenter context) {
         this.context = context;
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 
     private Parent createContent() {
@@ -63,8 +64,10 @@ public class GameMenuView extends Application{
         return Arrays.asList(
                 new Pair<String, Runnable>("Resume", () -> {
                 }),
-                new Pair<String, Runnable>("Restart", () -> {}),
-                new Pair<String, Runnable>("Exit to main menu", () -> {}),
+                new Pair<String, Runnable>("Restart", () -> {
+                }),
+                new Pair<String, Runnable>("Exit to main menu", () -> {
+                }),
                 new Pair<String, Runnable>("Exit Game", Platform::exit)
         );
     }
@@ -131,7 +134,6 @@ public class GameMenuView extends Application{
         root.getChildren().add(menuBox);
     }
 
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         Scene scene = new Scene(createContent());
@@ -139,14 +141,6 @@ public class GameMenuView extends Application{
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-
-
-
 
 
 }
