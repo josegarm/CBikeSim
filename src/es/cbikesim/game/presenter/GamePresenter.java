@@ -186,10 +186,11 @@ public class GamePresenter implements Game.Presenter {
 
     @Override
     public void vehiclePicksUpBike(String idBike) {
+        Bike bike = getBikeWith(idBike);
         Vehicle vehicle = selectedVehicle;
 
         Invoker invoker = new Invoker();
-        Command vehiclePicksUpBike = new VehiclePickUpBikesUseCase(vehicle, scenario);
+        Command vehiclePicksUpBike = new VehiclePickUpBikesUseCase(vehicle, bike, scenario);
 
         invoker.addCommand(vehiclePicksUpBike);
         try {
@@ -202,10 +203,11 @@ public class GamePresenter implements Game.Presenter {
 
     @Override
     public void vehicleDepositsBike(String idBike) {
+        Bike bike = getBikeWith(idBike);
         Vehicle vehicle = selectedVehicle;
 
         Invoker invoker = new Invoker();
-        Command vehiclePicksUpBike = new VehicleDepositBikeUseCase(vehicle, scenario);
+        Command vehiclePicksUpBike = new VehicleDepositBikeUseCase(vehicle, bike, scenario);
 
         invoker.addCommand(vehiclePicksUpBike);
         try {
@@ -285,7 +287,7 @@ public class GamePresenter implements Game.Presenter {
                 break;
             case HARD:
                 generateVehicles = new GenerateVehicles(scenario, 3);
-                generateBikes = new GenerateNormalStationBikes(scenario);
+                generateBikes = new GenerateHardStationBikes(scenario);
                 break;
             case CUSTOM:
                 generateVehicles = new GenerateVehicles(scenario, carCapacity);

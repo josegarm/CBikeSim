@@ -18,7 +18,7 @@ public class GenerateNormalStationBikes implements Command {
     @Override
     public void execute() throws UseCaseException {
         for (Station station : scenario.getStationList()) {
-            for (int numBike = 0; numBike < station.getMaxCapacity() * (double)(1/2); numBike++) {
+            for (int numBike = 0; numBike < station.getMaxCapacity() * (1.0/2); numBike++) {
                 station.getAvailableBikeList().add(BikeFactory.makeBike(Bike.RANDOM));
             }
         }

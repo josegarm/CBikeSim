@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
@@ -43,7 +44,10 @@ public class GameMenuPresenter implements GameMenu.Presenter {
     public void initMenu(){
         prepareMusic();
 
-        view.start(new Stage(StageStyle.UNDECORATED));
+        Stage stage = new Stage(StageStyle.UNDECORATED);
+        stage.initModality(Modality.APPLICATION_MODAL);
+
+        view.start(stage);
 
         load();
     }
