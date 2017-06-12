@@ -33,4 +33,8 @@ public class MenuTitleView extends Pane {
     }
 
     public void setText(String value){ text.setText(value);}
+
+    public void setSizeText(int sizeText){
+        text.setFont(Font.loadFont(getClass().getResource("/font/Penumbra-HalfSerif-Std_35114.ttf").toExternalForm(), sizeText));
+    }
 }

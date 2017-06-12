@@ -29,6 +29,8 @@ public interface Game {
     interface Presenter {
         void initGame();
 
+        void stopGame();
+
         void backToMainMenu();
 
         void playSelect();

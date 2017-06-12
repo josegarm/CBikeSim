@@ -59,4 +59,8 @@ public class Timer {
         timeline.stop();
     }
 
+    public IntegerProperty getTime(){
+        return this.timeSeconds;
+    }
+
 }

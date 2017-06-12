@@ -86,11 +86,16 @@ public class GamePresenter implements Game.Presenter {
     }
 
     @Override
-    public void backToMainMenu() {
+    public void stopGame() {
         stopTimer();
         stopClientGenerator();
-
         mp.stop();
+    }
+
+    @Override
+    public void backToMainMenu() {
+        stopGame();
+
         MainMenu.Presenter mainMenuPresenter = new MainMenuPresenter();
         MainMenu.View mainMenuView = new MainMenuView(mainMenuPresenter);
         mainMenuPresenter.initMenu();
@@ -123,14 +128,14 @@ public class GamePresenter implements Game.Presenter {
 
     @Override
     public void notifyNewClient(Client client) {
-        if (CBikeSimState.getInstance().getAudio()) {
-            mpClient.stop();
-            mpClient.play();
-        }
-
         ImageView newClientNotification = new ClientNotificationView(client.getFrom().getPosition());
 
         Platform.runLater(() -> {
+            if (CBikeSimState.getInstance().getAudio()) {
+                mpClient.stop();
+                mpClient.play();
+            }
+
             if(client.getFrom() == selectedStation && itemSelectedType == STATION) paintStationPanel(selectedStation);
             view.getMapPane().getChildren().add(newClientNotification);
             new Timeline(new KeyFrame(Duration.seconds(1), event -> {
@@ -353,8 +358,9 @@ public class GamePresenter implements Game.Presenter {
         clientView.setAnimation(PathAnimationFactory.pathAnimationFactory(client.getFrom().getPosition(), client.getTo().getPosition()));
         clientView.setDuration(seconds);
 
-        new Thread(clientView).start();
-        CBikeSimState.getInstance().addThread(clientView);
+        Thread thread = new Thread(clientView);
+        thread.setDaemon(true);
+        thread.start();
     }
 
     private void paintVehicleInTransit(Vehicle vehicle) {
@@ -370,8 +376,9 @@ public class GamePresenter implements Game.Presenter {
         vehicleView.setAnimation(PathAnimationFactory.pathAnimationFactory(startPoint, secondPoint, thirdPoint, endPoint));
         vehicleView.setDuration(calculateDuration(vehicle));
 
-        new Thread(selectedVehicleView).start();
-        CBikeSimState.getInstance().addThread(selectedVehicleView);
+        Thread thread = new Thread(selectedVehicleView);
+        thread.setDaemon(true);
+        thread.start();
     }
 
     private int calculateDuration(Client client) {
@@ -548,6 +555,9 @@ public class GamePresenter implements Game.Presenter {
         for (Bike bike : selectedStation.getAvailableBikeList()) {
             if (bike.getId().equals(id)) return bike;
         }
+        for (Bike bike : selectedVehicle.getBikeList()) {
+            if (bike.getId().equals(id)) return bike;
+        }
         // throw error
         return null;
     }
@@ -606,6 +616,16 @@ public class GamePresenter implements Game.Presenter {
     private void startTimer() {
         //countdown
         timer.startTimer();
+        int count = 0;
+        timer.getTime().addListener(e -> {
+            if(timer.getTime().getValue() == 0) {
+                GameMenu.Presenter menu = new GameMenuPresenter(this, score);
+                GameMenu.View view = new GameMenuView(menu);
+                menu.initMenu();
+            }
+        });
+
+
         Label timerText = timer.getTimerLabel();
         timerText.setTranslateX(180);
         view.getUtilityPane().getChildren().addAll( timer.getTimerTitle(), timerText);
@@ -635,13 +655,13 @@ public class GamePresenter implements Game.Presenter {
     }
 
     private void addPause() {
-        ImageView play_pause = new ImageView(new Image(getClass().getResource("/img/pause-play-button.png").toExternalForm()));
+        ImageView play_pause = new ImageView(new Image(getClass().getResource("/img/icon-menu.png").toExternalForm()));
         play_pause.setLayoutX(10);
         play_pause.setLayoutY(10);
         view.getMapPane().getChildren().add(play_pause);
         play_pause.setOnMouseClicked(e -> {
             try {
-                GameMenu.Presenter menu = new GameMenuPresenter(this, score);
+                GameMenu.Presenter menu = new GameMenuPresenter(this);
                 GameMenu.View view = new GameMenuView(menu);
                 menu.initMenu();
             } catch (Exception e1) {

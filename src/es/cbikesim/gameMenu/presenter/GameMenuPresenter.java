@@ -1,5 +1,6 @@
 package es.cbikesim.gameMenu.presenter;
 
+import es.cbikesim.app.CBikeSim;
 import es.cbikesim.app.CBikeSimState;
 import es.cbikesim.game.contract.Game;
 import es.cbikesim.gameMenu.contract.GameMenu;
@@ -25,6 +26,8 @@ import java.util.List;
 
 public class GameMenuPresenter implements GameMenu.Presenter {
 
+    private static final int GAME_MENU = 0, FINISH_GAME_MENU = 1;
+
     private GameMenu.View view;
 
     private Game.Presenter context;
@@ -35,9 +38,17 @@ public class GameMenuPresenter implements GameMenu.Presenter {
 
     private Score score;
 
+    private int type;
+
+    public GameMenuPresenter(Game.Presenter context) {
+        this.context = context;
+        this.type = GAME_MENU;
+    }
+
     public GameMenuPresenter(Game.Presenter context, Score score) {
         this.context = context;
         this.score = score;
+        this.type = FINISH_GAME_MENU;
     }
 
     @Override
@@ -49,7 +60,8 @@ public class GameMenuPresenter implements GameMenu.Presenter {
 
         view.start(stage);
 
-        load();
+        if (type == GAME_MENU) load();
+        else if (type == FINISH_GAME_MENU) prepareFinishGameMenu();
     }
 
     @Override
@@ -152,9 +164,9 @@ public class GameMenuPresenter implements GameMenu.Presenter {
                     view.getStage().close();
                     context.backToMainMenu();
                 }),
-                new Pair<String, Runnable>("EXIT GAME", Platform::exit),
-                new Pair<String, Runnable>("CHANGE TO FINAL", () ->{
-                    prepareFinishGameMenu();
+                new Pair<String, Runnable>("EXIT GAME", () -> {
+                    context.stopGame();
+                    Platform.exit();
                 })
         );
     }
@@ -163,13 +175,18 @@ public class GameMenuPresenter implements GameMenu.Presenter {
         return Arrays.asList(
                 new Pair<String, Runnable>("RESTART", () -> {
                     view.getStage().close();
+                    CBikeSimState.getInstance().getPrimaryStage().show();
                     context.initGame();
                 }),
                 new Pair<String, Runnable>("EXIT TO MAIN MENU", () -> {
                     view.getStage().close();
+                    CBikeSimState.getInstance().getPrimaryStage().show();
                     context.backToMainMenu();
                 }),
-                new Pair<String, Runnable>("EXIT GAME", Platform::exit)
+                new Pair<String, Runnable>("EXIT GAME", () -> {
+                    context.stopGame();
+                    Platform.exit();
+                })
         );
     }
 
@@ -182,8 +199,11 @@ public class GameMenuPresenter implements GameMenu.Presenter {
         finalScoreTitle.setLayoutX(50);
         finalScoreTitle.setLayoutY(100);
 
-        finalScore.setLayoutX(180);
-        finalScore.setLayoutY(100);
+        finalScore.setLayoutX(115);
+        finalScore.setLayoutY(130);
+
+        finalScoreTitle.setSizeText(15);
+        finalScore.setSizeText(15);
 
         view.getMenuBox().setTranslateY(150);
 
@@ -192,9 +212,8 @@ public class GameMenuPresenter implements GameMenu.Presenter {
         view.getRoot().getChildren().addAll(finalScore, finalScoreTitle);
 
         addMenu(getGameDoneData());
-        //view.getMenuBox().setLayoutY(lineY + 105);
-        //view.getLine().setLayoutY(lineY + 100);
 
+        CBikeSimState.getInstance().getPrimaryStage().hide();
     }
 
 
