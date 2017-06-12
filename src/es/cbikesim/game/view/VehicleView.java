@@ -2,6 +2,7 @@ package es.cbikesim.game.view;
 
 import es.cbikesim.game.contract.Game;
 import es.cbikesim.lib.util.Point;
+import es.cbikesim.lib.util.StopRun;
 import javafx.animation.PathTransition;
 import javafx.scene.image.Image;
 import javafx.scene.input.ClipboardContent;
@@ -11,7 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-public class VehicleView extends Rectangle implements Runnable {
+public class VehicleView extends Rectangle implements Runnable, StopRun {
 
     Game.Presenter context;
 
@@ -87,7 +88,8 @@ public class VehicleView extends Rectangle implements Runnable {
         this.animation.setDuration(Duration.seconds(waitSecond));
     }
 
-    public void stop() {
+    @Override
+    public void stopRun() {
         this.alive = false;
     }
 
