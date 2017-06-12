@@ -37,10 +37,12 @@ public class MainMenuPresenter implements MainMenu.Presenter {
     }
 
     @Override
-    public void load() {
-        addMenu(this.getMenuData());
+    public void initMenu(){
         prepareMusic();
-        if (CBikeSimState.getInstance().getAudio()) mp.play();
+
+        view.start(CBikeSimState.getInstance().getPrimaryStage());
+
+        load();
     }
 
     @Override
@@ -73,8 +75,30 @@ public class MainMenuPresenter implements MainMenu.Presenter {
         mp.stop();
         Game.Presenter gamePresenter = new GamePresenter();
         Game.View gameView = new GameView(gamePresenter);
-        gamePresenter.createScenario(difficulty, time, numBikes, carCapacity);
-        gameView.start();
+        gamePresenter.initGame(difficulty, time, numBikes, carCapacity);
+    }
+
+    private void prepareMusic() {
+        String pathSelect = getClass().getResource("/music/select.wav").toString();
+        String pathHoverM = getClass().getResource("/music/hover.wav").toString();
+        String path = getClass().getResource("/music/funny_arcade.mp3").toString();
+
+        Media media = new Media(path);
+        Media mediaSelect = new Media(pathSelect);
+        Media mediaHover = new Media(pathHoverM);
+
+        this.mp = new MediaPlayer(media);
+        this.mpSelect = new MediaPlayer(mediaSelect);
+        this.mpHover = new MediaPlayer(mediaHover);
+
+        this.mp.setVolume(0.3);
+        this.mpSelect.setVolume(1.0);
+        this.mpHover.setVolume(0.1);
+    }
+
+    private void load() {
+        addMenu(this.getMenuData());
+        if (CBikeSimState.getInstance().getAudio()) mp.play();
     }
 
     private void addMenu(List<Pair<String, Runnable>> list) {
@@ -111,24 +135,6 @@ public class MainMenuPresenter implements MainMenu.Presenter {
 
         });
         st.play();
-    }
-
-    private void prepareMusic() {
-        String pathSelect = getClass().getResource("/music/select.wav").toString();
-        String pathHoverM = getClass().getResource("/music/hover.wav").toString();
-        String path = getClass().getResource("/music/funny_arcade.mp3").toString();
-
-        Media media = new Media(path);
-        Media mediaSelect = new Media(pathSelect);
-        Media mediaHover = new Media(pathHoverM);
-
-        this.mp = new MediaPlayer(media);
-        this.mpSelect = new MediaPlayer(mediaSelect);
-        this.mpHover = new MediaPlayer(mediaHover);
-
-        this.mp.setVolume(0.3);
-        this.mpSelect.setVolume(1.0);
-        this.mpHover.setVolume(0.1);
     }
 
     private List<Pair<String, Runnable>> getSettingsData() {

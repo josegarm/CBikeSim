@@ -24,7 +24,6 @@ public class CBikeSim extends Application {
 
         MainMenu.Presenter mainMenuPresenter = new MainMenuPresenter();
         MainMenu.View mainMenuView = new MainMenuView(mainMenuPresenter);
-        mainMenuView.start();
-
+        mainMenuPresenter.initMenu();
     }
 }

@@ -55,63 +55,25 @@ public class GamePresenter implements Game.Presenter {
     private ClientGenerator clientGenerator;
     private ClientGeneratorStrategySelector clientGeneratorStrategySelector;
 
-    private int itemSelectedType = 0;
+    private int itemSelectedType = NOTHING;
 
     public GamePresenter() {
+
+    }
+
+    @Override
+    public void initGame(int difficulty, int time, String numBikes, int carCapacity) {
         scenario = new Scenario();
-    }
 
-    @Override
-    public void createScenario(int difficulty, int time, String numBikes, int carCapacity) {
-        this.clientGenerator = new ClientGenerator(ClientGenerator.RANDOM, scenario, this, 5);
-        this.clientGeneratorStrategySelector = new ClientGeneratorStrategySelector(clientGenerator,time,difficulty);
         prepareTimer(time);
-
-        Invoker invoker = new Invoker();
-        Command createStations = new CreateStations(scenario);
-        Command generateVehicles, generateBikes;
-
-        switch (difficulty) {
-            case EASY:
-                generateVehicles = new GenerateVehicles(scenario, 9);
-                generateBikes = new GenerateEasyStationBikes(scenario);
-                break;
-            case NORMAL:
-                generateVehicles = new GenerateVehicles(scenario, 6);
-                generateBikes = new GenerateNormalStationBikes(scenario);
-                break;
-            case HARD:
-                generateVehicles = new GenerateVehicles(scenario, 3);
-                generateBikes = new GenerateNormalStationBikes(scenario);
-                break;
-            case CUSTOM:
-                generateVehicles = new GenerateVehicles(scenario, carCapacity);
-                generateBikes = new GenerateNormalStationBikes(scenario);
-                break;
-            default:
-                generateVehicles = new GenerateVehicles(scenario, 6);
-                generateBikes = new GenerateNormalStationBikes(scenario);
-        }
-
-        invoker.addCommand(createStations);
-        invoker.addCommand(generateVehicles);
-        invoker.addCommand(generateBikes);
-        try {
-            invoker.invoke();
-        } catch (UseCaseException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void load() {
+        prepareClientGenerator(time,difficulty);
         prepareMusic();
-        paintMap();
-        timerStart();
-        addPause();
-        startClientGenerator();
-        startClientGeneratorStrategySelector();
-        if (CBikeSimState.getInstance().getAudio()) mp.play();
+
+        createScenario(difficulty,time,numBikes,carCapacity);
+
+        view.start(CBikeSimState.getInstance().getPrimaryStage());
+
+        load();
     }
 
     @Override
@@ -274,6 +236,60 @@ public class GamePresenter implements Game.Presenter {
         this.view = view;
     }
 
+    @Override
+    public void changeMusic() {
+        CBikeSimState.getInstance().turnAudio();
+        if(CBikeSimState.getInstance().getAudio()) mp.play();
+        else mp.pause();
+    }
+
+    private void createScenario(int difficulty, int time, String numBikes, int carCapacity) {
+        Invoker invoker = new Invoker();
+        Command createStations = new CreateStations(scenario);
+        Command generateVehicles, generateBikes;
+
+        switch (difficulty) {
+            case EASY:
+                generateVehicles = new GenerateVehicles(scenario, 9);
+                generateBikes = new GenerateEasyStationBikes(scenario);
+                break;
+            case NORMAL:
+                generateVehicles = new GenerateVehicles(scenario, 6);
+                generateBikes = new GenerateNormalStationBikes(scenario);
+                break;
+            case HARD:
+                generateVehicles = new GenerateVehicles(scenario, 3);
+                generateBikes = new GenerateNormalStationBikes(scenario);
+                break;
+            case CUSTOM:
+                generateVehicles = new GenerateVehicles(scenario, carCapacity);
+                generateBikes = new GenerateNormalStationBikes(scenario);
+                break;
+            default:
+                generateVehicles = new GenerateVehicles(scenario, 6);
+                generateBikes = new GenerateNormalStationBikes(scenario);
+        }
+
+        invoker.addCommand(createStations);
+        invoker.addCommand(generateVehicles);
+        invoker.addCommand(generateBikes);
+        try {
+            invoker.invoke();
+        } catch (UseCaseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void load() {
+        paintMap();
+        addPause();
+
+        startTimer();
+        startClientGenerator();
+        startClientGeneratorStrategySelector();
+
+        if (CBikeSimState.getInstance().getAudio()) mp.play();
+    }
 
     private void paintMap() {
         for (Station station : scenario.getStationList()) {
@@ -487,6 +503,17 @@ public class GamePresenter implements Game.Presenter {
         return null;
     }
 
+    private void prepareTimer(int seconds) {
+        if(timer != null) timer.stopTimer();
+        timer = new Timer(seconds);
+    }
+
+    private void prepareClientGenerator(int time, int difficulty){
+        if(this.clientGenerator != null) this.clientGenerator.stopRun();
+        if(this.clientGeneratorStrategySelector != null) this.clientGeneratorStrategySelector.stopRun();
+        this.clientGenerator = new ClientGenerator(ClientGenerator.RANDOM, scenario, this, 5);
+        this.clientGeneratorStrategySelector = new ClientGeneratorStrategySelector(clientGenerator,time,difficulty);
+    }
 
     private void prepareMusic() {
         String pathSelect = getClass().getResource("/music/select.wav").toString();
@@ -501,20 +528,13 @@ public class GamePresenter implements Game.Presenter {
         this.mpSelect.setVolume(1.0);
     }
 
-    private void prepareTimer(int seconds) {
-        timer = new Timer(seconds);
-    }
-
     //DURATION in SECONDS
-    private void timerStart() {
+    private void startTimer() {
         //countdown
         timer.startTimer();
         Label timerText = timer.getTimerLabel();
         timerText.setTranslateX(180);
-        view.getUtilityPane().getChildren().addAll(
-                timer.getTimerTitle(),
-                timerText
-        );
+        view.getUtilityPane().getChildren().addAll( timer.getTimerTitle(), timerText);
     }
 
     private void startClientGenerator() {
@@ -534,7 +554,9 @@ public class GamePresenter implements Game.Presenter {
         view.getMapPane().getChildren().add(play_pause);
         play_pause.setOnMouseClicked(e -> {
             try {
-                new GameMenuView(this).start(new Stage(StageStyle.UNDECORATED));
+                GameMenu.Presenter menu = new GameMenuPresenter(this);
+                GameMenu.View view = new GameMenuView(menu);
+                view.start();
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
