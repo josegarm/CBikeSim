@@ -31,16 +31,13 @@ public class ClientGenerator extends Thread implements StopRun{
     @Override
     public void run() {
         this.alive = true;
+
+        sleep();
+
         while (alive) {
-            try {
-                Thread.sleep(waitSeconds * 1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             Client client = generateClient();
-            if (client != null) {
-                context.notifyNewClient(client);
-            }
+            if (client != null) context.notifyNewClient(client);
+            sleep();
         }
     }
 
@@ -74,5 +71,13 @@ public class ClientGenerator extends Thread implements StopRun{
 
     public void setWaitSeconds(int waitSeconds) {
         this.waitSeconds = waitSeconds;
+    }
+
+    private void sleep(){
+        try {
+            Thread.sleep(waitSeconds * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

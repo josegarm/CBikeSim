@@ -28,8 +28,9 @@ public class VehicleArrivesStationUseCase implements Command {
     }
 
     private void validate() throws UseCaseException {
-        if (vehicle == null) throw new UseCaseException("Error: VehicleLeavesStationUseCase -> Vehicle is null");
-        if (scenario == null) throw new UseCaseException("Error: VehicleLeavesStationUseCase -> Scenario is null");
+        if (vehicle == null)            throw new UseCaseException("Error: VehicleLeavesStationUseCase -> Vehicle is null");
+        if (vehicle.getTo() == null)    throw new UseCaseException("Error: VehicleLeavesStationUseCase -> Station target is null");
+        if (scenario == null)           throw new UseCaseException("Error: VehicleLeavesStationUseCase -> Scenario is null");
     }
 }
 

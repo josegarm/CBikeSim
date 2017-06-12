@@ -73,9 +73,9 @@ public class MainMenuPresenter implements MainMenu.Presenter {
 
     private void initGame(int difficulty) {
         mp.stop();
-        Game.Presenter gamePresenter = new GamePresenter();
+        Game.Presenter gamePresenter = new GamePresenter(difficulty, time, numBikes, carCapacity);
         Game.View gameView = new GameView(gamePresenter);
-        gamePresenter.initGame(difficulty, time, numBikes, carCapacity);
+        gamePresenter.initGame();
     }
 
     private void prepareMusic() {

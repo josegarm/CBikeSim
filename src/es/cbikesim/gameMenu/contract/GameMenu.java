@@ -1,6 +1,6 @@
-package es.cbikesim.lib.gameMenu.contract;
+package es.cbikesim.gameMenu.contract;
 
-import es.cbikesim.lib.gameMenu.view.GameMenuItemView;
+import es.cbikesim.gameMenu.view.GameMenuItemView;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 public interface GameMenu {
 
     interface View {
-        void start();
+        void start(Stage stage);
 
         Stage getStage();
 
@@ -18,7 +18,7 @@ public interface GameMenu {
     }
 
     interface Presenter {
-        void load();
+        void initMenu();
 
         void playHover();
 
