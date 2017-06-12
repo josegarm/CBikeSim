@@ -39,11 +39,14 @@ public class GamePresenter implements Game.Presenter {
 
     public static final int EASY = 0, NORMAL = 1, HARD = 2, CUSTOM = 3;
     public static final String FEW_BIKES = "FEW", NORMAL_BIKES = "NORMAL", MANY_BIKES = "MANY";
+    private static final int NOTHING = 0, STATION = 1, VEHICLE = 2;
 
     private Game.View view;
     private Scenario scenario;
+
     private Station selectedStation;
     private Vehicle selectedVehicle;
+
     private VehicleView selectedVehicleView;
 
     private MediaPlayer mp, mpSelect;
@@ -52,7 +55,7 @@ public class GamePresenter implements Game.Presenter {
     private ClientGenerator clientGenerator;
     private ClientGeneratorStrategySelector clientGeneratorStrategySelector;
 
-    private int difficulty;
+    private int itemSelectedType = 0;
 
     public GamePresenter() {
         scenario = new Scenario();
@@ -60,7 +63,6 @@ public class GamePresenter implements Game.Presenter {
 
     @Override
     public void createScenario(int difficulty, int time, String numBikes, int carCapacity) {
-        this.difficulty = difficulty;
         this.clientGenerator = new ClientGenerator(ClientGenerator.RANDOM, scenario, this, 5);
         this.clientGeneratorStrategySelector = new ClientGeneratorStrategySelector(clientGenerator,time,difficulty);
         prepareTimer(time);
@@ -125,6 +127,7 @@ public class GamePresenter implements Game.Presenter {
         Station station = getSelectedStationWith(id);
         selectedStation = station;
         paintStationPanel(station);
+        itemSelectedType = STATION;
     }
 
     @Override
@@ -133,6 +136,7 @@ public class GamePresenter implements Game.Presenter {
         selectedVehicle = vehicle;
         selectedStation = vehicle.getAt();
         paintVehiclePanel(vehicle);
+        itemSelectedType = VEHICLE;
     }
 
     @Override
@@ -140,6 +144,7 @@ public class GamePresenter implements Game.Presenter {
         ImageView newClientNotification = new ClientNotificationView(client.getFrom().getPosition());
 
         Platform.runLater(() -> {
+            if(client.getFrom() == selectedStation && itemSelectedType == STATION) paintStationPanel(selectedStation);
             view.getMapPane().getChildren().add(newClientNotification);
             new Timeline(new KeyFrame(Duration.seconds(1), event -> {
                 view.getMapPane().getChildren().remove(newClientNotification);
@@ -176,8 +181,11 @@ public class GamePresenter implements Game.Presenter {
         try {
             invoker.invoke();
             if (client.getBike() == null) {
-                Platform.runLater(() -> view.getMapPane().getChildren().remove(clientView));
-                clientView.stop();
+                Platform.runLater(() -> {
+                    if(client.getFrom() == selectedStation && itemSelectedType == STATION) paintStationPanel(selectedStation);
+                    view.getMapPane().getChildren().remove(clientView);
+                });
+                clientView.stopRun();
             } else {
                 Platform.runLater(() ->
                         clientView.setLayoutX(-25 + (-25.0 * client.getTo().getClientWaitingToDepositList().indexOf(client)))
@@ -248,7 +256,7 @@ public class GamePresenter implements Game.Presenter {
         invoker.addCommand(vehicleArrivesStation);
         try {
             invoker.invoke();
-            vehicleView.stop();
+            vehicleView.stopRun();
 
         } catch (UseCaseException e) {
             System.err.println(e.getMessage());
@@ -297,6 +305,7 @@ public class GamePresenter implements Game.Presenter {
         clientView.setDuration(seconds);
 
         new Thread(clientView).start();
+        CBikeSimState.getInstance().addThread(clientView);
     }
 
     private void paintVehicleInTransit(Vehicle vehicle) {
@@ -312,6 +321,7 @@ public class GamePresenter implements Game.Presenter {
         vehicleView.setDuration(calculateDurationVehicle(vehicle));
 
         new Thread(selectedVehicleView).start();
+        CBikeSimState.getInstance().addThread(selectedVehicleView);
     }
 
     private int calculateDurationClient(Client client) {
@@ -509,11 +519,12 @@ public class GamePresenter implements Game.Presenter {
 
     private void startClientGenerator() {
         clientGenerator.start();
-        CBikeSimState.getInstance().getPrimaryStage().setOnCloseRequest(event -> clientGenerator.cancel());
+        CBikeSimState.getInstance().addThread(clientGenerator);
     }
 
     private void startClientGeneratorStrategySelector(){
         clientGeneratorStrategySelector.start();
+        CBikeSimState.getInstance().addThread(clientGeneratorStrategySelector);
     }
 
     private void addPause() {

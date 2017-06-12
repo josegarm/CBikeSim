@@ -1,11 +1,13 @@
 package es.cbikesim.game.util;
 
+import es.cbikesim.lib.util.StopRun;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
 import static es.cbikesim.game.presenter.GamePresenter.*;
 
-public class ClientGeneratorStrategySelector {
+public class ClientGeneratorStrategySelector implements StopRun {
 
     private ClientGenerator clientGenerator;
     private Timer timer;
@@ -32,8 +34,10 @@ public class ClientGeneratorStrategySelector {
         }, 0, 1000);
     }
 
-    public void stop(){
+    @Override
+    public void stopRun(){
         timer.cancel();
+        timer.purge();
     }
 
     public void checkOption(int timeLeft){
