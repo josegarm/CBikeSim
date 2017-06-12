@@ -1,6 +1,5 @@
 package es.cbikesim.game.view;
 
-import es.cbikesim.app.CBikeSimState;
 import es.cbikesim.game.contract.Game;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -9,12 +8,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-import java.util.List;
 
 public class GameView implements Game.View {
 
@@ -40,18 +36,13 @@ public class GameView implements Game.View {
     private Pane mapPane;
     private ImageView map;
 
-    //STATIONS
-    private List<Circle> stations;
-
-
     public GameView(Game.Presenter presenter) {
         this.presenter = presenter;
         this.presenter.setView(this);
     }
 
     @Override
-    public void start() {
-        Stage primaryStage = CBikeSimState.getInstance().getPrimaryStage();
+    public void start(Stage primaryStage) {
         Scene scene = new Scene(createContent());
 
         primaryStage.setTitle("CBikeSim Game");
@@ -96,7 +87,6 @@ public class GameView implements Game.View {
         addBackground();
         addMap();
         addComponents();
-        presenter.load();
         return root;
     }
 

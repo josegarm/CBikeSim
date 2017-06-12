@@ -34,9 +34,9 @@ public class MainMenuView implements MainMenu.View {
     }
 
     @Override
-    public void start() {
-        Stage primaryStage = CBikeSimState.getInstance().getPrimaryStage();
+    public void start(Stage primaryStage) {
         Scene scene = new Scene(createContent());
+
         primaryStage.setTitle("CBikeSim Menu");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -58,7 +58,6 @@ public class MainMenuView implements MainMenu.View {
         addTitle();
         addLine();
         addMenuBox();
-        presenter.load();
         return root;
     }
 
