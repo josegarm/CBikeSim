@@ -37,7 +37,7 @@ public class VehicleArrivesStationUseCaseTest {
     }
 
     @Test
-    public void executeVehicleCanArrive() throws Exception {
+    public void testExecuteVehicleArrivesStation() throws Exception {
         vehicle.setFrom(a);
         vehicle.setTo(b);
 
@@ -46,7 +46,6 @@ public class VehicleArrivesStationUseCaseTest {
 
         assertNull(vehicle.getFrom());
         assertNull(vehicle.getTo());
-
         assertEquals(b, vehicle.getAt());
 
         assertTrue(vehicle.getAt().getVehicleList().contains(vehicle));

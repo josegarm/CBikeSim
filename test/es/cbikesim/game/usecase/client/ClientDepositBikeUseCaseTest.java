@@ -51,7 +51,7 @@ public class ClientDepositBikeUseCaseTest {
         assertNull(client.getBike());
         assertNull(client.getTo());
 
-        assertNotNull(client.getFrom());
+        assertEquals(a, client.getFrom());
 
         assertTrue(client.getFrom().getAvailableBikeList().contains(bike));
         assertFalse(scenario.getClientsInTransit().contains(client));

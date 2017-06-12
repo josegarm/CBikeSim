@@ -7,9 +7,9 @@ import es.cbikesim.game.model.*;
 import es.cbikesim.game.usecase.client.ClientDepositBikeUseCase;
 import es.cbikesim.game.usecase.client.ClientPickUpBikeUseCase;
 import es.cbikesim.game.usecase.vehicle.VehicleArrivesStationUseCase;
-import es.cbikesim.game.usecase.vehicle.VehicleDepositBikeUseCase;
+import es.cbikesim.game.usecase.vehicle.VehicleDepositsBikeUseCase;
 import es.cbikesim.game.usecase.vehicle.VehicleLeavesStationUseCase;
-import es.cbikesim.game.usecase.vehicle.VehiclePickUpBikesUseCase;
+import es.cbikesim.game.usecase.vehicle.VehiclePicksUpBikeUseCase;
 import es.cbikesim.game.util.ClientGenerator;
 import es.cbikesim.game.util.ClientGeneratorStrategySelector;
 import es.cbikesim.game.util.factories.PathAnimationFactory;
@@ -196,7 +196,7 @@ public class GamePresenter implements Game.Presenter {
         Vehicle vehicle = selectedVehicle;
 
         Invoker invoker = new Invoker();
-        Command vehiclePicksUpBike = new VehiclePickUpBikesUseCase(vehicle, bike, scenario);
+        Command vehiclePicksUpBike = new VehiclePicksUpBikeUseCase(vehicle, bike, scenario);
 
         invoker.addCommand(vehiclePicksUpBike);
         try {
@@ -213,7 +213,7 @@ public class GamePresenter implements Game.Presenter {
         Vehicle vehicle = selectedVehicle;
 
         Invoker invoker = new Invoker();
-        Command vehiclePicksUpBike = new VehicleDepositBikeUseCase(vehicle, bike, scenario);
+        Command vehiclePicksUpBike = new VehicleDepositsBikeUseCase(vehicle, bike, scenario);
 
         invoker.addCommand(vehiclePicksUpBike);
         try {
