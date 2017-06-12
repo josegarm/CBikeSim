@@ -18,7 +18,7 @@ public interface GameMenu {
     }
 
     interface Presenter {
-        void load();
+        void initMenu();
 
         void playHover();
 

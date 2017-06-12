@@ -583,7 +583,7 @@ public class GamePresenter implements Game.Presenter {
             try {
                 GameMenu.Presenter menu = new GameMenuPresenter(this);
                 GameMenu.View view = new GameMenuView(menu);
-                view.start();
+                menu.initMenu();
             } catch (Exception e1) {
                 e1.printStackTrace();
             }

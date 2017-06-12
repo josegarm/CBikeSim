@@ -38,6 +38,7 @@ public class GameMenuView implements GameMenu.View {
     public void start(Stage stage) {
         Scene scene = new Scene(createContent());
 
+        this.stage = stage;
         stage.setAlwaysOnTop(true);
         stage.setScene(scene);
         stage.show();

@@ -11,6 +11,8 @@ import javafx.scene.Node;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javafx.util.Pair;
 
@@ -32,9 +34,12 @@ public class GameMenuPresenter implements GameMenu.Presenter {
     }
 
     @Override
-    public void load() {
-        addMenu(this.getMenuData());
+    public void initMenu(){
         prepareMusic();
+
+        view.start(new Stage(StageStyle.UNDECORATED));
+
+        load();
     }
 
     @Override
@@ -63,6 +68,10 @@ public class GameMenuPresenter implements GameMenu.Presenter {
         this.view = view;
     }
 
+
+    public void load() {
+        addMenu(this.getMenuData());
+    }
 
 
     private void addMenu(List<Pair<String, Runnable>> list) {
@@ -126,11 +135,12 @@ public class GameMenuPresenter implements GameMenu.Presenter {
                     this.itemPressed.setText("AUDIO   " + (CBikeSimState.getInstance().getAudio() ? "ON" : "OFF"));
                 }),
                 new Pair<String, Runnable>("RESTART", () -> {
+                    view.getStage().close();
                     context.initGame();
                 }),
                 new Pair<String, Runnable>("EXIT TO MAIN MENU", () -> {
-
-                    CBikeSimState.getInstance().getPrimaryStage().close();
+                    view.getStage().close();
+                    context.backToMainMenu();
                 }),
                 new Pair<String, Runnable>("EXIT GAME", Platform::exit)
         );
