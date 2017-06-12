@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
-public class Timer{
+public class Timer {
 
     private Integer START_TIME;
     private Timeline timeline;
@@ -18,10 +18,10 @@ public class Timer{
     private IntegerProperty timeSeconds;
 
 
-
-    public Timer(int seconds){
+    public Timer(int seconds) {
         START_TIME = seconds;
-        timeSeconds  = new SimpleIntegerProperty(START_TIME);
+        timeSeconds = new SimpleIntegerProperty(START_TIME);
+
         // Bind the timerLabel text property to the timeSeconds property
         timerLabel.textProperty().bind(timeSeconds.asString());
         timerTitle.setText("Time: ");
@@ -34,23 +34,24 @@ public class Timer{
         timerTitle.setStyle("-fx-font-size: 2em;");
     }
 
-    public void startTimer(){
+    public void startTimer() {
         if (timeline != null) {
             timeline.stop();
         }
+
         timeSeconds.set(START_TIME);
         timeline = new Timeline();
         timeline.getKeyFrames().add(
-                new KeyFrame(Duration.seconds(START_TIME +1),
+                new KeyFrame(Duration.seconds(START_TIME + 1),
                         new KeyValue(timeSeconds, 0)));
         timeline.playFromStart();
     }
 
-    public Label getTimerLabel(){
+    public Label getTimerLabel() {
         return timerLabel;
     }
 
-    public Label getTimerTitle(){
+    public Label getTimerTitle() {
         return timerTitle;
     }
 

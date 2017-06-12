@@ -5,38 +5,33 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.*;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 
-public class ClientInStationView extends ImageView{
+public class ClientInStationView extends ImageView {
 
-    public ClientInStationView(Image image, String id, Game.Presenter context){
+    public ClientInStationView(Image image, String id, Game.Presenter context) {
         this(image);
 
         super.setId(id);
 
         super.setOnMouseClicked(e -> {
             context.playSelect();
-
         });
 
-        super.setOnDragEntered(e -> {
+        super.setOnDragEntered(event -> {
             super.setImage(new Image(getClass().getResource("/img/client_highlight.png").toExternalForm()));
-            e.acceptTransferModes(TransferMode.ANY);
+            event.acceptTransferModes(TransferMode.ANY);
         });
 
-        super.setOnDragExited(e -> {
+        super.setOnDragExited(event -> {
             super.setImage(new Image(getClass().getResource("/img/client.png").toExternalForm()));
         });
 
-        super.setOnDragOver(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent event) {
-                if (event.getGestureSource() != super.getClass() && event.getDragboard().hasString()) {
-                    /* allow for both copying and moving, whatever user chooses */
-                    event.acceptTransferModes(TransferMode.ANY);
-                }
-
+        super.setOnDragOver(event -> {
+            if (event.getGestureSource() != super.getClass() && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.ANY);
                 event.consume();
             }
         });
@@ -47,7 +42,7 @@ public class ClientInStationView extends ImageView{
         });
     }
 
-    public ClientInStationView(Image image){
+    public ClientInStationView(Image image) {
         super(image);
         super.setFitWidth(50.0);
         super.setFitHeight(50.0);

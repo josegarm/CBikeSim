@@ -8,30 +8,26 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class StationView extends Circle{
+public class StationView extends Circle {
 
-    public StationView(Point position, String id, Game.Presenter context){
-        super(position.getX(), position.getY(),20.0);
+    public StationView(Point position, String id, Game.Presenter context) {
+        super(position.getX(), position.getY(), 20.0);
 
         super.setId(id);
-        super.setFill(Color.rgb(0,128,255));
-        super.setStroke(Color.rgb(0,76,153));
+        super.setFill(Color.rgb(0, 128, 255));
+        super.setStroke(Color.rgb(0, 76, 153));
         super.setStrokeWidth(3);
 
-        super.setOnMouseClicked(e -> {
+        super.setOnMouseClicked(event -> {
             context.playSelect();
             context.showDataFromStation(id);
         });
 
-        super.setOnDragOver(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent event) {
-                if (event.getGestureSource() != super.getClass() && event.getDragboard().hasString()) {
-                    event.acceptTransferModes(TransferMode.ANY);
-                }
-
-                event.consume();
+        super.setOnDragOver(event -> {
+            if (event.getGestureSource() != super.getClass() && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.ANY);
             }
+            event.consume();
         });
 
         super.setOnDragDropped(event -> {

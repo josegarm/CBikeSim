@@ -12,7 +12,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.util.Random;
 
@@ -29,7 +28,7 @@ public class MainMenuView implements MainMenu.View {
     private VBox menuBox;
     private Line line;
 
-    public MainMenuView(MainMenu.Presenter presenter){
+    public MainMenuView(MainMenu.Presenter presenter) {
         this.presenter = presenter;
         this.presenter.setView(this);
     }
@@ -63,13 +62,13 @@ public class MainMenuView implements MainMenu.View {
         return root;
     }
 
-    private void initComponents(){
+    private void initComponents() {
         root = new Pane();
         menuBox = new VBox(-5);
     }
 
     private void addBackground() {
-        String path = "/img/bicycle_wallpaper_"+ (new Random().nextInt((5 - 1) + 1) + 1) + ".jpg";
+        String path = "/img/bicycle_wallpaper_" + (new Random().nextInt((5 - 1) + 1) + 1) + ".jpg";
         ImageView imageView = new ImageView(new Image(getClass().getResource(path).toExternalForm()));
         imageView.setFitWidth(WIDTH);
         imageView.setFitHeight(HEIGHT);
@@ -79,7 +78,7 @@ public class MainMenuView implements MainMenu.View {
     private void addTitle() {
         MenuTitleView title = new MenuTitleView("CBikeSim");
         title.setTranslateX(WIDTH / 2 - title.getTitleWidth() / 2);
-        title.setTranslateY(HEIGHT /3);
+        title.setTranslateY(HEIGHT / 3);
 
         root.getChildren().add(title);
     }

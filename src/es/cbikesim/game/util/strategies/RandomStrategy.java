@@ -7,11 +7,11 @@ import es.cbikesim.game.util.factories.ClientFactory;
 
 import java.util.Random;
 
-public class RandomStrategy implements Strategy{
+public class RandomStrategy implements Strategy {
 
     private Scenario scenario;
 
-    public RandomStrategy(Scenario scenario){
+    public RandomStrategy(Scenario scenario) {
         this.scenario = scenario;
     }
 

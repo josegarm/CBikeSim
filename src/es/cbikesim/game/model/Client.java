@@ -8,7 +8,7 @@ public class Client {
     private Station from;
     private Station to;
 
-    public Client(String id){
+    public Client(String id) {
         this.id = id;
     }
 
@@ -24,13 +24,21 @@ public class Client {
         this.bike = bike;
     }
 
-    public Station getFrom(){ return this.from; }
+    public Station getFrom() {
+        return this.from;
+    }
 
-    public void setFrom(Station from){ this.from = from; }
+    public void setFrom(Station from) {
+        this.from = from;
+    }
 
-    public Station getTo(){ return this.to; }
+    public Station getTo() {
+        return this.to;
+    }
 
-    public void setTo(Station to) { this.to = to; }
+    public void setTo(Station to) {
+        this.to = to;
+    }
 
     @Override
     public String toString() {

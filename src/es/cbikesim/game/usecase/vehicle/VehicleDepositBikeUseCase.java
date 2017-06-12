@@ -9,7 +9,7 @@ import es.cbikesim.lib.pattern.Command;
 /**
  * Use Case: The vehicle deposit bikes in the arrival station
  */
-public class VehicleDepositBikeUseCase implements Command{
+public class VehicleDepositBikeUseCase implements Command {
 
     private Vehicle vehicle;
     private Scenario scenario;
@@ -26,13 +26,13 @@ public class VehicleDepositBikeUseCase implements Command{
         Station at = vehicle.getAt();
         vehicle.getAt().getVehicleList().add(vehicle);
 
-        if (!vehicle.getBikeList().isEmpty() && at.getAvailableBikeList().size() < at.getMaxCapacity()){
+        if (!vehicle.getBikeList().isEmpty() && at.getAvailableBikeList().size() < at.getMaxCapacity()) {
             at.getAvailableBikeList().add(vehicle.getBikeList().remove(0));
         }
     }
 
-    private void validate() throws UseCaseException{
-        if(vehicle == null)     throw new UseCaseException("Error: VehicleDepositBikeUseCase -> Vehicle is null");
-        if(scenario == null)    throw new UseCaseException("Error: VehicleDepositBikeUseCase -> Scenario is null");
+    private void validate() throws UseCaseException {
+        if (vehicle == null) throw new UseCaseException("Error: VehicleDepositBikeUseCase -> Vehicle is null");
+        if (scenario == null) throw new UseCaseException("Error: VehicleDepositBikeUseCase -> Scenario is null");
     }
 }

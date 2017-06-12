@@ -9,19 +9,19 @@ public class BikeFactory {
 
     private static int id = 0;
 
-    public static Bike makeBike(int type){
+    public static Bike makeBike(int type) {
         Bike bike = null;
 
-        switch(type){
+        switch (type) {
             case Bike.NORMAL:
-                bike = new NormalBike(""+id++);
+                bike = new NormalBike("" + id++);
                 break;
             case Bike.ELECTRIC:
-                bike = new ElectricBike(""+id++);
+                bike = new ElectricBike("" + id++);
                 break;
             case Bike.RANDOM:
-                if (id%2 == 0)  bike = new NormalBike(""+id++);
-                else            bike = new ElectricBike(""+id++);
+                if (id % 2 == 0) bike = new NormalBike("" + id++);
+                else bike = new ElectricBike("" + id++);
                 break;
             default:
                 //throw exception

@@ -5,7 +5,7 @@ import es.cbikesim.lib.util.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Station{
+public class Station {
 
     public final static int MORNING = 0, AFTERNOON = 1;
 
@@ -30,7 +30,7 @@ public class Station{
     }
 
     public Station(String id, int maxCapacity, Point position, int critical) {
-        this(id,maxCapacity,position);
+        this(id, maxCapacity, position);
         this.critical = critical;
     }
 
@@ -50,7 +50,7 @@ public class Station{
         return vehicleList;
     }
 
-    public String getId(){
+    public String getId() {
         return id;
     }
 

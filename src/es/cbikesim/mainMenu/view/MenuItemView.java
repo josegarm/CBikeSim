@@ -29,7 +29,7 @@ public class MenuItemView extends Pane {
         getChildren().addAll(createBackground(), createText(name));
     }
 
-    public void setText(String text){
+    public void setText(String text) {
         this.text.setText(text);
     }
 
@@ -37,7 +37,7 @@ public class MenuItemView extends Pane {
         setOnMouseClicked(e -> action.run());
     }
 
-    private Polygon createBackground(){
+    private Polygon createBackground() {
         Polygon bg = new Polygon(
                 0, 0,
                 200, 0,
@@ -58,7 +58,7 @@ public class MenuItemView extends Pane {
         return bg;
     }
 
-    private Text createText(String name){
+    private Text createText(String name) {
         text = new Text(name);
 
         text.setTranslateX(5);
@@ -75,7 +75,7 @@ public class MenuItemView extends Pane {
         return text;
     }
 
-    private void addListeners(){
+    private void addListeners() {
 
         setOnMouseEntered(e -> {
             context.playHover();

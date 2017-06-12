@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
-public class ClientView extends Circle implements Runnable{
+public class ClientView extends Circle implements Runnable {
 
     Game.Presenter context;
 
@@ -15,8 +15,8 @@ public class ClientView extends Circle implements Runnable{
     private int waitSecond;
     private PathTransition animation;
 
-    public ClientView(Point position, String id, Game.Presenter context){
-        super(position.getX(), position.getY(),10.0);
+    public ClientView(Point position, String id, Game.Presenter context) {
+        super(position.getX(), position.getY(), 10.0);
 
         super.setId(id);
         super.setFill(Color.rgb(255, 170, 0));
@@ -27,7 +27,6 @@ public class ClientView extends Circle implements Runnable{
 
         super.setOnMouseClicked(e -> {
             context.playSelect();
-            //context.showDataFromStation(id);
         });
 
         super.setOnMouseEntered(e -> {
@@ -42,17 +41,20 @@ public class ClientView extends Circle implements Runnable{
         move();
         while (alive) {
             context.clientDepositsBike(super.getId(), this);
-            try { Thread.sleep(1000);
-            } catch (InterruptedException e) { e.printStackTrace(); }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public void setAnimation(PathTransition animation){
+    public void setAnimation(PathTransition animation) {
         this.animation = animation;
         this.animation.setNode(this);
     }
 
-    public void setDuration(int seconds){
+    public void setDuration(int seconds) {
         this.waitSecond = seconds;
         this.animation.setDuration(Duration.seconds(waitSecond));
     }
@@ -61,7 +63,7 @@ public class ClientView extends Circle implements Runnable{
         this.alive = false;
     }
 
-    private void move(){
+    private void move() {
         animation.play();
         try {
             Thread.sleep((long) Duration.seconds(waitSecond).toMillis());

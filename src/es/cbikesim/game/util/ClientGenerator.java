@@ -5,51 +5,57 @@ import es.cbikesim.game.model.Client;
 import es.cbikesim.game.model.Scenario;
 import es.cbikesim.game.model.Station;
 import es.cbikesim.game.util.strategies.CriticalStrategy;
+import es.cbikesim.game.util.strategies.NullStrategy;
 import es.cbikesim.game.util.strategies.RandomStrategy;
 import es.cbikesim.game.util.strategies.Strategy;
 
 public class ClientGenerator extends Thread {
 
-    public final static int RANDOM = 0, CRITICAL_MORNING = 1, CRITICAL_AFTERNOON = 2;
+    public final static int NULL = 0, RANDOM = 1, CRITICAL_MORNING = 2, CRITICAL_AFTERNOON = 3;
 
     private boolean alive;
-    private int waitTime;
+    private int waitSeconds;
 
     private Game.Presenter context;
     private Scenario scenario;
     private Strategy strategy;
 
-    public ClientGenerator(Scenario scenario, Game.Presenter context, int waitTime){
+    public ClientGenerator(int strategy, Scenario scenario, Game.Presenter context, int waitSeconds) {
         this.scenario = scenario;
         this.context = context;
-        this.waitTime = waitTime;
-        this.strategy = new RandomStrategy(scenario);
+        this.waitSeconds = waitSeconds;
+        this.changeStrategy(strategy);
     }
 
     @Override
-    public void run(){
+    public void run() {
         this.alive = true;
-        while (alive){
+        while (alive) {
             try {
-                Thread.sleep(waitTime);
+                Thread.sleep(waitSeconds * 1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            context.notifyNewClient(generateClient());
+            Client client = generateClient();
+            if (client != null) {
+                context.notifyNewClient(client);
+            }
         }
     }
 
-    public void cancel(){
+    public void cancel() {
         this.alive = false;
     }
 
-    public Client generateClient(){
+    public Client generateClient() {
         return strategy.generateClient();
     }
 
-    public void changeStrategy(int selectedStrategy){
-
+    public void changeStrategy(int selectedStrategy) {
         switch (selectedStrategy) {
+            case NULL:
+                strategy = new NullStrategy();
+                break;
             case RANDOM:
                 strategy = new RandomStrategy(scenario);
                 break;
@@ -62,10 +68,9 @@ public class ClientGenerator extends Thread {
             default:
                 strategy = null;
         }
-
     }
 
-    public void setWaitTime(int waitTime) {
-        this.waitTime = waitTime;
+    public void setWaitSeconds(int waitSeconds) {
+        this.waitSeconds = waitSeconds;
     }
 }

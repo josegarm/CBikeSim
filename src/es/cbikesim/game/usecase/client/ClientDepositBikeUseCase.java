@@ -9,7 +9,7 @@ import es.cbikesim.lib.pattern.Command;
 /**
  * Use Case: The client deposit a bike in the arrival station
  */
-public class ClientDepositBikeUseCase implements Command{
+public class ClientDepositBikeUseCase implements Command {
 
     private Client client;
     private Scenario scenario;
@@ -26,7 +26,7 @@ public class ClientDepositBikeUseCase implements Command{
         Station to = client.getTo();
         scenario.getClientsInTransit().remove(client);
 
-        if (to.getAvailableBikeList().size() < to.getMaxCapacity()){
+        if (to.getAvailableBikeList().size() < to.getMaxCapacity()) {
             to.getAvailableBikeList().add(client.getBike());
             client.setBike(null);
             client.setFrom(to);
@@ -36,8 +36,8 @@ public class ClientDepositBikeUseCase implements Command{
         }
     }
 
-    private void validate() throws UseCaseException{
-        if(client == null)      throw new UseCaseException("Error: ClientDepositBikeUseCase -> Client is null");
-        if(scenario == null)    throw new UseCaseException("Error: ClientDepositBikeUseCase -> Scenario is null");
+    private void validate() throws UseCaseException {
+        if (client == null) throw new UseCaseException("Error: ClientDepositBikeUseCase -> Client is null");
+        if (scenario == null) throw new UseCaseException("Error: ClientDepositBikeUseCase -> Scenario is null");
     }
 }
