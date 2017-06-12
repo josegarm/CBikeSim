@@ -6,6 +6,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
@@ -38,14 +39,17 @@ public class Score {
 
         //FORMAT
         scoreLabel.setTextFill(Color.WHITE);
-        scoreLabel.setStyle("-fx-font-size: 4em;");
+        scoreLabel.setStyle("-fx-font-size: 2em;");
+        scoreLabel.setAlignment(Pos.CENTER_RIGHT);
+        scoreLabel.setPrefWidth(85.0);
 
         scoreTitle.setTextFill(Color.WHITE);
         scoreTitle.setStyle("-fx-font-size: 2em;");
+
     }
 
     public void startScore(){
-
+        scoreUpdater.setValue(0);
     }
 
     public Label getScore() {
@@ -56,8 +60,10 @@ public class Score {
 
 
     public void changeScore(Integer score){
-        scoreUpdater.set(scoreUpdater.getValue() + score);
+        Integer currentScore = scoreUpdater.getValue();
+        scoreUpdater.set(((currentScore + score) >= 0) ? scoreUpdater.getValue() + score : 0);
     }
+
 
 
 

@@ -13,14 +13,14 @@ public class BikeStallView extends ImageView {
     public static final int STATION = 0, VEHICLE = 1;
 
     private Game.Presenter context;
-    private int type;
+    private int containerType;
 
-    public BikeStallView(Image image, String id, Game.Presenter context, int type, boolean dragEvents, boolean dropEvents) {
-        this(image, context, type, dragEvents, dropEvents);
+    public BikeStallView(Image image, String id, Game.Presenter context, int containerType, boolean dragEvents, boolean dropEvents) {
+        this(image, context, containerType, dragEvents, dropEvents);
         super.setId(id);
     }
 
-    public BikeStallView(Image image, Game.Presenter context, int type, boolean dragEvents, boolean dropEvents) {
+    public BikeStallView(Image image, Game.Presenter context, int containerType, boolean dragEvents, boolean dropEvents) {
         super(image);
         super.setFitWidth(60.0);
         super.setFitHeight(50.0);
@@ -29,7 +29,7 @@ public class BikeStallView extends ImageView {
         GridPane.setHalignment(this, HPos.CENTER);
 
         this.context = context;
-        this.type = type;
+        this.containerType = containerType;
 
         if (dragEvents) startDragEvents();
         if (dropEvents) startDropEvents();
@@ -68,7 +68,7 @@ public class BikeStallView extends ImageView {
         });
 
         super.setOnDragDropped(event -> {
-            if (type == VEHICLE) {
+            if (containerType == VEHICLE) {
                 context.vehiclePicksUpBike(event.getDragboard().getString());
             } else {
                 context.vehicleDepositsBike(event.getDragboard().getString());

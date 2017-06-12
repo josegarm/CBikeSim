@@ -1,10 +1,7 @@
 package es.cbikesim.game.presenter;
 
 import es.cbikesim.app.CBikeSimState;
-import es.cbikesim.game.command.CreateStations;
-import es.cbikesim.game.command.GenerateEasyStationBikes;
-import es.cbikesim.game.command.GenerateNormalStationBikes;
-import es.cbikesim.game.command.GenerateVehicles;
+import es.cbikesim.game.command.*;
 import es.cbikesim.game.contract.Game;
 import es.cbikesim.game.model.*;
 import es.cbikesim.game.usecase.client.ClientDepositBikeUseCase;
@@ -93,6 +90,7 @@ public class GamePresenter implements Game.Presenter {
         stopTimer();
         stopClientGenerator();
 
+        mp.stop();
         MainMenu.Presenter mainMenuPresenter = new MainMenuPresenter();
         MainMenu.View mainMenuView = new MainMenuView(mainMenuPresenter);
         mainMenuPresenter.initMenu();
@@ -291,7 +289,7 @@ public class GamePresenter implements Game.Presenter {
                 break;
             case CUSTOM:
                 generateVehicles = new GenerateVehicles(scenario, carCapacity);
-                generateBikes = new GenerateNormalStationBikes(scenario);
+                generateBikes = new GenerateCustomStationBikes(scenario, numBikes);
                 break;
             default:
                 generateVehicles = new GenerateVehicles(scenario, 6);
@@ -348,7 +346,7 @@ public class GamePresenter implements Game.Presenter {
         score.changeScore(30);
         ClientView clientView = new ClientView(client.getFrom().getPosition(), client.getId(), this);
         view.getMapPane().getChildren().add(clientView);
-        int seconds = calculateDurationClient(client);
+        int seconds = calculateDuration(client);
 
         clientView.setAnimation(PathAnimationFactory.pathAnimationFactory(client.getFrom().getPosition(), client.getTo().getPosition()));
         clientView.setDuration(seconds);
@@ -368,27 +366,33 @@ public class GamePresenter implements Game.Presenter {
         Point endPoint = new Point(thirdPoint.getX() + 40.00, thirdPoint.getY());
 
         vehicleView.setAnimation(PathAnimationFactory.pathAnimationFactory(startPoint, secondPoint, thirdPoint, endPoint));
-        vehicleView.setDuration(calculateDurationVehicle(vehicle));
+        vehicleView.setDuration(calculateDuration(vehicle));
 
         new Thread(selectedVehicleView).start();
         CBikeSimState.getInstance().addThread(selectedVehicleView);
     }
 
-    private int calculateDurationClient(Client client) {
+    private int calculateDuration(Client client) {
         int duration;
+        int velocity = 25;
         double distance =
                 Math.abs(client.getTo().getPosition().getX() - client.getFrom().getPosition().getX()) +
                         Math.abs(client.getTo().getPosition().getY() - client.getFrom().getPosition().getY());
-        duration = (int) distance / 35;
+
+        if(client.getBike().getBikeType() == Bike.ELECTRIC) velocity = 45;
+        else if (client.getBike().getBikeType() == Bike.NORMAL) velocity = 30;
+
+        duration = (int) distance / velocity;
         return duration;
     }
 
-    private int calculateDurationVehicle(Vehicle vehicle) {
+    private int calculateDuration(Vehicle vehicle) {
         int duration;
+        int velocity = 50;
         double distance =
                 Math.abs(vehicle.getTo().getPosition().getX() - vehicle.getFrom().getPosition().getX()) +
                         Math.abs(vehicle.getTo().getPosition().getY() - vehicle.getFrom().getPosition().getY());
-        duration = (int) distance / 45;
+        duration = (int) distance / velocity;
         return duration;
     }
 
@@ -416,12 +420,20 @@ public class GamePresenter implements Game.Presenter {
         int numBikes = station.getAvailableBikeList().size();
 
         Image bikeEmptyImage = new Image(getClass().getResource("/img/bike_empty.png").toExternalForm());
-        Image bikeImage = new Image(getClass().getResource("/img/bike.png").toExternalForm());
+        Image normalBikeImage = new Image(getClass().getResource("/img/bike.png").toExternalForm());
+        Image electricBikeImage = new Image(getClass().getResource("/img/bike_elec.png").toExternalForm());
 
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns && count < station.getMaxCapacity(); column++) {
                 if (count < numBikes) {
-                    view.getTopPane().add(new BikeStallView(bikeImage, station.getAvailableBikeList().get(count).getId(), this, BikeStallView.STATION, true, false), column, row);
+                    view.getTopPane().add(
+                            new BikeStallView(
+                                    (station.getAvailableBikeList().get(count).getBikeType() == Bike.ELECTRIC) ? electricBikeImage : normalBikeImage,
+                                    station.getAvailableBikeList().get(count).getId(),
+                                    this, BikeStallView.STATION,
+                                    true,
+                                    false),
+                            column, row);
                 } else {
                     view.getTopPane().add(new BikeStallView(bikeEmptyImage, this, BikeStallView.STATION, false, true), column, row);
                 }
@@ -447,7 +459,7 @@ public class GamePresenter implements Game.Presenter {
         Image clientImage = new Image(getClass().getResource("/img/client.png").toExternalForm());
 
         for (int row = 0; row < rows; row++) {
-            for (int column = 0; column < columns && count < 6; column++) {
+            for (int column = 0; column < columns && count < 9; column++) {
                 if (count < numClients) {
                     view.getBottomPane().add(new ClientInStationView(clientImage, station.getClientWaitingToPickUpList().get(count).getId(), this), column, row);
                 } else {
@@ -472,12 +484,21 @@ public class GamePresenter implements Game.Presenter {
         int numBikes = vehicle.getBikeList().size();
 
         Image bikeEmptyImage = new Image(getClass().getResource("/img/bike_empty.png").toExternalForm());
-        Image bikeImage = new Image(getClass().getResource("/img/bike.png").toExternalForm());
+        Image normalBikeImage = new Image(getClass().getResource("/img/bike.png").toExternalForm());
+        Image electricBikeImage = new Image(getClass().getResource("/img/bike_elec.png").toExternalForm());
 
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns && count < vehicle.getMaxCapacity(); column++) {
                 if (count < numBikes) {
-                    view.getBottomPane().add(new BikeStallView(bikeImage, vehicle.getBikeList().get(count).getId(), this, BikeStallView.VEHICLE, true, false), column, row);
+                    view.getBottomPane().add(
+                            new BikeStallView(
+                                    (vehicle.getBikeList().get(count).getBikeType() == Bike.ELECTRIC) ? electricBikeImage : normalBikeImage,
+                                    vehicle.getBikeList().get(count).getId(),
+                                    this,
+                                    BikeStallView.VEHICLE,
+                                    true,
+                                    false),
+                            column, row);
                 } else {
                     view.getBottomPane().add(new BikeStallView(bikeEmptyImage, this, BikeStallView.VEHICLE, false, true), column, row);
                 }
@@ -573,7 +594,10 @@ public class GamePresenter implements Game.Presenter {
         this.mpStart = new MediaPlayer(mediaStart);
         this.mpClient = new MediaPlayer(mediaClient);
 
-        this.mpSelect.setVolume(1.0);
+        this.mp.setVolume(0.3);
+        this.mpStart.setVolume(0.5);
+        this.mpSelect.setVolume(0.3);
+        this.mpClient.setVolume(0.2);
     }
 
     //DURATION in SECONDS
@@ -590,10 +614,10 @@ public class GamePresenter implements Game.Presenter {
 
         Label label = score.getScore();
         label.setTranslateX(140);
-        label.setTranslateY(30);
+        label.setTranslateY(50);
 
         Label labelTitle = score.getScoreTitle();
-        labelTitle.setTranslateY(60);
+        labelTitle.setTranslateY(50);
 
         view.getUtilityPane().getChildren().addAll(labelTitle, label);
     }
