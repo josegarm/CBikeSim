@@ -1,6 +1,5 @@
 package es.cbikesim.gameMenu.presenter;
 
-import es.cbikesim.app.CBikeSim;
 import es.cbikesim.app.CBikeSimState;
 import es.cbikesim.game.contract.Game;
 import es.cbikesim.gameMenu.contract.GameMenu;
@@ -11,7 +10,6 @@ import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
@@ -52,7 +50,7 @@ public class GameMenuPresenter implements GameMenu.Presenter {
     }
 
     @Override
-    public void initMenu(){
+    public void initMenu() {
         prepareMusic();
 
         Stage stage = new Stage(StageStyle.UNDECORATED);
@@ -190,7 +188,7 @@ public class GameMenuPresenter implements GameMenu.Presenter {
         );
     }
 
-    private void prepareFinishGameMenu(){
+    private void prepareFinishGameMenu() {
         MenuTitleView finalScoreTitle = new MenuTitleView("Final Score");
         MenuTitleView finalScore = new MenuTitleView("0");
 
@@ -215,8 +213,6 @@ public class GameMenuPresenter implements GameMenu.Presenter {
 
         CBikeSimState.getInstance().getPrimaryStage().hide();
     }
-
-
 
 
 }

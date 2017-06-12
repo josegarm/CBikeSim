@@ -36,7 +36,7 @@ public class CBikeSimState {
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
         primaryStage.setOnCloseRequest(event -> {
-            for(StopRun sr : threads) sr.stopRun();
+            for (StopRun sr : threads) sr.stopRun();
         });
     }
 
@@ -48,7 +48,7 @@ public class CBikeSimState {
         this.audio = audio;
     }
 
-    public void addThread(StopRun sr){
+    public void addThread(StopRun sr) {
         threads.add(sr);
     }
 }

@@ -1,15 +1,12 @@
 package es.cbikesim.lib.util;
 
 
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
-import javafx.util.Duration;
 
 public class Score {
 
@@ -28,7 +25,7 @@ public class Score {
     private int score;
     private int multiplier;
 
-    public Score(){
+    public Score() {
         scoreLabel = new Label();
         scoreTitle = new Label();
 
@@ -48,7 +45,7 @@ public class Score {
 
     }
 
-    public void startScore(){
+    public void startScore() {
         scoreUpdater.setValue(0);
     }
 
@@ -56,15 +53,15 @@ public class Score {
         return scoreLabel;
     }
 
-    public Label getScoreTitle(){ return scoreTitle; }
-
-
-    public void changeScore(Integer score){
-        Integer currentScore = scoreUpdater.getValue();
-        scoreUpdater.set(((currentScore + score) >= 0) ? scoreUpdater.getValue() + score : 0);
+    public Label getScoreTitle() {
+        return scoreTitle;
     }
 
 
+    public void changeScore(Integer score) {
+        Integer currentScore = scoreUpdater.getValue();
+        scoreUpdater.set(((currentScore + score) >= 0) ? scoreUpdater.getValue() + score : 0);
+    }
 
 
 }

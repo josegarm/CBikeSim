@@ -37,7 +37,7 @@ public class MainMenuPresenter implements MainMenu.Presenter {
     }
 
     @Override
-    public void initMenu(){
+    public void initMenu() {
         prepareMusic();
 
         view.start(CBikeSimState.getInstance().getPrimaryStage());

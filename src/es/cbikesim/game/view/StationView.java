@@ -2,8 +2,6 @@ package es.cbikesim.game.view;
 
 import es.cbikesim.game.contract.Game;
 import es.cbikesim.lib.util.Point;
-import javafx.event.EventHandler;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -35,11 +33,11 @@ public class StationView extends Circle {
         });
 
         super.setOnMouseEntered(e -> {
-            super.setStroke(Color.rgb(255,255,255));
+            super.setStroke(Color.rgb(255, 255, 255));
         });
 
         super.setOnMouseExited(e -> {
-            super.setStroke(Color.rgb(0,76,153));
+            super.setStroke(Color.rgb(0, 76, 153));
         });
     }
 

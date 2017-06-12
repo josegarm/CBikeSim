@@ -10,7 +10,7 @@ import es.cbikesim.game.util.strategies.RandomStrategy;
 import es.cbikesim.game.util.strategies.Strategy;
 import es.cbikesim.lib.util.StopRun;
 
-public class ClientGenerator extends Thread implements StopRun{
+public class ClientGenerator extends Thread implements StopRun {
 
     public final static int NULL = 0, RANDOM = 1, CRITICAL_MORNING = 2, CRITICAL_AFTERNOON = 3;
 
@@ -73,7 +73,7 @@ public class ClientGenerator extends Thread implements StopRun{
         this.waitSeconds = waitSeconds;
     }
 
-    private void sleep(){
+    private void sleep() {
         try {
             Thread.sleep(waitSeconds * 1000);
         } catch (InterruptedException e) {

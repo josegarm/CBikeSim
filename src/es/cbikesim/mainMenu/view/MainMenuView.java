@@ -1,6 +1,5 @@
 package es.cbikesim.mainMenu.view;
 
-import es.cbikesim.app.CBikeSimState;
 import es.cbikesim.mainMenu.contract.MainMenu;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -67,7 +66,7 @@ public class MainMenuView implements MainMenu.View {
     }
 
     private void addBackground() {
-        String path = "/img/bicycle_wallpaper_" + (new Random().nextInt((5 - 1) + 1) + 1) + ".jpg";
+        String path = "/img/bicycle_wallpaper_" + (new Random().nextInt((2 - 1) + 1) + 1) + ".jpg";
         ImageView imageView = new ImageView(new Image(getClass().getResource(path).toExternalForm()));
         imageView.setFitWidth(WIDTH);
         imageView.setFitHeight(HEIGHT);

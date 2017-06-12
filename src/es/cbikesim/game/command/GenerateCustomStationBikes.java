@@ -22,18 +22,18 @@ public class GenerateCustomStationBikes implements Command {
     public void execute() throws UseCaseException {
         double n;
 
-        switch (numBikes){
+        switch (numBikes) {
             case GamePresenter.FEW_BIKES:
-                n = 1.0/4;
+                n = 1.0 / 4;
                 break;
             case GamePresenter.NORMAL_BIKES:
-                n = 1.0/2;
+                n = 1.0 / 2;
                 break;
             case GamePresenter.MANY_BIKES:
-                n = 3.0/4;
+                n = 3.0 / 4;
                 break;
             default:
-                n = 1.0/2;
+                n = 1.0 / 2;
                 break;
         }
 

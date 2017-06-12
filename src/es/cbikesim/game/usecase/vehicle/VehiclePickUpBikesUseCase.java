@@ -36,8 +36,8 @@ public class VehiclePickUpBikesUseCase implements Command {
     }
 
     private void validate() throws UseCaseException {
-        if (vehicle == null)    throw new UseCaseException("Error: VehiclePickUpBikesUseCase -> Vehicle is null");
-        if (bike == null)       throw new UseCaseException("Error: VehicleDepositBikeUseCase -> Bike is null");
-        if (scenario == null)   throw new UseCaseException("Error: VehiclePickUpBikesUseCase -> Scenario is null");
+        if (vehicle == null) throw new UseCaseException("Error: VehiclePickUpBikesUseCase -> Vehicle is null");
+        if (bike == null) throw new UseCaseException("Error: VehicleDepositBikeUseCase -> Bike is null");
+        if (scenario == null) throw new UseCaseException("Error: VehiclePickUpBikesUseCase -> Scenario is null");
     }
 }

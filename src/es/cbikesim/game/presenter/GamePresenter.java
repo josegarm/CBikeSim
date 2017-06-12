@@ -14,10 +14,10 @@ import es.cbikesim.game.util.ClientGenerator;
 import es.cbikesim.game.util.ClientGeneratorStrategySelector;
 import es.cbikesim.game.util.factories.PathAnimationFactory;
 import es.cbikesim.game.view.*;
-import es.cbikesim.lib.exception.UseCaseException;
 import es.cbikesim.gameMenu.contract.GameMenu;
 import es.cbikesim.gameMenu.presenter.GameMenuPresenter;
 import es.cbikesim.gameMenu.view.GameMenuView;
+import es.cbikesim.lib.exception.UseCaseException;
 import es.cbikesim.lib.pattern.Command;
 import es.cbikesim.lib.pattern.Invoker;
 import es.cbikesim.lib.util.Point;
@@ -78,7 +78,7 @@ public class GamePresenter implements Game.Presenter {
         prepareClientGenerator();
         prepareMusic();
 
-        createScenario(difficulty,time,numBikes,carCapacity);
+        createScenario(difficulty, time, numBikes, carCapacity);
 
         view.start(CBikeSimState.getInstance().getPrimaryStage());
 
@@ -136,7 +136,7 @@ public class GamePresenter implements Game.Presenter {
                 mpClient.play();
             }
 
-            if(client.getFrom() == selectedStation && itemSelectedType == STATION) paintStationPanel(selectedStation);
+            if (client.getFrom() == selectedStation && itemSelectedType == STATION) paintStationPanel(selectedStation);
             view.getMapPane().getChildren().add(newClientNotification);
             new Timeline(new KeyFrame(Duration.seconds(1), event -> {
                 view.getMapPane().getChildren().remove(newClientNotification);
@@ -174,7 +174,8 @@ public class GamePresenter implements Game.Presenter {
             invoker.invoke();
             if (client.getBike() == null) {
                 Platform.runLater(() -> {
-                    if(client.getFrom() == selectedStation && itemSelectedType == STATION) paintStationPanel(selectedStation);
+                    if (client.getFrom() == selectedStation && itemSelectedType == STATION)
+                        paintStationPanel(selectedStation);
                     view.getMapPane().getChildren().remove(clientView);
                 });
                 clientView.stopRun();
@@ -272,7 +273,7 @@ public class GamePresenter implements Game.Presenter {
     @Override
     public void changeMusic() {
         CBikeSimState.getInstance().turnAudio();
-        if(CBikeSimState.getInstance().getAudio()) mp.play();
+        if (CBikeSimState.getInstance().getAudio()) mp.play();
         else mp.pause();
     }
 
@@ -388,7 +389,7 @@ public class GamePresenter implements Game.Presenter {
                 Math.abs(client.getTo().getPosition().getX() - client.getFrom().getPosition().getX()) +
                         Math.abs(client.getTo().getPosition().getY() - client.getFrom().getPosition().getY());
 
-        if(client.getBike().getBikeType() == Bike.ELECTRIC) velocity = 45;
+        if (client.getBike().getBikeType() == Bike.ELECTRIC) velocity = 45;
         else if (client.getBike().getBikeType() == Bike.NORMAL) velocity = 30;
 
         duration = (int) distance / velocity;
@@ -575,19 +576,19 @@ public class GamePresenter implements Game.Presenter {
         timer = new Timer(time);
     }
 
-    private void stopTimer(){
-        if(timer != null) timer.stopTimer();
+    private void stopTimer() {
+        if (timer != null) timer.stopTimer();
     }
 
-    private void prepareClientGenerator(){
+    private void prepareClientGenerator() {
         stopClientGenerator();
         this.clientGenerator = new ClientGenerator(ClientGenerator.RANDOM, scenario, this, 5);
-        this.clientGeneratorStrategySelector = new ClientGeneratorStrategySelector(clientGenerator,time,difficulty);
+        this.clientGeneratorStrategySelector = new ClientGeneratorStrategySelector(clientGenerator, time, difficulty);
     }
 
-    private void stopClientGenerator(){
-        if(this.clientGenerator != null) this.clientGenerator.stopRun();
-        if(this.clientGeneratorStrategySelector != null) this.clientGeneratorStrategySelector.stopRun();
+    private void stopClientGenerator() {
+        if (this.clientGenerator != null) this.clientGenerator.stopRun();
+        if (this.clientGeneratorStrategySelector != null) this.clientGeneratorStrategySelector.stopRun();
     }
 
     private void prepareMusic() {
@@ -618,7 +619,7 @@ public class GamePresenter implements Game.Presenter {
         timer.startTimer();
         int count = 0;
         timer.getTime().addListener(e -> {
-            if(timer.getTime().getValue() == 0) {
+            if (timer.getTime().getValue() == 0) {
                 GameMenu.Presenter menu = new GameMenuPresenter(this, score);
                 GameMenu.View view = new GameMenuView(menu);
                 menu.initMenu();
@@ -628,10 +629,10 @@ public class GamePresenter implements Game.Presenter {
 
         Label timerText = timer.getTimerLabel();
         timerText.setTranslateX(180);
-        view.getUtilityPane().getChildren().addAll( timer.getTimerTitle(), timerText);
+        view.getUtilityPane().getChildren().addAll(timer.getTimerTitle(), timerText);
     }
 
-    private void startScore(){
+    private void startScore() {
         score = new Score();
 
         Label label = score.getScore();
@@ -649,7 +650,7 @@ public class GamePresenter implements Game.Presenter {
         CBikeSimState.getInstance().addThread(clientGenerator);
     }
 
-    private void startClientGeneratorStrategySelector(){
+    private void startClientGeneratorStrategySelector() {
         clientGeneratorStrategySelector.start();
         CBikeSimState.getInstance().addThread(clientGeneratorStrategySelector);
     }

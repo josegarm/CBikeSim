@@ -55,11 +55,11 @@ public class Timer {
         return timerTitle;
     }
 
-    public void stopTimer(){
+    public void stopTimer() {
         timeline.stop();
     }
 
-    public IntegerProperty getTime(){
+    public IntegerProperty getTime() {
         return this.timeSeconds;
     }
 

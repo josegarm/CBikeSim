@@ -12,7 +12,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class GameMenuView implements GameMenu.View {
 
@@ -60,7 +59,9 @@ public class GameMenuView implements GameMenu.View {
     }
 
     @Override
-    public Pane getRoot(){ return this.root; }
+    public Pane getRoot() {
+        return this.root;
+    }
 
     private Parent createContent() {
         initComponents();
