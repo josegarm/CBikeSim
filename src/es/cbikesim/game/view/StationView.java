@@ -33,6 +33,14 @@ public class StationView extends Circle {
         super.setOnDragDropped(event -> {
             context.moveVehicleToAnotherStation(event.getDragboard().getString(), super.getId());
         });
+
+        super.setOnMouseEntered(e -> {
+            super.setStroke(Color.rgb(255,255,255));
+        });
+
+        super.setOnMouseExited(e -> {
+            super.setStroke(Color.rgb(0,76,153));
+        });
     }
 
 }
