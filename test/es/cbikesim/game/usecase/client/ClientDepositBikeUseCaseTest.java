@@ -48,13 +48,13 @@ public class ClientDepositBikeUseCaseTest {
         clientDepositBikeUseCase = new ClientDepositBikeUseCase(client,scenario);
         clientDepositBikeUseCase.execute();
 
-        assertNull(client.getBike());
-        assertNull(client.getTo());
+        assertNull("Client still has bike after depositing it. Should be null.",client.getBike());
+        assertNull("Client still has 'to' parameter after arriving. Should be null.",client.getTo());
 
-        assertEquals(a, client.getFrom());
+        assertEquals("Clients current station is not equal to the destination station. Destination and current should be the same.",a, client.getFrom());
 
-        assertTrue(client.getFrom().getAvailableBikeList().contains(bike));
-        assertFalse(scenario.getClientsInTransit().contains(client));
+        assertTrue("Clients bike has not been deposited in the station. Clients bike should be in station bike list.",client.getFrom().getAvailableBikeList().contains(bike));
+        assertFalse("Client still in transit after arriving. Client should have dissapeared from transit list.",scenario.getClientsInTransit().contains(client));
     }
 
     @Test
@@ -65,9 +65,9 @@ public class ClientDepositBikeUseCaseTest {
         clientDepositBikeUseCase = new ClientDepositBikeUseCase(client,scenario);
         clientDepositBikeUseCase.execute();
 
-        assertNotNull(client.getBike());
-        assertNotNull(client.getTo());
-        assertNotNull(client.getFrom());
+        assertNotNull("Client does not have bike. He can't deposit it yet he doesn't have it. He should have it because he hasn't deposited the bike yet!",client.getBike());
+        assertNotNull("Client doesn't have destination station. He should have it because he hasn't deposited the bike yet!",client.getTo());
+        assertNotNull("Client origin station is null. This parameter should still exist because he hasn't deposited the bike yet!",client.getFrom());
 
         assertTrue(client.getTo().getClientWaitingToDepositList().contains(client));
         assertFalse(scenario.getClientsInTransit().contains(client));
