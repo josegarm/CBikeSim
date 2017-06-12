@@ -36,7 +36,7 @@ public class VehiclePicksUpBikeUseCaseTest {
     }
 
     @Test
-    public void testExecuteVehicleCanPicksUpBike() throws Exception {
+    public void testExecuteVehicleCanPickUpBike() throws Exception {
         vehicle = new Vehicle("vehicle1", 6, a);
         a.getVehicleList().add(vehicle);
         a.getAvailableBikeList().add(bike);
@@ -44,12 +44,12 @@ public class VehiclePicksUpBikeUseCaseTest {
         vehiclePicksUpBikeUseCase = new VehiclePicksUpBikeUseCase(vehicle, bike, scenario);
         vehiclePicksUpBikeUseCase.execute();
 
-        assertNull(vehicle.getTo());
-        assertNull(vehicle.getFrom());
-        assertEquals(a, vehicle.getAt());
+        assertNull("Vehicle is at station! Destination station (to) should be null!",vehicle.getTo());
+        assertNull("Vehicle is at station! Origin station (from) should be null!",vehicle.getFrom());
+        assertEquals("Vehicle's current station is not the same as perceived current station! Should be the same.",a, vehicle.getAt());
 
-        assertTrue(vehicle.getBikeList().contains(bike));
-        assertFalse(a.getAvailableBikeList().contains(bike));
+        assertTrue("Vechicle doesn't have picked up bike! Vehicle should have picked up bike!",vehicle.getBikeList().contains(bike));
+        assertFalse("Station has picked up bike! Station should not have bike after vehicle picks it up!",a.getAvailableBikeList().contains(bike));
     }
 
     @Test
@@ -61,12 +61,12 @@ public class VehiclePicksUpBikeUseCaseTest {
         vehiclePicksUpBikeUseCase = new VehiclePicksUpBikeUseCase(vehicle, bike, scenario);
         vehiclePicksUpBikeUseCase.execute();
 
-        assertNull(vehicle.getTo());
-        assertNull(vehicle.getFrom());
-        assertEquals(a, vehicle.getAt());
+        assertNull("Vehicle is at station! Destination station (to) should be null!",vehicle.getTo());
+        assertNull("Vehicle is at station! Origin station (from) should be null!",vehicle.getFrom());
+        assertEquals("Vehicle's current station is not the same as perceived current station! Should be the same.",a, vehicle.getAt());
 
-        assertFalse("Los mensajes se escriben aqui, este es el que falla",vehicle.getBikeList().contains(bike));
-        assertTrue(a.getAvailableBikeList().contains(bike));
+        assertFalse("Vehicle has bike after not picking it up! Should not have bike that is still in station!",vehicle.getBikeList().contains(bike));
+        assertTrue("Station does not have bike after vehicle doesn't pick it up. Station should still have bike!.",a.getAvailableBikeList().contains(bike));
     }
 
 }
