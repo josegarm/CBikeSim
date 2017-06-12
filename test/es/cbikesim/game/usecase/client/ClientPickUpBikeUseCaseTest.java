@@ -48,12 +48,12 @@ public class ClientPickUpBikeUseCaseTest {
         clientPickUpBikeUseCase = new ClientPickUpBikeUseCase(client,bike,scenario);
         clientPickUpBikeUseCase.execute();
 
-        assertEquals(bike,client.getBike());
+        assertEquals("Client does not have the bike he picked up. Bike chosen and the bike picked up should be the same.",bike,client.getBike());
 
-        assertFalse(a.getAvailableBikeList().contains(bike));
-        assertFalse(a.getClientWaitingToPickUpList().contains(client));
+        assertFalse("Bike that client picked up is still in station bike list! The bike should not be in the list!",a.getAvailableBikeList().contains(bike));
+        assertFalse("Client is still in waiting list after picking up his bike. Client should not be in the list!",a.getClientWaitingToPickUpList().contains(client));
 
-        assertTrue(scenario.getClientsInTransit().contains(client));
+        assertTrue("Client is not in transit list! After picking up bike, client has to be in transit list!",scenario.getClientsInTransit().contains(client));
     }
 
 }
