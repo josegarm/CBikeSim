@@ -639,7 +639,7 @@ public class GamePresenter implements Game.Presenter {
         view.getMapPane().getChildren().add(play_pause);
         play_pause.setOnMouseClicked(e -> {
             try {
-                GameMenu.Presenter menu = new GameMenuPresenter(this);
+                GameMenu.Presenter menu = new GameMenuPresenter(this, score);
                 GameMenu.View view = new GameMenuView(menu);
                 menu.initMenu();
             } catch (Exception e1) {

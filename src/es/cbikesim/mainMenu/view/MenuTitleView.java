@@ -31,4 +31,6 @@ public class MenuTitleView extends Pane {
     public double getTitleHeight() {
         return text.getLayoutBounds().getHeight();
     }
+
+    public void setText(String value){ text.setText(value);}
 }

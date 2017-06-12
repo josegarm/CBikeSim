@@ -4,10 +4,13 @@ import es.cbikesim.app.CBikeSimState;
 import es.cbikesim.game.contract.Game;
 import es.cbikesim.gameMenu.contract.GameMenu;
 import es.cbikesim.gameMenu.view.GameMenuItemView;
+import es.cbikesim.lib.util.Score;
+import es.cbikesim.mainMenu.view.MenuTitleView;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
@@ -29,8 +32,11 @@ public class GameMenuPresenter implements GameMenu.Presenter {
 
     private GameMenuItemView itemPressed;
 
-    public GameMenuPresenter(Game.Presenter context) {
+    private Score score;
+
+    public GameMenuPresenter(Game.Presenter context, Score score) {
         this.context = context;
+        this.score = score;
     }
 
     @Override
@@ -142,8 +148,49 @@ public class GameMenuPresenter implements GameMenu.Presenter {
                     view.getStage().close();
                     context.backToMainMenu();
                 }),
+                new Pair<String, Runnable>("EXIT GAME", Platform::exit),
+                new Pair<String, Runnable>("CHANGE TO FINAL", () ->{
+                    prepareFinishGameMenu();
+                })
+        );
+    }
+
+    private List<Pair<String, Runnable>> getGameDoneData() {
+        return Arrays.asList(
+                new Pair<String, Runnable>("RESTART", () -> {
+                    view.getStage().close();
+                    context.initGame();
+                }),
+                new Pair<String, Runnable>("EXIT TO MAIN MENU", () -> {
+                    view.getStage().close();
+                    context.backToMainMenu();
+                }),
                 new Pair<String, Runnable>("EXIT GAME", Platform::exit)
         );
+    }
+
+    private void prepareFinishGameMenu(){
+        MenuTitleView finalScoreTitle = new MenuTitleView("Final Score");
+        MenuTitleView finalScore = new MenuTitleView("0");
+
+        finalScore.setText(score.getScore().getText());
+
+        finalScoreTitle.setLayoutX(50);
+        finalScoreTitle.setLayoutY(100);
+
+        finalScore.setLayoutX(180);
+        finalScore.setLayoutY(100);
+
+        view.getMenuBox().setTranslateY(150);
+
+        view.getLine().setStartY(150);
+        view.getLine().setEndY(320);
+        view.getRoot().getChildren().addAll(finalScore, finalScoreTitle);
+
+        addMenu(getGameDoneData());
+        //view.getMenuBox().setLayoutY(lineY + 105);
+        //view.getLine().setLayoutY(lineY + 100);
+
     }
 
 

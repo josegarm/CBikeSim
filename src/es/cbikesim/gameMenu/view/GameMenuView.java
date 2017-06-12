@@ -59,6 +59,9 @@ public class GameMenuView implements GameMenu.View {
         return this.line;
     }
 
+    @Override
+    public Pane getRoot(){ return this.root; }
+
     private Parent createContent() {
         initComponents();
         addBackground();
@@ -106,5 +109,6 @@ public class GameMenuView implements GameMenu.View {
 
         root.getChildren().add(menuBox);
     }
+
 
 }
