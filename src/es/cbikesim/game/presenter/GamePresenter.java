@@ -24,6 +24,7 @@ import es.cbikesim.gameMenu.view.GameMenuView;
 import es.cbikesim.lib.pattern.Command;
 import es.cbikesim.lib.pattern.Invoker;
 import es.cbikesim.lib.util.Point;
+import es.cbikesim.lib.util.Score;
 import es.cbikesim.lib.util.Timer;
 import es.cbikesim.mainMenu.contract.MainMenu;
 import es.cbikesim.mainMenu.presenter.MainMenuPresenter;
@@ -52,13 +53,15 @@ public class GamePresenter implements Game.Presenter {
 
     private VehicleView selectedVehicleView;
 
-    private MediaPlayer mp, mpSelect;
+    private MediaPlayer mp, mpSelect, mpStart, mpClient;
     private Timer timer;
 
     private ClientGenerator clientGenerator;
     private ClientGeneratorStrategySelector clientGeneratorStrategySelector;
 
     private int itemSelectedType = NOTHING;
+
+    private Score score;
 
     private int difficulty, time, carCapacity;
     private String numBikes;
@@ -122,6 +125,11 @@ public class GamePresenter implements Game.Presenter {
 
     @Override
     public void notifyNewClient(Client client) {
+        if (CBikeSimState.getInstance().getAudio()) {
+            mpClient.stop();
+            mpClient.play();
+        }
+
         ImageView newClientNotification = new ClientNotificationView(client.getFrom().getPosition());
 
         Platform.runLater(() -> {
@@ -168,9 +176,10 @@ public class GamePresenter implements Game.Presenter {
                 });
                 clientView.stopRun();
             } else {
-                Platform.runLater(() ->
-                        clientView.setLayoutX(-25 + (-25.0 * client.getTo().getClientWaitingToDepositList().indexOf(client)))
-                );
+                Platform.runLater(() -> {
+                    score.changeScore(-1);
+                    clientView.setLayoutX(-25 + (-25.0 * client.getTo().getClientWaitingToDepositList().indexOf(client)));
+                });
             }
         } catch (UseCaseException e) {
             System.err.println(e.getMessage());
@@ -304,10 +313,14 @@ public class GamePresenter implements Game.Presenter {
         addPause();
 
         startTimer();
+        startScore();
         startClientGenerator();
         startClientGeneratorStrategySelector();
 
-        if (CBikeSimState.getInstance().getAudio()) mp.play();
+        if (CBikeSimState.getInstance().getAudio()) {
+            mpStart.play();
+            mp.play();
+        }
     }
 
     private void paintMap() {
@@ -332,6 +345,7 @@ public class GamePresenter implements Game.Presenter {
     }
 
     private void paintClientInTransit(Client client) {
+        score.changeScore(30);
         ClientView clientView = new ClientView(client.getFrom().getPosition(), client.getId(), this);
         view.getMapPane().getChildren().add(clientView);
         int seconds = calculateDurationClient(client);
@@ -344,6 +358,7 @@ public class GamePresenter implements Game.Presenter {
     }
 
     private void paintVehicleInTransit(Vehicle vehicle) {
+        score.changeScore(5);
         VehicleView vehicleView = selectedVehicleView;
         vehicleView.toFront();
 
@@ -545,12 +560,18 @@ public class GamePresenter implements Game.Presenter {
     private void prepareMusic() {
         String pathSelect = getClass().getResource("/music/select.wav").toString();
         String path = getClass().getResource("/music/soundtrack_game.mp3").toString();
+        String pathStart = getClass().getResource("/music/startGame.mp3").toString();
+        String pathClient = getClass().getResource("/music/client_arrives.mp3").toString();
 
         Media mediaSelect = new Media(pathSelect);
         Media media = new Media(path);
+        Media mediaStart = new Media(pathStart);
+        Media mediaClient = new Media(pathClient);
 
         this.mpSelect = new MediaPlayer(mediaSelect);
         this.mp = new MediaPlayer(media);
+        this.mpStart = new MediaPlayer(mediaStart);
+        this.mpClient = new MediaPlayer(mediaClient);
 
         this.mpSelect.setVolume(1.0);
     }
@@ -562,6 +583,19 @@ public class GamePresenter implements Game.Presenter {
         Label timerText = timer.getTimerLabel();
         timerText.setTranslateX(180);
         view.getUtilityPane().getChildren().addAll( timer.getTimerTitle(), timerText);
+    }
+
+    private void startScore(){
+        score = new Score();
+
+        Label label = score.getScore();
+        label.setTranslateX(140);
+        label.setTranslateY(30);
+
+        Label labelTitle = score.getScoreTitle();
+        labelTitle.setTranslateY(60);
+
+        view.getUtilityPane().getChildren().addAll(labelTitle, label);
     }
 
     private void startClientGenerator() {
