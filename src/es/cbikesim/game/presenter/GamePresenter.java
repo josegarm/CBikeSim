@@ -43,7 +43,7 @@ public class GamePresenter implements Game.Presenter {
     private static final int NOTHING = 0, STATION = 1, VEHICLE = 2;
 
     private Game.View view;
-    private Scenario scenario;
+    protected Scenario scenario;
 
     private Station selectedStation;
     private Vehicle selectedVehicle;
