@@ -8,8 +8,9 @@ import es.cbikesim.game.util.strategies.CriticalStrategy;
 import es.cbikesim.game.util.strategies.NullStrategy;
 import es.cbikesim.game.util.strategies.RandomStrategy;
 import es.cbikesim.game.util.strategies.Strategy;
+import es.cbikesim.lib.util.StopRun;
 
-public class ClientGenerator extends Thread {
+public class ClientGenerator extends Thread implements StopRun{
 
     public final static int NULL = 0, RANDOM = 1, CRITICAL_MORNING = 2, CRITICAL_AFTERNOON = 3;
 
@@ -43,7 +44,8 @@ public class ClientGenerator extends Thread {
         }
     }
 
-    public void cancel() {
+    @Override
+    public void stopRun() {
         this.alive = false;
     }
 

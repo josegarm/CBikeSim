@@ -2,12 +2,13 @@ package es.cbikesim.game.view;
 
 import es.cbikesim.game.contract.Game;
 import es.cbikesim.lib.util.Point;
+import es.cbikesim.lib.util.StopRun;
 import javafx.animation.PathTransition;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
-public class ClientView extends Circle implements Runnable {
+public class ClientView extends Circle implements Runnable, StopRun {
 
     Game.Presenter context;
 
@@ -59,7 +60,8 @@ public class ClientView extends Circle implements Runnable {
         this.animation.setDuration(Duration.seconds(waitSecond));
     }
 
-    public void stop() {
+    @Override
+    public void stopRun() {
         this.alive = false;
     }
 
