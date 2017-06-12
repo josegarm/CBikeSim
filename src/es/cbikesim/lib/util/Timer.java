@@ -55,4 +55,8 @@ public class Timer {
         return timerTitle;
     }
 
+    public void stopTimer(){
+        timeline.stop();
+    }
+
 }

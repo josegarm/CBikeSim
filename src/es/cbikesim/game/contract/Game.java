@@ -6,11 +6,12 @@ import es.cbikesim.game.view.VehicleView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public interface Game {
 
     interface View {
-        void start();
+        void start(Stage primaryStage);
 
         GridPane getTopPane();
 
@@ -26,11 +27,9 @@ public interface Game {
     }
 
     interface Presenter {
-        void load();
+        void initGame(int difficulty, int time, String numBikes, int carCapacity);
 
         void playSelect();
-
-        void createScenario(int difficulty, int time, String numBikes, int carCapacity);
 
         void showDataFromStation(String id);
 
@@ -53,6 +52,8 @@ public interface Game {
         void setVehicleView(VehicleView vehicleView);
 
         void setView(Game.View view);
+
+        void changeMusic();
 
     }
 
