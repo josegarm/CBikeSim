@@ -27,7 +27,9 @@ public interface Game {
     }
 
     interface Presenter {
-        void initGame(int difficulty, int time, String numBikes, int carCapacity);
+        void initGame();
+
+        void backToMainMenu();
 
         void playSelect();
 

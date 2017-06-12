@@ -1,12 +1,9 @@
-package es.cbikesim.lib.gameMenu.presenter;
+package es.cbikesim.gameMenu.presenter;
 
 import es.cbikesim.app.CBikeSimState;
 import es.cbikesim.game.contract.Game;
-import es.cbikesim.game.presenter.GamePresenter;
-import es.cbikesim.game.view.GameView;
-import es.cbikesim.lib.gameMenu.contract.GameMenu;
-import es.cbikesim.lib.gameMenu.view.GameMenuItemView;
-import es.cbikesim.lib.gameMenu.view.GameMenuView;
+import es.cbikesim.gameMenu.contract.GameMenu;
+import es.cbikesim.gameMenu.view.GameMenuItemView;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
@@ -121,19 +118,21 @@ public class GameMenuPresenter implements GameMenu.Presenter {
 
     private List<Pair<String, Runnable>> getMenuData() {
         return Arrays.asList(
-                new Pair<String, Runnable>("Resume", () -> {
+                new Pair<String, Runnable>("RESUME", () -> {
                     view.getStage().close();
                 }),
                 new Pair<String, Runnable>("AUDIO   " + (CBikeSimState.getInstance().getAudio() ? "ON" : "OFF"), () -> {
                     context.changeMusic();
                     this.itemPressed.setText("AUDIO   " + (CBikeSimState.getInstance().getAudio() ? "ON" : "OFF"));
                 }),
-                new Pair<String, Runnable>("Restart", () -> {
+                new Pair<String, Runnable>("RESTART", () -> {
+                    context.initGame();
                 }),
-                new Pair<String, Runnable>("Exit to main menu", () -> {
+                new Pair<String, Runnable>("EXIT TO MAIN MENU", () -> {
+
                     CBikeSimState.getInstance().getPrimaryStage().close();
                 }),
-                new Pair<String, Runnable>("Exit Game", Platform::exit)
+                new Pair<String, Runnable>("EXIT GAME", Platform::exit)
         );
     }
 

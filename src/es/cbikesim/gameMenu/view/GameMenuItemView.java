@@ -1,6 +1,6 @@
-package es.cbikesim.lib.gameMenu.view;
+package es.cbikesim.gameMenu.view;
 
-import es.cbikesim.lib.gameMenu.contract.GameMenu;
+import es.cbikesim.gameMenu.contract.GameMenu;
 import javafx.beans.binding.Bindings;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.DropShadow;
@@ -40,19 +40,19 @@ public class GameMenuItemView extends Pane {
     private Polygon createBackground() {
         Polygon bg = new Polygon(
                 0, 0,
-                200, 0,
-                215, 15,
-                200, 30,
+                180, 0,
+                195, 15,
+                180, 30,
                 0, 30
         );
 
-        bg.setStroke(Color.color(1, 1, 1, 0.75));
+        bg.setStroke(Color.color(0, 0.2314, 0.5333));
         bg.setEffect(new GaussianBlur());
 
         bg.fillProperty().bind(
                 Bindings.when(pressedProperty())
-                        .then(Color.color(0, 0, 0, 1))
-                        .otherwise(Color.color(0, 0, 0, 0.50))
+                        .then(Color.gray(1, 0.1))
+                        .otherwise(Color.gray(1, 0.2))
         );
 
         return bg;
@@ -63,7 +63,7 @@ public class GameMenuItemView extends Pane {
 
         text.setTranslateX(5);
         text.setTranslateY(20);
-        text.setFont(Font.loadFont(getClass().getResource("/font/Penumbra-HalfSerif-Std_35114.ttf").toExternalForm(), 13));
+        text.setFont(Font.loadFont(getClass().getResource("/font/Penumbra-HalfSerif-Std_35114.ttf").toExternalForm(), 12));
         text.setFill(Color.WHITE);
 
         text.effectProperty().bind(

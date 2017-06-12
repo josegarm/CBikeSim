@@ -6,7 +6,6 @@ import es.cbikesim.game.command.GenerateEasyStationBikes;
 import es.cbikesim.game.command.GenerateNormalStationBikes;
 import es.cbikesim.game.command.GenerateVehicles;
 import es.cbikesim.game.contract.Game;
-import es.cbikesim.game.gameMenu.GameMenuView;
 import es.cbikesim.game.model.*;
 import es.cbikesim.game.usecase.client.ClientDepositBikeUseCase;
 import es.cbikesim.game.usecase.client.ClientPickUpBikeUseCase;
@@ -19,10 +18,16 @@ import es.cbikesim.game.util.ClientGeneratorStrategySelector;
 import es.cbikesim.game.util.factories.PathAnimationFactory;
 import es.cbikesim.game.view.*;
 import es.cbikesim.lib.exception.UseCaseException;
+import es.cbikesim.gameMenu.contract.GameMenu;
+import es.cbikesim.gameMenu.presenter.GameMenuPresenter;
+import es.cbikesim.gameMenu.view.GameMenuView;
 import es.cbikesim.lib.pattern.Command;
 import es.cbikesim.lib.pattern.Invoker;
 import es.cbikesim.lib.util.Point;
 import es.cbikesim.lib.util.Timer;
+import es.cbikesim.mainMenu.contract.MainMenu;
+import es.cbikesim.mainMenu.presenter.MainMenuPresenter;
+import es.cbikesim.mainMenu.view.MainMenuView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -31,8 +36,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public class GamePresenter implements Game.Presenter {
@@ -57,16 +60,22 @@ public class GamePresenter implements Game.Presenter {
 
     private int itemSelectedType = NOTHING;
 
-    public GamePresenter() {
+    private int difficulty, time, carCapacity;
+    private String numBikes;
 
+    public GamePresenter(int difficulty, int time, String numBikes, int carCapacity) {
+        this.difficulty = difficulty;
+        this.time = time;
+        this.numBikes = numBikes;
+        this.carCapacity = carCapacity;
     }
 
     @Override
-    public void initGame(int difficulty, int time, String numBikes, int carCapacity) {
+    public void initGame() {
         scenario = new Scenario();
 
-        prepareTimer(time);
-        prepareClientGenerator(time,difficulty);
+        prepareTimer();
+        prepareClientGenerator();
         prepareMusic();
 
         createScenario(difficulty,time,numBikes,carCapacity);
@@ -74,6 +83,16 @@ public class GamePresenter implements Game.Presenter {
         view.start(CBikeSimState.getInstance().getPrimaryStage());
 
         load();
+    }
+
+    @Override
+    public void backToMainMenu() {
+        stopTimer();
+        stopClientGenerator();
+
+        MainMenu.Presenter mainMenuPresenter = new MainMenuPresenter();
+        MainMenu.View mainMenuView = new MainMenuView(mainMenuPresenter);
+        mainMenuPresenter.initMenu();
     }
 
     @Override
@@ -503,16 +522,24 @@ public class GamePresenter implements Game.Presenter {
         return null;
     }
 
-    private void prepareTimer(int seconds) {
-        if(timer != null) timer.stopTimer();
-        timer = new Timer(seconds);
+    private void prepareTimer() {
+        stopTimer();
+        timer = new Timer(time);
     }
 
-    private void prepareClientGenerator(int time, int difficulty){
-        if(this.clientGenerator != null) this.clientGenerator.stopRun();
-        if(this.clientGeneratorStrategySelector != null) this.clientGeneratorStrategySelector.stopRun();
+    private void stopTimer(){
+        if(timer != null) timer.stopTimer();
+    }
+
+    private void prepareClientGenerator(){
+        stopClientGenerator();
         this.clientGenerator = new ClientGenerator(ClientGenerator.RANDOM, scenario, this, 5);
         this.clientGeneratorStrategySelector = new ClientGeneratorStrategySelector(clientGenerator,time,difficulty);
+    }
+
+    private void stopClientGenerator(){
+        if(this.clientGenerator != null) this.clientGenerator.stopRun();
+        if(this.clientGeneratorStrategySelector != null) this.clientGeneratorStrategySelector.stopRun();
     }
 
     private void prepareMusic() {

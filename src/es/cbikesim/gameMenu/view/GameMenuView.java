@@ -1,7 +1,6 @@
-package es.cbikesim.lib.gameMenu.view;
+package es.cbikesim.gameMenu.view;
 
-import es.cbikesim.app.CBikeSimState;
-import es.cbikesim.lib.gameMenu.contract.GameMenu;
+import es.cbikesim.gameMenu.contract.GameMenu;
 import es.cbikesim.mainMenu.view.MenuTitleView;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,8 +13,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
-import java.util.Random;
 
 public class GameMenuView implements GameMenu.View {
 
@@ -38,9 +35,9 @@ public class GameMenuView implements GameMenu.View {
     }
 
     @Override
-    public void start() {
-        stage = new Stage(StageStyle.UNDECORATED);
+    public void start(Stage stage) {
         Scene scene = new Scene(createContent());
+
         stage.setAlwaysOnTop(true);
         stage.setScene(scene);
         stage.show();
@@ -65,9 +62,8 @@ public class GameMenuView implements GameMenu.View {
         initComponents();
         addBackground();
         addTitle();
-        addLine();
         addMenuBox();
-        presenter.load();
+        addLine();
         return root;
     }
 
@@ -85,7 +81,7 @@ public class GameMenuView implements GameMenu.View {
     }
 
     private void addTitle() {
-        MenuTitleView title = new MenuTitleView("Menu");
+        MenuTitleView title = new MenuTitleView("MENU");
         title.setTranslateX(WIDTH / 2 - title.getTitleWidth() / 2);
         title.setTranslateY(HEIGHT / 6);
 
