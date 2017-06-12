@@ -44,12 +44,12 @@ public class VehicleArrivesStationUseCaseTest {
         vehicleArrivesStationUseCase = new VehicleArrivesStationUseCase(vehicle,scenario);
         vehicleArrivesStationUseCase.execute();
 
-        assertNull(vehicle.getFrom());
-        assertNull(vehicle.getTo());
-        assertEquals(b, vehicle.getAt());
+        assertNull("Vehicle still has origin station after arriving. Should be null!",vehicle.getFrom());
+        assertNull("Vehicle still has destination station after arriving. Should be null!",vehicle.getTo());
+        assertEquals("Vehicle is not at its destination station! Vehicle destionation should be the same as the current station!",b, vehicle.getAt());
 
-        assertTrue(vehicle.getAt().getVehicleList().contains(vehicle));
-        assertFalse(scenario.getVehiclesInTransit().contains(vehicle));
+        assertTrue("Vehicle is not in station list after arriving! Vehicle should be in station vehicle list!",vehicle.getAt().getVehicleList().contains(vehicle));
+        assertFalse("Vechicle is still in transit list after arriving to station! Vechicle should not be in transit list.",scenario.getVehiclesInTransit().contains(vehicle));
     }
 
 }
