@@ -1,4 +1,4 @@
-package es.cbikesim.lib.pattern;
+package es.cbikesim.lib.util;
 
 import es.cbikesim.lib.exception.UseCaseException;
 

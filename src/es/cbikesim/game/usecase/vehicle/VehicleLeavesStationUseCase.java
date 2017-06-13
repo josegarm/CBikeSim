@@ -4,7 +4,7 @@ import es.cbikesim.game.model.Scenario;
 import es.cbikesim.game.model.Station;
 import es.cbikesim.game.model.Vehicle;
 import es.cbikesim.lib.exception.UseCaseException;
-import es.cbikesim.lib.pattern.Command;
+import es.cbikesim.lib.util.Command;
 
 public class VehicleLeavesStationUseCase implements Command {
 

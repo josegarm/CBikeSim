@@ -3,7 +3,7 @@ package es.cbikesim.game.command;
 import es.cbikesim.game.model.Scenario;
 import es.cbikesim.game.model.Station;
 import es.cbikesim.lib.exception.UseCaseException;
-import es.cbikesim.lib.pattern.Command;
+import es.cbikesim.lib.util.Command;
 import es.cbikesim.lib.util.Point;
 
 import java.util.Arrays;

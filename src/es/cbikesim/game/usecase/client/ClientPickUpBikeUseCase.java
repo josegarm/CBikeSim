@@ -6,7 +6,7 @@ import es.cbikesim.game.model.Client;
 import es.cbikesim.game.model.Scenario;
 import es.cbikesim.game.model.Station;
 import es.cbikesim.lib.exception.UseCaseException;
-import es.cbikesim.lib.pattern.Command;
+import es.cbikesim.lib.util.Command;
 
 /**
  * Use Case: The client pick up a bike in the current station and go to other station
