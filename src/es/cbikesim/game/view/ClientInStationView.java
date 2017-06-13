@@ -9,6 +9,9 @@ import javafx.scene.layout.GridPane;
 
 public class ClientInStationView extends ImageView {
 
+    public static final Image EMPTY = new Image(ClientInStationView.class.getResource("/img/client_empty.png").toExternalForm());
+    public static final Image CLIENT = new Image(ClientInStationView.class.getResource("/img/client.png").toExternalForm());
+
     public ClientInStationView(Image image, String id, Game.Presenter context) {
         this(image);
 

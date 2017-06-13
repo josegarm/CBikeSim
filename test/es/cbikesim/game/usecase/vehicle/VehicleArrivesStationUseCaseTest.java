@@ -46,10 +46,10 @@ public class VehicleArrivesStationUseCaseTest {
 
         assertNull("Vehicle still has origin station after arriving. Should be null!",vehicle.getFrom());
         assertNull("Vehicle still has destination station after arriving. Should be null!",vehicle.getTo());
-        assertEquals("Vehicle is not at its destination station! Vehicle destionation should be the same as the current station!",b, vehicle.getAt());
+        assertEquals("Vehicle is not at its destination station! Vehicle destination should be the same as the current station!",b, vehicle.getAt());
 
         assertTrue("Vehicle is not in station list after arriving! Vehicle should be in station vehicle list!",vehicle.getAt().getVehicleList().contains(vehicle));
-        assertFalse("Vechicle is still in transit list after arriving to station! Vechicle should not be in transit list.",scenario.getVehiclesInTransit().contains(vehicle));
+        assertFalse("Vechicle is still in transit list after arriving to station! Vehicle should not be in transit list.",scenario.getVehiclesInTransit().contains(vehicle));
     }
 
 }

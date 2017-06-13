@@ -45,7 +45,7 @@ public class ClientView extends Circle implements Runnable, StopRun {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                alive = false;
             }
         }
     }
@@ -70,7 +70,7 @@ public class ClientView extends Circle implements Runnable, StopRun {
         try {
             Thread.sleep((long) Duration.seconds(waitSecond).toMillis());
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            alive = false;
         }
     }
 }

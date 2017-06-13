@@ -15,6 +15,10 @@ public class BikeStallView extends ImageView {
     private Game.Presenter context;
     private int containerType;
 
+    public static final Image EMPTY = new Image(BikeStallView.class.getResource("/img/bike_empty.png").toExternalForm());
+    public static final Image NORMAL = new Image(BikeStallView.class.getResource("/img/bike.png").toExternalForm());
+    public static final Image ELECTRIC = new Image(BikeStallView.class.getResource("/img/bike_elec.png").toExternalForm());
+
     public BikeStallView(Image image, String id, Game.Presenter context, int containerType, boolean dragEvents, boolean dropEvents) {
         this(image, context, containerType, dragEvents, dropEvents);
         super.setId(id);
@@ -35,36 +39,27 @@ public class BikeStallView extends ImageView {
         if (dropEvents) startDropEvents();
     }
 
-    public void startDragEvents() {
-        super.setOnDragDetected(
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        Dragboard db = BikeStallView.super.startDragAndDrop(TransferMode.ANY);
-                        db.setDragView(new Image(getClass().getResource("/img/bike_drag.png").toExternalForm()));
-                        db.setDragViewOffsetX(40);
-                        db.setDragViewOffsetY(40);
+    private void startDragEvents() {
+        super.setOnDragDetected(event -> {
+            Dragboard db = BikeStallView.super.startDragAndDrop(TransferMode.ANY);
+            db.setDragView(new Image(getClass().getResource("/img/bike_drag.png").toExternalForm()));
+            db.setDragViewOffsetX(40);
+            db.setDragViewOffsetY(40);
 
-                        ClipboardContent content = new ClipboardContent();
-                        content.putString(BikeStallView.super.getId());
-                        db.setContent(content);
+            ClipboardContent content = new ClipboardContent();
+            content.putString(BikeStallView.super.getId());
+            db.setContent(content);
 
-                        event.consume();
-                    }
-                }
-        );
+            event.consume();
+        });
     }
 
-    public void startDropEvents() {
-        super.setOnDragOver(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent event) {
-                if (event.getGestureSource() != super.getClass() && event.getDragboard().hasString()) {
-                    event.acceptTransferModes(TransferMode.ANY);
-                }
-
-                event.consume();
+    private void startDropEvents() {
+        super.setOnDragOver(event -> {
+            if (event.getGestureSource() != super.getClass() && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.ANY);
             }
+            event.consume();
         });
 
         super.setOnDragDropped(event -> {

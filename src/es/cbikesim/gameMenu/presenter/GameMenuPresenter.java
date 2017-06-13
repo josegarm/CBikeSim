@@ -156,6 +156,7 @@ public class GameMenuPresenter implements GameMenu.Presenter {
                 }),
                 new Pair<String, Runnable>("RESTART", () -> {
                     view.getStage().close();
+                    context.stopGame();
                     context.initGame();
                 }),
                 new Pair<String, Runnable>("EXIT TO MAIN MENU", () -> {
@@ -174,6 +175,7 @@ public class GameMenuPresenter implements GameMenu.Presenter {
                 new Pair<String, Runnable>("RESTART", () -> {
                     view.getStage().close();
                     CBikeSimState.getInstance().getPrimaryStage().show();
+                    context.stopGame();
                     context.initGame();
                 }),
                 new Pair<String, Runnable>("EXIT TO MAIN MENU", () -> {

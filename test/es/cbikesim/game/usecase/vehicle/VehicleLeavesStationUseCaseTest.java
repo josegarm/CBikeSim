@@ -45,7 +45,7 @@ public class VehicleLeavesStationUseCaseTest {
 
         assertNull("Vehicle 'at' parameter should be null! Vehicle has left the station!",vehicle.getAt());
         assertEquals("Vehicle origin station is not equal to perceived origin parameter! Should be the same.",a,vehicle.getFrom());
-        assertEquals("Vehicle destination station is not equal to perceived destionation parameter! Should be the same.",b,vehicle.getTo());
+        assertEquals("Vehicle destination station is not equal to perceived destination parameter! Should be the same.",b,vehicle.getTo());
 
         assertTrue("Vehicle is not in transit list. It has left the station! It should be in transit list.",scenario.getVehiclesInTransit().contains(vehicle));
         assertFalse("Station still has vehicle. Should not have a departed vehicle still in the list!",a.getVehicleList().contains(vehicle));
