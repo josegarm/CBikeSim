@@ -1,11 +1,12 @@
 package es.cbikesim.game.view;
 
 import es.cbikesim.game.contract.Game;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.*;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 
 public class BikeStallView extends ImageView {

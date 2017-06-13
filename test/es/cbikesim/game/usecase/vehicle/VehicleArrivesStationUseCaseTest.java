@@ -1,6 +1,8 @@
 package es.cbikesim.game.usecase.vehicle;
 
-import es.cbikesim.game.model.*;
+import es.cbikesim.game.model.Scenario;
+import es.cbikesim.game.model.Station;
+import es.cbikesim.game.model.Vehicle;
 import es.cbikesim.lib.util.Point;
 import org.junit.After;
 import org.junit.Before;
