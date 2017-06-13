@@ -29,7 +29,7 @@ public class VehiclePicksUpBikeUseCase implements Command {
 
         Station at = vehicle.getAt();
 
-        if (at.getAvailableBikeList().size() >= 1) {
+        if (at.getAvailableBikeList().size() >= 1 && vehicle.getBikeList().size() < vehicle.getMaxCapacity()) {
             at.getAvailableBikeList().remove(bike);
             vehicle.getBikeList().add(bike);
         }
